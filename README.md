@@ -1,8 +1,7 @@
 # Topinambour
 
-[![Gem Version](https://badge.fury.io/rb/Topinambour.svg)](https://badge.fury.io/rb/Topinambour)
-
-<a href="https://raw.github.com/cedlemo/germinal/master/screenshot1.png"><img src="https://raw.github.com/cedlemo/germinal/master/screenshot1_prev.png" width="576" height="324" alt="Screenshot"></a>
+[![Gem Version](https://badge.fury.io/rb/topinambour.svg)](https://badge.fury.io/rb/topinambour)
+<a href="https://raw.github.com/cedlemo/topinambour/master/screenshot1.png"><img src="https://raw.github.com/cedlemo/topinambour/master/screenshot1_prev.png" width="576" height="324" alt="Screenshot"></a>
 
 Topinambour is Terminal written with the Gtk3 and Vte3 ruby bindings from the project [ruby-gnome2](https://github.com/ruby-gnome2/ruby-gnome2). I have written it for testing purpose, but Topinambour works well and I use it as my primary terminal emulator.
 
@@ -10,17 +9,17 @@ Topinambour is Terminal written with the Gtk3 and Vte3 ruby bindings from the pr
 
 *    tabs supports
 *    tabs can be reordered or selected through the preview mode ( `Shift + Ctrl + o` )
-<a href="https://raw.github.com/cedlemo/germinal/master/screenshot2.png"><img src="https://raw.github.com/cedlemo/germinal/master/screenshot2_prev.png" width="576" height="324" alt="Screenshot"></a>
+<a href="https://raw.github.com/cedlemo/topinambour/master/screenshot2.png"><img src="https://raw.github.com/cedlemo/topinambour/master/screenshot2_prev.png" width="576" height="324" alt="Screenshot"></a>
 
 *    Each tab can be named.
 *    The configuration can be done via a Css file
 *    Terminal colors can be changed on the fly and saved in the CSS configuration file
-<a href="https://raw.github.com/cedlemo/germinal/master/screenshot3.png"><img src="https://raw.github.com/cedlemo/germinal/master/screenshot3_prev.png" width="576" height="324" alt="Screenshot"></a>
+<a href="https://raw.github.com/cedlemo/topinambour/master/screenshot3.png"><img src="https://raw.github.com/cedlemo/topinambour/master/screenshot3_prev.png" width="576" height="324" alt="Screenshot"></a>
 *    Terminal font can be changed on the fly and saved in the CSS configuration file
-<a href="https://raw.github.com/cedlemo/germinal/master/screenshot4.png"><img src="https://raw.github.com/cedlemo/germinal/master/screenshot4_prev.png" width="576" height="324" alt="Screenshot"></a>
+<a href="https://raw.github.com/cedlemo/topinambour/master/screenshot4.png"><img src="https://raw.github.com/cedlemo/topinambour/master/screenshot4_prev.png" width="576" height="324" alt="Screenshot"></a>
 
 *    The Css file can be edited in a tab of Topinambour and saved. Each modifications are applied while you are writting them. (Use `Shift + Ctrl + w` to close the editor)
-<a href="https://raw.github.com/cedlemo/germinal/master/screenshot5.png"><img src="https://raw.github.com/cedlemo/germinal/master/screenshot5_prev.png" width="576" height="324" alt="Screenshot"></a>
+<a href="https://raw.github.com/cedlemo/topinambour/master/screenshot5.png"><img src="https://raw.github.com/cedlemo/topinambour/master/screenshot5_prev.png" width="576" height="324" alt="Screenshot"></a>
 *   Topinambour allows users to modify existing modules. For example if a user copy the css_editor.rb in the directory *~/.config/Topinambour/lib/css_editor.rb*, he should be able to modify it in order to fit its needs. 
 
 ##  TODO:
@@ -51,7 +50,7 @@ Topinambour is Terminal written with the Gtk3 and Vte3 ruby bindings from the pr
 
 ## User configuration
 
-It can be found in the file `$HOME/.config/Topinambour/germinal.css` (Be carefull by default Topinambour use fish as a default shell, if you want to use another one specify it in the germinal.css file)
+It can be found in the file `$HOME/.config/Topinambour/topinambour.css` (Be carefull by default Topinambour use fish as a default shell, if you want to use another one specify it in the topinambour.css file)
 
 ```css
 *{
@@ -125,7 +124,7 @@ Each time you modify this configuration via the interface of Topinambour (termin
 
     FileUtils.mv(USR_CSS, "#{USR_CSS}_#{Time.new.strftime('%Y-%m-%d-%H-%M-%S')}.backup")
 
-Which means that the old file can be something like that : *germinal.css_2016-12-5-13-20.backup*.
+Which means that the old file can be something like that : *topinambour.css_2016-12-5-13-20.backup*.
 
 ## Installation
 
@@ -156,8 +155,8 @@ the ruby gem binaries (for example).
 
 ##### Get the sources
 
-    git clone https://github.com/cedlemo/germinal.git
-    cd germinal/bin
+    git clone https://github.com/cedlemo/topinambour.git
+    cd topinambour/bin
     
 ##### Edit the files Topinambour and test
   The filenames correspond to their functionnalities.
