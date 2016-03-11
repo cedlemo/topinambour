@@ -1,0 +1,200 @@
+# Copyright 2015-2016 Cédric LE MOIGNE, cedlemo@gmx.com
+# This file is part of Topinambour.
+#
+# Topinambour is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# any later version.
+#
+# Topinambour is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Topinambour.  If not, see <http://www.gnu.org/licenses/>.
+
+class TopinambourWindow < Gtk::ApplicationWindow
+  extend TopinambourStyleProperties
+  attr_reader :notebook, :bar, :overlay, :current_label, :current_tab, :css_editor_style
+
+  type_register
+  install_style("string", "shell", "/usr/bin/fish")
+  install_style("int", "width", [-1, 2000, 1000])
+  install_style("int", "height", [-1, 2000, 500])
+  install_style("string", "css-editor-style", "classic")
+
+  def initialize(application)
+    super(:application => application)
+    set_icon_from_file("#{DATA_PATH}/germinal-icon.png")
+    load_css_properties
+    set_position(:center)
+    create_header_bar
+    create_containers
+    show_all
+    signal_connect "key-press-event" do |widget, event|
+      TopinambourShortcuts.handle_key_press(widget, event)
+    end
+  end
+
+  def add_terminal(cmd = @shell)
+    exit_overlay_mode
+    working_dir = nil
+    # Check if current tab is a TopinambourTerminal (can be TopinambourCssEditor)
+    if @notebook.current.class == TopinambourTerminal && @notebook.n_pages > 0
+      working_dir = @notebook.current.pid_dir
+    end
+
+    terminal = TopinambourTerminal.new(cmd, working_dir)
+    terminal.show
+    terminal.signal_connect "size-allocate" do |widget|
+      w = widget.column_count
+      h = widget.row_count
+      size_infos = "#{w}x#{h}"
+      if @overlay.children.size == 1
+        add_overlay(TopinambourResizeMessage.new(size_infos))
+        add_resize_timeout
+      elsif @overlay.children[1].class == TopinambourResizeMessage
+        GLib::Source.remove(@resize_timeout) if @resize_timeout
+        @overlay.children[1].text = size_infos
+        add_resize_timeout
+      end
+    end
+    @notebook.append_page(terminal, Gtk::Label.new)
+    @notebook.set_tab_reorderable(terminal, true)
+    @notebook.set_page(@notebook.n_pages - 1)
+  end
+
+  def quit_gracefully
+    exit_overlay_mode
+    @notebook.remove_all_pages
+    application.quit
+  end
+  
+  def show_color_selector
+    toggle_overlay(TopinambourColorSelector) if @notebook.current.class == TopinambourTerminal
+  end
+
+  def show_prev_tab
+    exit_overlay_mode
+    @notebook.cycle_prev_page
+  end
+
+  def show_next_tab
+    exit_overlay_mode
+    @notebook.cycle_next_page
+  end
+  
+  def show_terminal_chooser
+    toggle_overlay(TopinambourTermChooser)
+  end
+
+  def show_font_selector
+    toggle_overlay(TopinambourFontSelector) if @notebook.current.class == TopinambourTerminal
+  end
+
+  def show_css_editor
+    css_editor = TopinambourCssEditor.new(self)
+    @notebook.append_page(css_editor, Gtk::Label.new)
+    @notebook.set_page(@notebook.n_pages - 1)
+  end
+
+  def exit_overlay_mode
+    @overlay.children[1].destroy if in_overlay_mode?
+  end
+
+  def load_css_properties
+    @default_width = style_get_property("width")
+    @default_height = style_get_property("height")
+    set_default_size(@default_width, @default_height)
+    set_size_request(@default_width, @default_height)
+    @shell = style_get_property("shell")
+    @css_editor_style = style_get_property("css-editor-style")
+  end
+
+  def display_about
+    Gtk::AboutDialog.show(self,
+                          "authors" => ["Cédric Le Moigne <cedlemo@gmx.com>"],
+                          "comments" => "Terminal Emulator based on the ruby bindings of Gtk3 and Vte3",
+                          "copyright" => "Copyright (C) 2015-2016 Cédric Le Moigne",
+                          "license" => "This program is licenced under the licence GPL-3.0 and later.",
+                          "logo" => Gdk::Pixbuf.new("#{DATA_PATH}/germinal-icon-128.png"),
+                          "program_name" => "Topinambour",
+                          "version" => "1.2.3",
+                          "website" => "https://github.com/cedlemo/germinal",
+                          "website_label" => "Topinambour github repository"
+                         )
+  end
+  
+  def close_current_tab
+    exit_overlay_mode
+    @notebook.remove_current_page
+  end
+
+  def in_overlay_mode?
+    @overlay.children.size > 1 ? true : false
+  end
+
+  private
+
+  def add_overlay(widget)
+    @overlay.add_overlay(widget)
+    @overlay.set_overlay_pass_through(widget, true)
+  end
+
+  def create_containers
+    @notebook = TopinambourNotebook.new
+    @overlay = Gtk::Overlay.new
+    @overlay.add(@notebook)
+    add(@overlay)
+  end
+  
+  def create_header_bar
+    @bar = TopinambourHeaderBar.generate_header_bar(self)
+    @current_label = TopinambourHeaderBar.generate_current_label(self)
+    @current_tab = TopinambourHeaderBar.generate_current_tab
+    add_buttons_at_begining
+    add_buttons_at_end
+  end
+
+  def add_buttons_at_begining
+    button = TopinambourHeaderBar.generate_prev_button(self)
+    @bar.pack_start(button)
+    @bar.pack_start(@current_tab)
+    button = TopinambourHeaderBar.generate_next_button(self)
+    @bar.pack_start(button)
+    @bar.pack_start(@current_label)
+    button = TopinambourHeaderBar.generate_new_tab_button(self)
+    @bar.pack_start(button)
+  end
+
+  def add_buttons_at_end
+    button = TopinambourHeaderBar.generate_open_menu_button(self)
+    @bar.pack_end(button)
+    button = TopinambourHeaderBar.generate_font_sel_button(self)
+    @bar.pack_end(button)
+    button = TopinambourHeaderBar.generate_color_sel_button(self)
+    @bar.pack_end(button)
+    button = TopinambourHeaderBar.generate_term_overv_button(self)
+    @bar.pack_end(button)
+  end
+
+  def add_resize_timeout
+    @resize_timeout = GLib::Timeout.add_seconds(2) do
+      second_child = @overlay.children[1] || nil
+      if second_child && second_child.class == TopinambourResizeMessage
+        @overlay.children[1].hide
+      end
+    end
+  end
+
+  def toggle_overlay(klass)
+    if in_overlay_mode? && @overlay.children[1].class == klass
+      exit_overlay_mode
+    else
+      exit_overlay_mode
+      add_overlay(klass.new(self))
+      @overlay.children[1].show_all
+    end
+  end
+end

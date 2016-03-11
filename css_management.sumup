@@ -1,0 +1,25 @@
+
+WRITE/LOAD CSS config
+
+application startup
+    application#load_css_config
+      generate Gtk::CssProvider
+        try to load user css
+        load default css if fail or doesn't exist
+
+color_selector 
+    application#update_css
+
+font_selector
+    application#update_css
+
+css_editor
+    application#update_css
+
+don't load use sass in order to display css file to the user.
+
+user_css.css -> load as file -> use sass to manage -> load as CssProvider
+
+present user_css.css to  modify en css editor
+
+in font / color selector -> just do a simple parsing with regex.

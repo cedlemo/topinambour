@@ -1,0 +1,62 @@
+#!/usr/bin/env ruby
+# Copyright 2015-2016 Cédric LE MOIGNE, cedlemo@gmx.com
+# This file is part of Topinambour.
+#
+# Topinambour is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# any later version.
+#
+# Topinambour is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Topinambour.  If not, see <http://www.gnu.org/licenses/>.
+#
+# Topinambour is a terminal emulator written with the ruby gtk3 and
+# vte 3 bindings.
+# Author:: Cedlemo (mailto:cedlemo@gmx.com)
+
+require "gtk3"
+require "vte3"
+require "fileutils"
+require "sass"
+
+CURRENT_PATH = File.expand_path(File.dirname(__FILE__))
+ROOT_PATH = File.expand_path("#{CURRENT_PATH}/..")
+LIB_PATH = "#{CURRENT_PATH}/../lib"
+DATA_PATH = "#{CURRENT_PATH}/../data"
+CONFIG_DIR = File.expand_path("#{ENV['HOME']}/.config/Topinambour")
+USR_CSS = "#{CONFIG_DIR}/germinal.css"
+USR_LIB_PATH  = "#{CONFIG_DIR}/lib"
+gresource_bin = "#{DATA_PATH}/germinal.gresource"
+gresource_xml = "#{DATA_PATH}/germinal.gresource.xml"
+
+system("glib-compile-resources",
+       "--target", gresource_bin,
+       "--sourcedir", File.dirname(gresource_xml),
+       gresource_xml)
+
+at_exit do
+  FileUtils.rm_f(gresource_bin)
+end
+
+resource = Gio::Resource.load(gresource_bin)
+Gio::Resources.register(resource)
+# Load default libraries !!WARNING!! loading order matters
+%w(actions style_properties application terminal notebook color_selector font_selector
+terminal_chooser headerbar shortcuts window resize_message css_editor).each do |l|
+  if File.exist?("#{USR_LIB_PATH}/#{l}.rb")
+    require "#{USR_LIB_PATH}/#{l}.rb"
+  else
+    require "#{LIB_PATH}/#{l}.rb"
+  end
+end
+
+Gtk::IconTheme.default.add_resource_path("/com/github/cedlemo/germinal/icons")
+
+germinal = TopinambourApplication.new
+
+exit(germinal.run([$PROGRAM_NAME] + ARGV))
