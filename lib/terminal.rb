@@ -70,7 +70,7 @@ class TopinambourTerminal < Vte::Terminal
       end
     end
 
-    builder = Gtk::Builder.new(:resource => "/com/github/cedlemo/germinal/terminal-menu.ui")
+    builder = Gtk::Builder.new(:resource => "/com/github/cedlemo/topinambour/terminal-menu.ui")
     @menu = Gtk::Popover.new(self, builder["termmenu"])
 
     signal_connect "button-press-event" do |widget, event|

@@ -1,21 +1,21 @@
 module CssHandler
-  def css_file?(filename)
+  def self.css_file?(filename)
     filename =~ /^.*\.css$/ ? true : false
   end
   
-  def scss_file?(filename)
+  def self.scss_file?(filename)
     filename =~ /^.*\.scss$/ ? true : false
   end
   
-  def sass_file?(filename)
+  def self.sass_file?(filename)
     filename =~ /^.*\.sass$/ ? true : false
   end
 
-  def to_css(filename)
+  def self.to_css(filename)
     content = File.open(filename, "r").read
     if css_file?(filename) || scss_file?(filename)
       Sass::Engine.new(content, :syntax => :scss).render
-    else
+    elsif sass_file?(filename)
       Sass::Engine.new(content, :syntax => :sass).render
     else
       puts "Your theme file must be a css, scss or sass file"
@@ -23,7 +23,7 @@ module CssHandler
     end
   end
   
-  def color_property?(value)
+  def self.color_property?(value)
     begin
       Gdk::RGBA.parse(value)
     rescue
@@ -32,16 +32,21 @@ module CssHandler
     true
   end
   
-  def property_to_css_instructions(name, value)
+  def self.property_to_css_instructions(name, value)
     if value.class == String && color_property?(value) 
       "#{name}: #{value};\n"
-    else value.class == String
+    elsif value.class == String
       "#{name}: \"#{value}\";\n"
     else
       "#{name}: #{value};\n"
     end 
   end
   
-  def get_global
-
+  def self.get_universal_selector_content(filename)
+    if css_file?(filename) || scss_file?(filename)
+      get_universal_selector_content_in_css(filename)
+    elsif sass_file?(filename)
+    # TODO
+    end
+  end
 end

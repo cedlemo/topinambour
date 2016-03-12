@@ -17,7 +17,7 @@
 class TopinambourApplication < Gtk::Application
   attr_reader :provider
   def initialize
-    super("com.github.cedlemo.germinal", :non_unique)
+    super("com.github.cedlemo.topinambour", :non_unique)
 
     signal_connect "startup" do |application|
       load_css_config
@@ -55,14 +55,14 @@ class TopinambourApplication < Gtk::Application
   private
 
   def load_menu_ui_in(application)
-    builder = Gtk::Builder.new(:resource => "/com/github/cedlemo/germinal/app-menu.ui")
+    builder = Gtk::Builder.new(:resource => "/com/github/cedlemo/topinambour/app-menu.ui")
     app_menu = builder["appmenu"]
     application.app_menu = app_menu
   end
 
   def load_css_config
     @provider = Gtk::CssProvider.new
-    default_css = Gio::Resources.lookup_data("/com/github/cedlemo/germinal/germinal.css", 0)
+    default_css = Gio::Resources.lookup_data("/com/github/cedlemo/topinambour/topinambour.css", 0)
     if File.exist?(USR_CSS)
       begin
         @provider.load(:path => USR_CSS)

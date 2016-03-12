@@ -83,7 +83,7 @@ SECTOOLTIP
 
   def self.generate_open_menu_button(window)
     gen_icon_button("open-menu-symbolic", "Main Menu") do |button|
-      builder = Gtk::Builder.new(:resource => "/com/github/cedlemo/germinal/window-menu.ui")
+      builder = Gtk::Builder.new(:resource => "/com/github/cedlemo/topinambour/window-menu.ui")
       menu = Gtk::Menu.new(builder["winmenu"])
       menu.attach_to_widget(button)
       menu.children[0].signal_connect("activate") { window.show_css_editor }
