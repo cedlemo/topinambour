@@ -1,0 +1,8 @@
+TopinambourWindow GtkOverlay GtkScrolledWindow {
+  background-color: rgba(49, 150, 188, 0.5);
+  border: solid 1px #3196bc;
+  border-radius: 6px 0px 0px 6px; }
+
+TopinambourWindow GtkOverlay GtkScrolledWindow GtkGrid {
+  margin: 0px;
+  padding: 0px; }
