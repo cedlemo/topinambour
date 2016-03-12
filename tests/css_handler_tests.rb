@@ -41,4 +41,50 @@ class TestCssHandlerModule < MiniTest::Test
     assert_equal(true, CssHandler.color_property?("rgb(0.5,0.6,0.4)"))
     assert_equal(true, CssHandler.color_property?("rgba(0.5,0.6,0.4, 0.0)"))
   end
+
+  def test_CssHandler_props_with_name
+    engine = CssHandler.to_engine(SIMPLE_CSS)
+    tree = engine.to_tree
+    props = CssHandler.props_with_name(tree, "border-radius")
+    assert_equal(2, props.size)
+    assert_equal(2, props[0].line)
+    assert_equal(8, props[1].line)
+
+    source_range = props[0].source_range
+    s = source_range.start_pos
+    e = source_range.end_pos
+    assert_equal(3, s.offset)
+    assert_equal(21, e.offset)
+
+    source_range = props[1].source_range
+    s = source_range.start_pos
+    e = source_range.end_pos
+    assert_equal(3, s.offset)
+    assert_equal(33, e.offset)
+
+    engine = CssHandler.to_engine(COMMENTS_CSS)
+    tree = engine.to_tree
+    props = CssHandler.props_with_name(tree, "border-radius")
+    assert_equal(1, props.size)
+    source_range = props[0].source_range
+    s = source_range.start_pos
+    e = source_range.end_pos
+    assert_equal(3, s.offset)
+    assert_equal(21, e.offset)
+  end
+  
+  def test_CssHandler_prop_position
+    engine = CssHandler.to_engine(SIMPLE_CSS)
+    tree = engine.to_tree
+    props = CssHandler.props_with_name(tree, "border-radius")
+    assert_equal(2, props.size)
+    start_line = CssHandler.prop_position(props[0])[0].line
+    end_line = CssHandler.prop_position(props[0])[1].line
+    start_pos = CssHandler.prop_position(props[0])[0].offset
+    end_pos = CssHandler.prop_position(props[0])[1].offset
+    assert_equal(2, start_line)
+    assert_equal(3, start_pos)
+    assert_equal(2, end_line)
+    assert_equal(21, end_pos)
+  end
 end
