@@ -1,3 +1,6 @@
+require "sass"
+require "gtk3" #to remove 
+
 module CssHandler
   def self.css_file?(filename)
     filename =~ /^.*\.css$/ ? true : false
@@ -24,12 +27,13 @@ module CssHandler
   end
   
   def self.color_property?(value)
+    parsed_color = nil
     begin
-      Gdk::RGBA.parse(value)
+      parsed_color = Gdk::RGBA.parse(value)
     rescue
-      false
+      parsed_color = nil
     end
-    true
+    parsed_color ? true : false 
   end
   
   def self.property_to_css_instructions(name, value)
