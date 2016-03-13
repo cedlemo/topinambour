@@ -1,0 +1,13 @@
+engines:
+  rubocop:
+    enabled: true
+  rubymotion:
+    enabled: true
+ratings:
+  paths:
+  - "**.rb"
+exclude_paths:
+  doc/*
+  test/*
+  data/*
+
