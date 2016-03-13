@@ -1,6 +1,9 @@
 # Topinambour
 
 [![Gem Version](https://badge.fury.io/rb/topinambour.svg)](https://badge.fury.io/rb/topinambour)
+[![Code Climate](https://codeclimate.com/github/cedlemo/topinambour/badges/gpa.svg)](https://codeclimate.com/github/cedlemo/topinambour)
+
+
 <a href="https://raw.github.com/cedlemo/topinambour/master/screenshot1.png"><img src="https://raw.github.com/cedlemo/topinambour/master/screenshot1_prev.png" width="576" height="324" alt="Screenshot"></a>
 
 Topinambour is Terminal written with the Gtk3 and Vte3 ruby bindings from the project [ruby-gnome2](https://github.com/ruby-gnome2/ruby-gnome2). I have written it for testing purpose, but Topinambour works well and I use it as my primary terminal emulator.
