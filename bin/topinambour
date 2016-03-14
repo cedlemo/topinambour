@@ -29,10 +29,10 @@ ROOT_PATH = File.expand_path("#{CURRENT_PATH}/..")
 LIB_PATH = "#{CURRENT_PATH}/../lib"
 DATA_PATH = "#{CURRENT_PATH}/../data"
 CONFIG_DIR = File.expand_path("#{ENV['HOME']}/.config/Topinambour")
-USR_CSS = "#{CONFIG_DIR}/germinal.css"
+USR_CSS = "#{CONFIG_DIR}/topinambour.css"
 USR_LIB_PATH  = "#{CONFIG_DIR}/lib"
-gresource_bin = "#{DATA_PATH}/germinal.gresource"
-gresource_xml = "#{DATA_PATH}/germinal.gresource.xml"
+gresource_bin = "#{DATA_PATH}/topinambour.gresource"
+gresource_xml = "#{DATA_PATH}/topinambour.gresource.xml"
 
 system("glib-compile-resources",
        "--target", gresource_bin,
@@ -55,8 +55,8 @@ terminal_chooser headerbar shortcuts window resize_message css_editor).each do |
   end
 end
 
-Gtk::IconTheme.default.add_resource_path("/com/github/cedlemo/germinal/icons")
+Gtk::IconTheme.default.add_resource_path("/com/github/cedlemo/topinambour/icons")
 
-germinal = TopinambourApplication.new
+topinambour = TopinambourApplication.new
 
-exit(germinal.run([$PROGRAM_NAME] + ARGV))
+exit(topinambour.run([$PROGRAM_NAME] + ARGV))

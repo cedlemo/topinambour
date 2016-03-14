@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
-  <gresource prefix="/com/github/cedlemo/germinal">
+  <gresource prefix="/com/github/cedlemo/topinambour">
     <file preprocess="xml-stripblanks">window.ui</file>
     <file preprocess="xml-stripblanks">app-menu.ui</file>
     <file preprocess="xml-stripblanks">window-menu.ui</file>
     <file preprocess="xml-stripblanks">terminal-menu.ui</file>
-    <file>germinal.css</file>
+    <file>topinambour.css</file>
     <file>application-exit-symbolic.svg</file>
     <file>color-select-symbolic.svg</file>
     <file>emblem-photos-symbolic.svg</file>
@@ -15,7 +15,7 @@
     <file>tab-new-symbolic.svg</file>
     <file>window-close-symbolic.svg</file>
   </gresource>
-  <gresource prefix="/com/github/cedlemo/germinal/icons">
+  <gresource prefix="/com/github/cedlemo/topinambour/icons">
     <file>application-exit-symbolic.svg</file>
     <file>color-select-symbolic.svg</file>
     <file>emblem-photos-symbolic.svg</file>

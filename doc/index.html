@@ -65,7 +65,7 @@
 
 <p><a href="https://badge.fury.io/rb/Topinambour"><img src="https://badge.fury.io/rb/Topinambour.svg" alt="Gem Version" /></a></p>
 
-<p><a href="https://raw.github.com/cedlemo/germinal/master/screenshot1.png"><img src="https://raw.github.com/cedlemo/germinal/master/screenshot1_prev.png" width="576" height="324" alt="Screenshot" /></a></p>
+<p><a href="https://raw.github.com/cedlemo/topinambour/master/screenshot1.png"><img src="https://raw.github.com/cedlemo/topinambour/master/screenshot1_prev.png" width="576" height="324" alt="Screenshot" /></a></p>
 
 <p>Topinambour is Terminal written with the Gtk3 and Vte3 ruby bindings from the project <a href="https://github.com/ruby-gnome2/ruby-gnome2">ruby-gnome2</a>. I have written it for testing purpose, but Topinambour works well and I use it as my primary terminal emulator.</p>
 
@@ -75,18 +75,18 @@
   <li>tabs supports</li>
   <li>
     <p>tabs can be reordered or selected through the preview mode ( <code>Shift + Ctrl + o</code> )
-<a href="https://raw.github.com/cedlemo/germinal/master/screenshot2.png"><img src="https://raw.github.com/cedlemo/germinal/master/screenshot2_prev.png" width="576" height="324" alt="Screenshot" /></a></p>
+<a href="https://raw.github.com/cedlemo/topinambour/master/screenshot2.png"><img src="https://raw.github.com/cedlemo/topinambour/master/screenshot2_prev.png" width="576" height="324" alt="Screenshot" /></a></p>
   </li>
   <li>Each tab can be named.</li>
   <li>The configuration can be done via a Css file</li>
   <li>Terminal colors can be changed on the fly and saved in the CSS configuration file
-<a href="https://raw.github.com/cedlemo/germinal/master/screenshot3.png"><img src="https://raw.github.com/cedlemo/germinal/master/screenshot3_prev.png" width="576" height="324" alt="Screenshot" /></a></li>
+<a href="https://raw.github.com/cedlemo/topinambour/master/screenshot3.png"><img src="https://raw.github.com/cedlemo/topinambour/master/screenshot3_prev.png" width="576" height="324" alt="Screenshot" /></a></li>
   <li>
     <p>Terminal font can be changed on the fly and saved in the CSS configuration file
-<a href="https://raw.github.com/cedlemo/germinal/master/screenshot4.png"><img src="https://raw.github.com/cedlemo/germinal/master/screenshot4_prev.png" width="576" height="324" alt="Screenshot" /></a></p>
+<a href="https://raw.github.com/cedlemo/topinambour/master/screenshot4.png"><img src="https://raw.github.com/cedlemo/topinambour/master/screenshot4_prev.png" width="576" height="324" alt="Screenshot" /></a></p>
   </li>
   <li>The Css file can be edited in a tab of Topinambour and saved. Each modifications are applied while you are writting them. (Use <code>Shift + Ctrl + w</code> to close the editor)
-<a href="https://raw.github.com/cedlemo/germinal/master/screenshot5.png"><img src="https://raw.github.com/cedlemo/germinal/master/screenshot5_prev.png" width="576" height="324" alt="Screenshot" /></a></li>
+<a href="https://raw.github.com/cedlemo/topinambour/master/screenshot5.png"><img src="https://raw.github.com/cedlemo/topinambour/master/screenshot5_prev.png" width="576" height="324" alt="Screenshot" /></a></li>
   <li>Topinambour allows users to modify existing modules. For example if a user copy the css_editor.rb in the directory <em>~/.config/Topinambour/lib/css_editor.rb</em>, he should be able to modify it in order to fit its needs.</li>
 </ul>
 
@@ -131,7 +131,7 @@
 
 <h2 id="user-configuration">User configuration</h2>
 
-<p>It can be found in the file <code>$HOME/.config/Topinambour/germinal.css</code> (Be carefull by default Topinambour use fish as a default shell, if you want to use another one specify it in the germinal.css file)</p>
+<p>It can be found in the file <code>$HOME/.config/Topinambour/topinambour.css</code> (Be carefull by default Topinambour use fish as a default shell, if you want to use another one specify it in the topinambour.css file)</p>
 
 <p>```css
 <em>{
@@ -206,7 +206,7 @@ TopinambourWindow GtkOverlay GtkScrolledWindow#terminal_chooser GtkBox{
 <pre class="code ruby"><code class="ruby"><span class='const'>FileUtils</span><span class='period'>.</span><span class='id identifier rubyid_mv'>mv</span><span class='lparen'>(</span><span class='const'>USR_CSS</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='const'>USR_CSS</span><span class='embexpr_end'>}</span><span class='tstring_content'>_</span><span class='embexpr_beg'>#{</span><span class='const'>Time</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='period'>.</span><span class='id identifier rubyid_strftime'>strftime</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>%Y-%m-%d-%H-%M-%S</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='embexpr_end'>}</span><span class='tstring_content'>.backup</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
 </code></pre>
 
-<p>Which means that the old file can be something like that : <em>germinal.css_2016-12-5-13-20.backup</em>.</p>
+<p>Which means that the old file can be something like that : <em>topinambour.css_2016-12-5-13-20.backup</em>.</p>
 
 <h2 id="installation">Installation</h2>
 
@@ -243,8 +243,8 @@ the ruby gem binaries (for example).</p>
 
 <h5 id="get-the-sources">Get the sources</h5>
 
-<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_git'>git</span> <span class='id identifier rubyid_clone'>clone</span> <span class='label'>https:</span><span class='tstring'><span class='regexp_beg'>/</span><span class='regexp_end'>/github</span></span><span class='period'>.</span><span class='id identifier rubyid_com'>com</span><span class='op'>/</span><span class='id identifier rubyid_cedlemo'>cedlemo</span><span class='op'>/</span><span class='id identifier rubyid_germinal'>germinal</span><span class='period'>.</span><span class='id identifier rubyid_git'>git</span>
-<span class='id identifier rubyid_cd'>cd</span> <span class='id identifier rubyid_germinal'>germinal</span><span class='op'>/</span><span class='id identifier rubyid_bin'>bin</span>
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_git'>git</span> <span class='id identifier rubyid_clone'>clone</span> <span class='label'>https:</span><span class='tstring'><span class='regexp_beg'>/</span><span class='regexp_end'>/github</span></span><span class='period'>.</span><span class='id identifier rubyid_com'>com</span><span class='op'>/</span><span class='id identifier rubyid_cedlemo'>cedlemo</span><span class='op'>/</span><span class='id identifier rubyid_topinambour'>topinambour</span><span class='period'>.</span><span class='id identifier rubyid_git'>git</span>
+<span class='id identifier rubyid_cd'>cd</span> <span class='id identifier rubyid_topinambour'>topinambour</span><span class='op'>/</span><span class='id identifier rubyid_bin'>bin</span>
 </code></pre>
 
 <h5 id="edit-the-files-topinambour-and-test">Edit the files Topinambour and test</h5>
