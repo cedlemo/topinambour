@@ -31,7 +31,7 @@ DATA_PATH = "#{CURRENT_PATH}/../data"
 CONFIG_DIR = File.expand_path("#{ENV['HOME']}/.config/Topinambour")
 USR_CSS = "#{CONFIG_DIR}/topinambour.css"
 USR_LIB_PATH  = "#{CONFIG_DIR}/lib"
-gresource_bin = "#{DATA_PATH}/topinambour.gresource"
+gresource_bin = "/tmp/topinambour.gresource"
 gresource_xml = "#{DATA_PATH}/topinambour.gresource.xml"
 
 system("glib-compile-resources",
