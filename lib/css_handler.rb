@@ -50,11 +50,11 @@ module CssHandler
 
   def self.property_to_css_instructions(name, value)
     if value.class == String && color_property?(value)
-      "#{name}: #{value};\n"
+      "#{name}: #{value}"
     elsif value.class == String
-      "#{name}: \"#{value}\";\n"
+      %(#{name}: "#{value}")
     else
-      "#{name}: #{value};\n"
+      "#{name}: #{value}"
     end
   end
 
@@ -69,7 +69,7 @@ module CssHandler
     end
     props
   end
-  
+
   def self.prop_position(prop)
     source_range = prop.source_range
     [source_range.start_pos, source_range.end_pos]
@@ -93,11 +93,30 @@ module CssHandler
     #   replace initial file with temp file
   end
 
-  def self.append_property_in_universal_selector(filename, tree, prop)
-    # Get the universal selector line/pos via the tree
-    # append our property at the end of this selector
+  def self.append_new_property_after_line(line, prop, indent)
+    tmp = line.gsub(/\;[^\;]*$/, ";\n")
+    new_prop = property_to_css_instructions(prop[:name], prop[:value])
+    tmp += (indent + new_prop + Regexp.last_match(0))
+    tmp
   end
-  
+
+  def self.append_property_in_universal_selector(filename, tree, prop)
+    last_prop = selectors_with_name(tree, "*").last.children.last
+    indent =  " " * last_prop.name_source_range.start_pos.offset
+    last_line = last_prop.value_source_range.end_pos.line
+    tmp = ""
+    line_number = 1
+    File.open(filename, "r").each_line do |line|
+      if last_line == line_number
+        tmp += append_new_property_after_line(line, prop, indent)
+      else
+        tmp += line
+      end
+      line_number += 1
+    end
+    tmp
+  end
+
   def self.rule_node_name_is?(node, name)
     if node.rule.include?(name)
       true
@@ -105,7 +124,7 @@ module CssHandler
       true
     elsif node.resolved_rules == name
       true
-    else  
+    else
       false
     end
   end
@@ -114,11 +133,11 @@ module CssHandler
     selectors = []
     tree.children.each do |node|
       next unless node.class == Sass::Tree::RuleNode
-      selectors << node if rule_node_name_is?(node, "*") 
+      selectors << node if rule_node_name_is?(node, sel_name)
     end
     selectors
-  end  
-  
+  end
+
   def self.update_css(filename, properties)
     engine = to_engine(filename)
     tree = engine.to_tree

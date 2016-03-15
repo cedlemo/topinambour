@@ -93,5 +93,25 @@ class TestCssHandlerModule < MiniTest::Test
     tree = engine.to_tree
     selectors = CssHandler.selectors_with_name(tree, "*")
     assert_equal(1, selectors.size)
+#    sel = selectors[0]
+#    puts sel.class
+#    puts sel.methods
+#    puts sel.selector_source_range.start_pos.line
+#    puts sel.selector_source_range.start_pos.offset
+#    puts sel.selector_source_range.end_pos.line
+#    puts sel.selector_source_range.end_pos.offset
+#    puts sel.source_range.start_pos.line
+#    puts sel.source_range.start_pos.offset
+#    puts sel.source_range.end_pos.line
+#    puts sel.source_range.end_pos.offset
+  end
+  def test_CssHandler_append_property_in_universal_selector
+    engine = CssHandler.to_engine(UNIVERSAL_SEL_CSS)
+    tree = engine.to_tree
+    prop = {:name => "toto", :value => "tata"}
+    new_css = CssHandler.append_property_in_universal_selector(UNIVERSAL_SEL_CSS,
+                                                               tree,
+                                                               prop)
+    assert_equal("", new_css) 
   end
 end
