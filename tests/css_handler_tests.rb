@@ -87,4 +87,11 @@ class TestCssHandlerModule < MiniTest::Test
     assert_equal(2, end_line)
     assert_equal(21, end_pos)
   end
+  
+  def test_CssHandler_selectors_with_name
+    engine = CssHandler.to_engine(UNIVERSAL_SEL_CSS)
+    tree = engine.to_tree
+    selectors = CssHandler.selectors_with_name(tree, "*")
+    assert_equal(1, selectors.size)
+  end
 end

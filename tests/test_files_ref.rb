@@ -5,4 +5,5 @@ module TestFilesRef
 
   INHERIT_CSS = "#{PATH}/file2.css"
   COMMENTS_CSS = "#{PATH}/file3.css"
+  UNIVERSAL_SEL_CSS = "#{PATH}/file4.css"
 end

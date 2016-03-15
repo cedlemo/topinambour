@@ -1,9 +1,5 @@
 * {
-  -TopinambourTerminal-foreground: #aeafad;
-/* Default css properties
-  -TopinambourTerminal-foreground: #aeafad;
-  -TopinambourTerminal-background: #323232;*/
-}
+  -TopinambourTerminal-foreground: #aeafad; }
 
 TopinambourWindow GtkHeaderBar GtkEntry {
   border-radius: 4px; }

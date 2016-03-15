@@ -97,12 +97,24 @@ module CssHandler
     # Get the universal selector line/pos via the tree
     # append our property at the end of this selector
   end
+  
+  def self.rule_node_name_is?(node, name)
+    if node.rule.include?(name)
+      true
+    elsif node.parsed_rules.to_s == name
+      true
+    elsif node.resolved_rules == name
+      true
+    else  
+      false
+    end
+  end
 
   def self.selectors_with_name(tree, sel_name)
     selectors = []
     tree.children.each do |node|
       next unless node.class == Sass::Tree::RuleNode
-      selectors << node
+      selectors << node if rule_node_name_is?(node, "*") 
     end
     selectors
   end  
