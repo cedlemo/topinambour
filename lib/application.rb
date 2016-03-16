@@ -15,14 +15,16 @@
 # along with Topinambour.  If not, see <http://www.gnu.org/licenses/>.
 
 class TopinambourApplication < Gtk::Application
-  attr_reader :provider
+  attr_reader :provider, :css_file, :css_content
   def initialize
     super("com.github.cedlemo.topinambour", :non_unique)
 
     signal_connect "startup" do |application|
       load_css_config
       screen = Gdk::Display.default.default_screen
-      Gtk::StyleContext.add_provider_for_screen(screen, @provider, Gtk::StyleProvider::PRIORITY_USER)
+      Gtk::StyleContext.add_provider_for_screen(screen,
+                                                @provider,
+                                                Gtk::StyleProvider::PRIORITY_USER)
       TopinambourActions.add_actions_to(application)
       load_menu_ui_in(application)
     end
@@ -40,19 +42,21 @@ class TopinambourApplication < Gtk::Application
     @props.merge!(new_props) if new_props
     css = update_css_properties
     merged_css = Sass::Engine.new(css, :syntax => :scss).render
-    if File.exist?(USR_CSS)
-      FileUtils.mv(USR_CSS, "#{USR_CSS}_#{Time.new.strftime('%Y-%m-%d-%H-%M-%S')}.backup")
-      File.open(USR_CSS, "w") do |file|
-        file.puts merged_css
-      end
-    else
-      File.open(USR_CSS, "w") do |file|
-        file.puts merged_css
-      end
-    end
+    replace_old_conf_with(merged_css)
   end
 
   private
+
+  def replace_old_conf_with(new_conf)
+    if File.exist?(USR_CSS)
+      new_name = "#{USR_CSS}_#{Time.new.strftime('%Y-%m-%d-%H-%M-%S')}.backup"
+      FileUtils.mv(USR_CSS, new_name)
+    end
+    check_and_create_if_no_config_dir
+    File.open(USR_CSS, "w") do |file|
+      file.puts new_conf
+    end
+  end
 
   def load_menu_ui_in(application)
     builder = Gtk::Builder.new(:resource => "/com/github/cedlemo/topinambour/app-menu.ui")
@@ -60,19 +64,30 @@ class TopinambourApplication < Gtk::Application
     application.app_menu = app_menu
   end
 
+  def load_default_css_config
+    @css_content = Gio::Resources.lookup_data("/com/github/cedlemo/topinambour/topinambour.css", 0)
+    @css_file = "#{DATA_PATH}/topinambour.css"
+    @provider.load(:data => @css_content)
+  end
+
+  def load_custom_css_config
+    @css_content = File.open(USR_CSS, "r").read
+    @css_file = USR_CSS
+    @provider.load(:data => @css_content)
+  end
+
   def load_css_config
     @provider = Gtk::CssProvider.new
-    default_css = Gio::Resources.lookup_data("/com/github/cedlemo/topinambour/topinambour.css", 0)
     if File.exist?(USR_CSS)
       begin
-        @provider.load(:path => USR_CSS)
+        load_custom_css_config
       rescue
         puts "Bad css file using default css"
-        @provider.load(:data => default_css)
+        load_default_css_config
       end
     else
       puts "No custom CSS, using default css"
-      @provider.load(:data => default_css)
+      load_default_css_config
     end
   end
 
@@ -127,5 +142,9 @@ class TopinambourApplication < Gtk::Application
     end
     @props["-TopinambourTerminal-font"] = DEFAULT_TERMINAL_FONT
     @props["-TopinambourWindow-shell"] = "\'/usr/bin/fish\'"
+  end
+
+  def check_and_create_if_no_config_dir
+    Dir.mkdir(CONFIG_DIR) unless Dir.exist?(CONFIG_DIR)
   end
 end
