@@ -108,10 +108,10 @@ class TestCssHandlerModule < MiniTest::Test
   
   def test_CssHandler_append_property_in_universal_selector
     engine = CssHandler.to_engine(UNIVERSAL_SEL_CSS)
-    tree = engine.to_tree
     prop = {:name => "toto", :value => "tata"}
-    new_css = CssHandler.append_property_in_universal_selector(UNIVERSAL_SEL_CSS,
-                                                               tree,
+    css_content = File.open(UNIVERSAL_SEL_CSS, "r").read
+    new_css = CssHandler.append_property_in_universal_selector(css_content,
+                                                               engine,
                                                                prop)
     modified_css = File.open(UNIVERSAL_SEL_APPEND_CSS, "r").read
     assert_equal(modified_css, new_css) 
@@ -122,8 +122,9 @@ class TestCssHandlerModule < MiniTest::Test
     tree = engine.to_tree
 
     prop = {:name => "-TopinambourTerminal-foreground", :value =>"black"}
-    new_css = CssHandler.modify_each_property_values(UNIVERSAL_SEL_CSS,
-                                                     tree,
+    css_content = File.open(UNIVERSAL_SEL_CSS, "r").read
+    new_css = CssHandler.modify_each_property_values(css_content,
+                                                     engine,
                                                      prop)
     modified_css = File.open(UNIVERSAL_SEL_MOD_CSS, "r").read
     assert_equal(modified_css, new_css) 
@@ -134,8 +135,9 @@ class TestCssHandlerModule < MiniTest::Test
     tree = engine.to_tree
 
     prop = {:name => "-TopinambourTerminal-foreground", :value =>"black"}
-    new_css = CssHandler.modify_each_property_values(MULTIPLE_PROP_CSS,
-                                                     tree,
+    css_content = File.open(MULTIPLE_PROP_CSS, "r").read
+    new_css = CssHandler.modify_each_property_values(css_content,
+                                                     engine,
                                                      prop)
     modified_css = File.open(MULTIPLE_PROP_MOD_CSS, "r").read
     assert_equal(modified_css, new_css) 
