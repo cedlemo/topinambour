@@ -1,0 +1,11 @@
+* {
+  -TopinambourTerminal-foreground: black; }
+
+TopinambourWindow GtkHeaderBar GtkEntry {
+  border-radius: 4px; }
+
+.tooltip {
+  background:rgba(50, 50, 50,0.5);
+  border:none;
+  color: #ddd;
+  border-radius: 0px 6px 0px 6px; }

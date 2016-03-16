@@ -38,6 +38,10 @@ module CssHandler
     end
   end
 
+  def self.reload_engine(engine, css_content)
+    Sass::Engine.new(css_content, :syntax => engine.options[:syntax])
+  end
+
   def self.color_property?(value)
     parsed_color = nil
     begin
@@ -84,13 +88,44 @@ module CssHandler
     end
     false
   end
+  
+  def self.modify_in_ranges(line, line_number, start_range, end_range, value)
+    if line_number < start_range.line || line_number > end_range.line
+      line
+    else
+      tmp = ""
+      if line_number == start_range.line
+        tmp += line[0..(start_range.offset - 2)] + value
+      end
+      tmp += line[(end_range.offset - 1)..-1] if line_number == end_range.line
+      tmp
+    end
+  end
 
-  def self.modify_property(filename, tree, prop)
-    # Get the property line/pos via the tree
-    # modify the existing prop in the file
-    #   create a temp file
-    #   copy initial file and modify the part we want
-    #   replace initial file with temp file
+  def self.modify_property_value(file_content, property, value)
+    start_range = property.value_source_range.start_pos
+    end_range = property.value_source_range.end_pos
+    tmp = ""
+    line_number = 1
+    file_content.each_line do |line|
+      tmp += modify_in_ranges(line, line_number, start_range, end_range, value)
+      line_number += 1
+    end
+    tmp
+  end
+
+  def self.modify_each_property_values(filename, tree, prop)
+    engine = to_engine(filename)
+    tree = engine.to_tree
+    props = props_with_name(tree, prop[:name])
+    new_css = File.open(filename,"r").read
+    (0..(props.size - 1)).each do |i|
+      new_css = modify_property_value(new_css, props[i], prop[:value])
+      engine = reload_engine(engine, new_css)
+      tree = engine.to_tree
+      props = props_with_name(tree, prop[:name])
+    end
+    new_css
   end
 
   def self.append_new_property_after_line(line, prop, indent)
@@ -102,7 +137,7 @@ module CssHandler
 
   def self.append_property_in_universal_selector(filename, tree, prop)
     last_prop = selectors_with_name(tree, "*").last.children.last
-    indent =  " " * last_prop.name_source_range.start_pos.offset
+    indent =  " " * (last_prop.name_source_range.start_pos.offset - 1)
     last_line = last_prop.value_source_range.end_pos.line
     tmp = ""
     line_number = 1
@@ -138,15 +173,22 @@ module CssHandler
     selectors
   end
 
+  def self.update_css_with_new_property(filename, tree, prop)
+    if property_defined?(tree, prop[:name])
+      modify_each_property_values(filename, tree, prop)
+    else
+      append_property_in_universal_selector(filename, tree, prop)
+    end
+  end
+
   def self.update_css(filename, properties)
     engine = to_engine(filename)
-    tree = engine.to_tree
+    new_css = nil
     properties.each do |prop|
-      if property_defined?(tree, prop[:name])
-        modify_property(filename, tree, prop)
-      else
-        append_property_in_universal_selector(filename, tree, prop)
-      end
+      tree = engine.to_tree
+      new_css = update_css_with_new_property(filename, tree, prop)
+      engine = reload_engine(engine, new_css)
     end
+    new_css
   end
 end

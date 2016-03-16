@@ -105,6 +105,7 @@ class TestCssHandlerModule < MiniTest::Test
 #    puts sel.source_range.end_pos.line
 #    puts sel.source_range.end_pos.offset
   end
+  
   def test_CssHandler_append_property_in_universal_selector
     engine = CssHandler.to_engine(UNIVERSAL_SEL_CSS)
     tree = engine.to_tree
@@ -112,6 +113,32 @@ class TestCssHandlerModule < MiniTest::Test
     new_css = CssHandler.append_property_in_universal_selector(UNIVERSAL_SEL_CSS,
                                                                tree,
                                                                prop)
-    assert_equal("", new_css) 
+    modified_css = File.open(UNIVERSAL_SEL_APPEND_CSS, "r").read
+    assert_equal(modified_css, new_css) 
+  end
+
+  def test_CssHandler_modify_each_property_values_one
+    engine = CssHandler.to_engine(UNIVERSAL_SEL_CSS)
+    tree = engine.to_tree
+
+    prop = {:name => "-TopinambourTerminal-foreground", :value =>"black"}
+    new_css = CssHandler.modify_each_property_values(UNIVERSAL_SEL_CSS,
+                                                     tree,
+                                                     prop)
+    modified_css = File.open(UNIVERSAL_SEL_MOD_CSS, "r").read
+    assert_equal(modified_css, new_css) 
+
+  end
+  def test_CssHandler_modify_each_property_values_two
+    engine = CssHandler.to_engine(MULTIPLE_PROP_CSS)
+    tree = engine.to_tree
+
+    prop = {:name => "-TopinambourTerminal-foreground", :value =>"black"}
+    new_css = CssHandler.modify_each_property_values(MULTIPLE_PROP_CSS,
+                                                     tree,
+                                                     prop)
+    modified_css = File.open(MULTIPLE_PROP_MOD_CSS, "r").read
+    assert_equal(modified_css, new_css) 
+
   end
 end
