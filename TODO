@@ -1,9 +1,8 @@
 Urgent:
-  use alternative to gtk setter set_attrib become attrib= 
-  sum up  the css load / read /reload /modification processes
   TopinambourTerminal#pid_dir can be replaced by Vte::Terminal#current_directory_uri
 
   ubuntu => try add check vor methods that are specific to last Gtk version (ubuntu trusty)
+
 Ideas:
   Use a treeview or listbox for terminal chooser
   Try create a tab that displays extending tab informations (name, pixbuff, process, pid, dir) in treeview
