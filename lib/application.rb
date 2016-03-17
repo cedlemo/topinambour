@@ -15,7 +15,7 @@
 # along with Topinambour.  If not, see <http://www.gnu.org/licenses/>.
 
 class TopinambourApplication < Gtk::Application
-  attr_reader :provider, :css_file, :css_content
+  attr_reader :provider, :css_file, :css_content # :css_content really needed ?
   def initialize
     super("com.github.cedlemo.topinambour", :non_unique)
 
@@ -37,14 +37,29 @@ class TopinambourApplication < Gtk::Application
     end
   end
 
-  def update_css(new_props = nil)
-    css_properties
-    @props.merge!(new_props) if new_props
-    css = update_css_properties
-    merged_css = Sass::Engine.new(css, :syntax => :scss).render
-    replace_old_conf_with(merged_css)
-  end
+  #def update_css(new_props = nil)
+  #  css_properties
+  #  @props.merge!(new_props) if new_props
+  #  css = update_css_properties
+  #  merged_css = Sass::Engine.new(css, :syntax => :scss).render
+  #  replace_old_conf_with(merged_css)
+  #end
+  def update_css(new_props)
+    props = []
+    new_props.each do |prop|
+      props << {:name => prop[0], :value => prop[1]}
+    end 
+    new_css = CssHandler.update_css(@css_file, props)
+    replace_old_conf_with(new_css)
 
+    begin
+      load_custom_css_config
+    rescue
+      puts "Bad css file using default css"
+      load_default_css_config
+    end
+  end
+  
   private
 
   def replace_old_conf_with(new_conf)
@@ -91,46 +106,46 @@ class TopinambourApplication < Gtk::Application
     end
   end
 
-  def load_css_to_tree
-    engine = Sass::Engine.new(@provider.to_s, :syntax => :scss)
-    engine.to_tree
-  end
-
-  def update_css_properties
-    modified_sass = change_existing_properties
-    sass_to_add = @props.empty? ? "" : add_new_css_properties
-    Sass::Engine.new(sass_to_add + modified_sass, :syntax => :sass).render
-  end
-
-  def add_new_css_properties
-    new_sass = "*"
-    @props.each do |k, v|
-      new_sass += "\n  #{k}: #{v}"
-    end
-    new_sass + "\n"
-  end
-
-  def change_existing_properties
-    keys_found = []
-    tree = load_css_to_tree
-    # we search for properties that are already configured
-    tree.children.each do |node|
-      node.each do |prop|
-        next if prop.class != Sass::Tree::PropNode
-        name = prop.name[0]
-        next unless @props[name]
-        keys_found << name unless keys_found.include?(name)
-        if @props[name] != prop.value.value
-          value_object = prop.value.value.class.new(@props[name])
-          prop.value = Sass::Script::Tree::Literal.new(value_object)
-        end
-      end
-    end
-    keys_found.each do |k|
-      @props.delete(k)
-    end
-    tree.to_sass
-  end
+#  def load_css_to_tree
+#    engine = Sass::Engine.new(@provider.to_s, :syntax => :scss)
+#    engine.to_tree
+#  end
+#
+#  def update_css_properties
+#    modified_sass = change_existing_properties
+#    sass_to_add = @props.empty? ? "" : add_new_css_properties
+#    Sass::Engine.new(sass_to_add + modified_sass, :syntax => :sass).render
+#  end
+#
+#  def add_new_css_properties
+#    new_sass = "*"
+#    @props.each do |k, v|
+#      new_sass += "\n  #{k}: #{v}"
+#    end
+#    new_sass + "\n"
+#  end
+#
+#  def change_existing_properties
+#    keys_found = []
+#    tree = load_css_to_tree
+#    # we search for properties that are already configured
+#    tree.children.each do |node|
+#      node.each do |prop|
+#        next if prop.class != Sass::Tree::PropNode
+#        name = prop.name[0]
+#        next unless @props[name]
+#        keys_found << name unless keys_found.include?(name)
+#        if @props[name] != prop.value.value
+#          value_object = prop.value.value.class.new(@props[name])
+#          prop.value = Sass::Script::Tree::Literal.new(value_object)
+#        end
+#      end
+#    end
+#    keys_found.each do |k|
+#      @props.delete(k)
+#    end
+#    tree.to_sass
+#  end
 
   def css_properties
     @props = {}

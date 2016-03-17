@@ -1,5 +1,5 @@
-require "sass"
-require "gtk3" # to remove
+#require "sass"
+#require "gtk3" # to remove
 
 module CssHandler
   def self.css_file?(filename)
@@ -83,6 +83,7 @@ module CssHandler
     tree.children.each do |node|
       node.each do |prop|
         next if prop.class != Sass::Tree::PropNode
+        next if prop.class == Sass::Tree::CommentNode
         return true if prop.name[0] == name
       end
     end
@@ -131,14 +132,37 @@ module CssHandler
   def self.append_new_property_after_line(line, prop, indent)
     tmp = line.gsub(/\;[^\;]*$/, ";\n")
     new_prop = property_to_css_instructions(prop[:name], prop[:value])
-    tmp += (indent + new_prop + Regexp.last_match(0))
+    tmp += (indent + new_prop + (Regexp.last_match(0) || ";\n"))
     tmp
   end
 
+  def self.last_child_which_is_not_comment(selector)
+    son = nil
+    selector.children.each do |child|
+      son = child unless child.class == Sass::Tree::CommentNode
+    end
+    son
+  end
+
+  def self.compute_position_to_append(selector, element)
+    indent = last_line = nil
+    if element
+      puts "not comment"
+      indent =  " " * (element.name_source_range.start_pos.offset - 1) || ""
+      last_line = element.value_source_range.end_pos.line
+    else # If we don 't have any property in selector, use sel offset
+      indent =  " " * (selector.source_range.start_pos.offset - 1) || ""
+      last_line = selector.source_range.start_pos.line
+    end
+    puts "#{indent} #{last_line}"
+    [indent, last_line]
+  end
+
   def self.append_property_in_universal_selector(css_content, engine, prop)
-    last_prop = selectors_with_name(engine.to_tree, "*").last.children.last
-    indent =  " " * (last_prop.name_source_range.start_pos.offset - 1)
-    last_line = last_prop.value_source_range.end_pos.line
+    puts "append_prop #{prop.inspect} in univ sel"
+    last_selector = selectors_with_name(engine.to_tree, "*").last
+    last_prop = last_child_which_is_not_comment(last_selector)
+    indent, last_line = compute_position_to_append(last_selector, last_prop)
     tmp = ""
     line_number = 1
     css_content.each_line do |line|
@@ -174,7 +198,7 @@ module CssHandler
   end
 
   def self.update_css_with_new_property(content, engine, prop)
-    if property_defined?(tree, prop[:name])
+    if property_defined?(engine.to_tree, prop[:name])
       modify_each_property_values(content, engine, prop)
     else
       append_property_in_universal_selector(content, engine, prop)
@@ -186,9 +210,9 @@ module CssHandler
     new_css = nil
     content = File.open(filename, "r").read
     properties.each do |prop|
-      tree = engine.to_tree
-      new_css = update_css_with_new_property(content, tree, prop)
+      new_css = update_css_with_new_property(content, engine, prop)
       engine = reload_engine(engine, new_css)
+      content = new_css
     end
     new_css
   end
