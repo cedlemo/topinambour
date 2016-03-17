@@ -106,47 +106,6 @@ class TopinambourApplication < Gtk::Application
     end
   end
 
-#  def load_css_to_tree
-#    engine = Sass::Engine.new(@provider.to_s, :syntax => :scss)
-#    engine.to_tree
-#  end
-#
-#  def update_css_properties
-#    modified_sass = change_existing_properties
-#    sass_to_add = @props.empty? ? "" : add_new_css_properties
-#    Sass::Engine.new(sass_to_add + modified_sass, :syntax => :sass).render
-#  end
-#
-#  def add_new_css_properties
-#    new_sass = "*"
-#    @props.each do |k, v|
-#      new_sass += "\n  #{k}: #{v}"
-#    end
-#    new_sass + "\n"
-#  end
-#
-#  def change_existing_properties
-#    keys_found = []
-#    tree = load_css_to_tree
-#    # we search for properties that are already configured
-#    tree.children.each do |node|
-#      node.each do |prop|
-#        next if prop.class != Sass::Tree::PropNode
-#        name = prop.name[0]
-#        next unless @props[name]
-#        keys_found << name unless keys_found.include?(name)
-#        if @props[name] != prop.value.value
-#          value_object = prop.value.value.class.new(@props[name])
-#          prop.value = Sass::Script::Tree::Literal.new(value_object)
-#        end
-#      end
-#    end
-#    keys_found.each do |k|
-#      @props.delete(k)
-#    end
-#    tree.to_sass
-#  end
-
   def css_properties
     @props = {}
     return @props if windows[0].notebook.current.class == TopinambourTerminal
