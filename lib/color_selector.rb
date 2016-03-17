@@ -67,7 +67,9 @@ class TopinambourColorSelector < Gtk::Box
     button.signal_connect "clicked" do |widget|
       new_props = {}
       TERMINAL_COLOR_NAMES.each_with_index do |c, i|
-        new_props["-TopinambourTerminal-#{c}"] = @colors[i].to_s
+        if @colors[i] != @default_colors[i]
+          new_props["-TopinambourTerminal-#{c}"] = @colors[i].to_s
+        end
       end
       apply_new_css_properties(widget.toplevel, new_props)
       button.toplevel.exit_overlay_mode
