@@ -147,19 +147,16 @@ module CssHandler
   def self.compute_position_to_append(selector, element)
     indent = last_line = nil
     if element
-      puts "not comment"
       indent =  " " * (element.name_source_range.start_pos.offset - 1) || ""
       last_line = element.value_source_range.end_pos.line
     else # If we don 't have any property in selector, use sel offset
       indent =  " " * (selector.source_range.start_pos.offset - 1) || ""
       last_line = selector.source_range.start_pos.line
     end
-    puts "#{indent} #{last_line}"
     [indent, last_line]
   end
 
   def self.append_property_in_universal_selector(css_content, engine, prop)
-    puts "append_prop #{prop.inspect} in univ sel"
     last_selector = selectors_with_name(engine.to_tree, "*").last
     last_prop = last_child_which_is_not_comment(last_selector)
     indent, last_line = compute_position_to_append(last_selector, last_prop)
