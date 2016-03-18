@@ -20,16 +20,16 @@ module TopinambourRegex
   USERCHARS = "-+.[:alnum:]"
   # Nonempty username, e.g. "john.smith"
   USER = "[#{USERCHARS}]+"
-  PASSCHARS_CLASS = "[-[:alnum:]\\Q,?;.:/!%$^*&~\"#'\\E]"
+  PASSCHARS_CLASS = '[-[:alnum:]\\Q,?;.:/!%$^*&~\"#\'\\E]'
   # Optional colon-prefixed password. I guess empty password should be allowed, right? E.g. ":secret", ":", "" */
   PASS = "(?x: :#{PASSCHARS_CLASS}* )?"
   # Optional at-terminated username (with perhaps a password too), e.g. "joe@", "pete:secret@", "" */
-  USERPASS = "(?:#{USER PASS}@)?"
+  USERPASS = "(?:#{USER}#{PASS}@)?"
   # S4: IPv4 segment (number between 0 and 255) with lookahead at the end so that we don't match "25" in the string "256".
   # The lookahead could go to the last segment of IPv4 only but this construct allows nicer unittesting. */
   S4_DEF = "(?(DEFINE)(?<S4>(?x: (?: [0-9] | [1-9][0-9] | 1[0-9]{2} | 2[0-4][0-9] | 25[0-5] ) (?! [0-9] ) )))"
   # IPV4: Decimal IPv4, e.g. "1.2.3.4", with lookahead (implemented in S4) at the end so that we don't match "192.168.1.123" in the string "192.168.1.1234". */
-  IPV4_DEF S4_DEF = "(?(DEFINE)(?<IPV4>(?x: (?: (?&S4) \\. ){3} (?&S4) )))"
+  IPV4_DEF = "#{S4_DEF}(?(DEFINE)(?<IPV4>(?x: (?: (?&S4) \\. ){3} (?&S4) )))"
   # IPv6, including embedded IPv4, e.g. "::1", "dead:beef::1.2.3.4".
   # Lookahead for the next char not being a dot or digit, so it doesn't get stuck matching "dead:beef::1" in "dead:beef::1.2.3.4".
   # This is not required since the surrounding brackets would trigger backtracking, but it allows nicer unittesting.
@@ -54,7 +54,7 @@ module TopinambourRegex
   IPV6V4_RIGHT= "(?x: (?&S6C){1,5} : )"
   # IPV6: An IPv6 address (possibly with an embedded IPv4).
   # This macro defines both IPV4 and IPV6, since the latter one requires the former. */
-  IP_DEF IPV4_DEF S6_DEF = "(?(DEFINE)(?<IPV6>(?x: (?: #{IPV6_NULL} | #{IPV6_LEFT} | #{IPV6_MID} | #{IPV6_RIGHT}" + 
+  IP_DEF = "#{IPV4_DEF}#{S6_DEF}(?(DEFINE)(?<IPV6>(?x: (?: #{IPV6_NULL} | #{IPV6_LEFT} | #{IPV6_MID} | #{IPV6_RIGHT}" + 
                            " | #{IPV6_FULL} | (?: #{IPV6V4_FULL} | #{IPV6V4_LEFT} | #{IPV6V4_MID} | #{IPV6V4_RIGHT}" + 
                            " ) (?&IPV4) ) (?! [.:[:xdigit:]] ) )))"
   # Either an alphanumeric character or dash; or if [negative lookahead] not ASCII
@@ -64,8 +64,7 @@ module TopinambourRegex
   HOSTNAMESEGMENTCHARS_CLASS = "(?x: [-[:alnum:]] | (?! [[:ascii:]] ) [[:graph:]] )"
   # A hostname of at least 1 component. The last component cannot be entirely numbers.
   # E.g. "foo", "example.com", "1234.com", but not "foo.123" */
-  HOSTNAME1 = "(?x: (?: #{HOSTNAMESEGMENTCHARS_CLASS}+ \\. )* " + "
-              #{HOSTNAMESEGMENTCHARS_CLASS}* (?! [0-9] ) #{HOSTNAMESEGMENTCHARS_CLASS}+ )"
+  HOSTNAME1 = "(?x: (?: #{HOSTNAMESEGMENTCHARS_CLASS}+ \\. )* " + "#{HOSTNAMESEGMENTCHARS_CLASS}* (?! [0-9] ) #{HOSTNAMESEGMENTCHARS_CLASS}+ )"
   # A hostname of at least 2 components. The last component cannot be entirely numbers.
   # E.g. "example.com", "1234.com", but not "1234.56" */
   HOSTNAME2 = "(?x: (?: #{HOSTNAMESEGMENTCHARS_CLASS}+ \\.)+ #{HOSTNAME1} )"
@@ -77,18 +76,19 @@ module TopinambourRegex
   EMAIL_HOST = "(?x: #{HOSTNAME2} | \\[ (?: (?&IPV4) | (?&IPV6) ) \\] )"
   # Number between 1 and 65535, with lookahead at the end so that we don't match "6789" in the string "67890",
   # and in turn we don't eventually match "http://host:6789" in "http://host:67890". */
-  N_1_65535 "(?x: (?: [1-9][0-9]{0,3} | [1-5][0-9]{4} | 6[0-4][0-9]{3} | 65[0-4][0-9]{2} | 655[0-2][0-9] | 6553[0-5] ) (?! [0-9] ) )"
+  N_1_65535 = "(?x: (?: [1-9][0-9]{0,3} | [1-5][0-9]{4} | 6[0-4][0-9]{3} | 65[0-4][0-9]{2} | 655[0-2][0-9] | 6553[0-5] ) (?! [0-9] ) )"
   # Optional colon-prefixed port, e.g. ":1080", "" */
-  PORT = "(?x: \\:" N_1_65535 " )?"
+  PORT = "(?x: \\:#{N_1_65535} )?"
   PATHCHARS_CLASS = "[-[:alnum:]\\Q_$.+!*,:;@&=?/~#|%\\E]"
   # Chars not to end a URL */
-  PATHNONTERM_CLASS "[\\Q.!,?\\E]"
+  PATHNONTERM_CLASS = "[\\Q.!,?\\E]"
   # Lookbehind at the end, so that the last character (if we matched a character at all) is not from PATHTERM_CLASS */
   URLPATH = "(?x: /#{PATHCHARS_CLASS}* (?<! #{PATHNONTERM_CLASS} ) )?"
   VOIP_PATH = "(?x: [;?]#{PATHCHARS_CLASS}* (?<! #{PATHNONTERM_CLASS} ) )?"
   # Now let's put these fragments together */
   DEFS = IP_DEF
-  REGEX_URL_AS_IS = "#{DEFS SCHEME}://#{USERPASS URL_HOST PORT URLPATH}"
+  #REGEX_URL_AS_IS = "#{SCHEME}://#{USERPASS}#{URL_HOST}#{PORT}#{URLPATH}"
+  REGEX_URL_AS_IS = "#{DEFS}#{SCHEME}#://#{USERPASS}#{URL_HOST}#{PORT}#{URLPATH}"
   # TODO: also support file:/etc/passwd */
   REGEX_URL_FILE = "#{DEFS}(?ix: file:/ (?: / (?: #{HOSTNAME1} )? / )? (?! / ) )(?x: #{PATHCHARS_CLASS}+ (?<! #{PATHNONTERM_CLASS} ) )?" 
   # Lookbehind so that we don't catch "abc.www.foo.bar", bug 739757. 

@@ -129,19 +129,15 @@ class TopinambourTerminal < Vte::Terminal
   end
 
   def add_matches
-#    @REGEXES = [:REGEX_URL_AS_IS]#, :REGEX_URL_FILE, :REGEX_URL_HTTP,
-#               # :REGEX_URL_VOIP, :REGEX_EMAIL, :REGEX_NEWS_MAN]
-#    @REGEXES.each do |name|
-#      regex_name = TopinambourRegex.const_get(name)
-#      regex = GLib::Regex.new(regex_name)
-#      flags = [GLib::RegexCompileFlags::OPTIMIZE,
-#               GLib::RegexCompileFlags::MULTILINE]
-#      match_add_gregex(regex, :compile_options => flags)
-#    end
-#    regex = GLib::Regex.new("toto")
-#    match_add_gregex(regex, 0)
-#    regex = GLib::Regex.new("tata")
-#    match_add_gregex(regex, 0)
+    @REGEXES = [:REGEX_URL_AS_IS, :REGEX_URL_FILE, :REGEX_URL_HTTP,
+                :REGEX_URL_VOIP, :REGEX_EMAIL, :REGEX_NEWS_MAN]
+    @REGEXES.each do |name|
+      regex_name = TopinambourRegex.const_get(name)
+      flags = [GLib::RegexCompileFlags::OPTIMIZE, 
+               GLib::RegexCompileFlags::MULTILINE]
+      regex = GLib::Regex.new(regex_name, :compile_options => flags)
+      match_add_gregex(regex, 0)
+    end
   end
   
   def display_copy_past_menu(widget, event)
