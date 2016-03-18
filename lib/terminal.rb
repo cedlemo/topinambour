@@ -49,13 +49,8 @@ class TopinambourTerminal < Vte::Terminal
     signal_connect "child-exited" do |widget|
       notebook = widget.parent
       current_page = notebook.page_num(widget)
-      if notebook.n_pages > 1
-        notebook.remove_page(current_page)
-        notebook.get_nth_page(notebook.page).grab_focus
-      else
-        notebook.remove_page(current_page)
-        notebook.toplevel.application.quit
-      end
+      notebook.remove_page(current_page)
+      notebook.toplevel.application.quit unless notebook.n_pages >= 1
     end
 
     signal_connect "window-title-changed" do |widget|
@@ -72,24 +67,20 @@ class TopinambourTerminal < Vte::Terminal
 
     builder = Gtk::Builder.new(:resource => "/com/github/cedlemo/topinambour/terminal-menu.ui")
     @menu = Gtk::Popover.new(self, builder["termmenu"])
-
+    
     signal_connect "button-press-event" do |widget, event|
       if event.type == Gdk::EventType::BUTTON_PRESS &&
          event.button == Gdk::BUTTON_SECONDARY
-
-        x, y = event.window.coords_to_parent(event.x,
-                                             event.y)
-        rect = Gdk::Rectangle.new(x - allocation.x,
-                                  y - allocation.y,
-                                  1,
-                                  1)
-        widget.menu.set_pointing_to(rect)
-        widget.menu.show
+        display_copy_paste_menu(widget, event)
+        true
+      elsif event.button == Gdk::BUTTON_PRIMARY
+        manage_regex_on_click(widget, event)
         true
       else
         false
       end
     end
+
     configure
   end
 
@@ -97,20 +88,17 @@ class TopinambourTerminal < Vte::Terminal
     File.readlink("/proc/#{@pid}/cwd")
   end
 
-  def get_css_colors
-    background = nil
-    foreground = nil
+  def css_colors
     colors = []
     background = parse_css_color(TERMINAL_COLOR_NAMES[0].to_s)
     foreground = parse_css_color(TERMINAL_COLOR_NAMES[1].to_s)
     TERMINAL_COLOR_NAMES[2..-1].each do |c|
-      color = parse_css_color(c.to_s)
-      colors << color
+      colors << parse_css_color(c.to_s)
     end
     [background, foreground] + colors
   end
 
-  def get_css_font
+  def css_font
     font = style_get_property("font")
     unless font
       font = Pango::FontDescription.new(DEFAULT_TERMINAL_FONT)
@@ -134,15 +122,31 @@ class TopinambourTerminal < Vte::Terminal
   def configure
     set_rewrap_on_resize(true)
     set_scrollback_lines(-1)
-    @colors = get_css_colors
-    set_font(get_css_font)
+    @colors = css_colors
+    set_font(css_font)
     apply_colors
-    #add_matches
+    add_matches
   end
 
   def add_matches
-    puts methods.grep(/rege/)
-    match_add_gregex("cedlemo")
+    regex = GLib::Regex.new("toto")
+    match_add_gregex(regex, 0)
+    regex = GLib::Regex.new("tata")
+    match_add_gregex(regex, 0)
+  end
+  
+  def display_copy_past_menu(widget, event)
+    x, y = event.window.coords_to_parent(event.x,
+                                         event.y)
+    rect = Gdk::Rectangle.new(x - allocation.x,
+                              y - allocation.y,
+                              1,
+                              1)
+    widget.menu.set_pointing_to(rect)
+    widget.menu.show
+  end
+  
+  def manage_regex_on_click(widget, event)
+    puts match_check_event(event).inspect
   end
 end
-
