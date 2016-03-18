@@ -37,7 +37,7 @@ class TopinambourColorSelector < Gtk::Box
   private
 
   def initialize_default_colors
-    @default_colors = @window.notebook.current.get_css_colors
+    @default_colors = @window.notebook.current.css_colors
     @colors = @default_colors.dup
   end
 

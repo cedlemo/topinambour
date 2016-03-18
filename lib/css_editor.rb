@@ -147,7 +147,7 @@ class TopinambourCssEditor < Gtk::Grid
   def reload_terminal_custom_css_properties
     @window.notebook.each do |tab|
       next unless tab.class == TopinambourTerminal
-      colors = tab.get_css_colors unless colors
+      colors = tab.css_colors unless colors
       tab.colors = colors
       tab.apply_colors
     end
