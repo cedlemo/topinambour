@@ -23,6 +23,22 @@ def assert_match_anchored(constant_name, string, result)
   assert_equal(reference, match_info.fetch(0))
 end
 
+def assert_match_anchored_extended(constant_name, additional_pattern, string, result)
+  pattern = TopinambourRegex.const_get(constant_name)
+  regex = GLib::Regex.new(pattern + additional_pattern)
+  match_info = regex.match(string, GLib::RegexMatchFlags::ANCHORED)
+  case result
+  when :ENTIRE
+    reference = string
+  when :NULL
+    reference = nil
+  else
+    reference = result
+  end
+  assert_equal(reference, match_info.fetch(0))
+
+end
+
 class TestTerminalRegex < MiniTest::Test
   def test_scheme
     assert_match_anchored(:SCHEME, "http", :ENTIRE)
@@ -39,35 +55,59 @@ class TestTerminalRegex < MiniTest::Test
     assert_match_anchored(:PASS, "",          :ENTIRE);
     assert_match_anchored(:PASS, "nocolon",   "");
     assert_match_anchored(:PASS, ":s3cr3T",   :ENTIRE);
-    assert_match_anchored(:PASS, ":$?#@host", ":$?#");
- end
+    assert_match_anchored(:PASS, ":$?\#@host", ":$?#");
+  end
+  
+  def test_hostname1
+    assert_match_anchored(:HOSTNAME1, "example.com",       :ENTIRE)
+    assert_match_anchored(:HOSTNAME1, "a-b.c-d",           :ENTIRE)
+    assert_match_anchored(:HOSTNAME1, "a_b",               "a") # TODO: can/should we totally abort here? */
+    assert_match_anchored(:HOSTNAME1, "déjà-vu.com",       :ENTIRE)
+    assert_match_anchored(:HOSTNAME1, "➡.ws",              :ENTIRE)
+    assert_match_anchored(:HOSTNAME1, "cömbining-áccents", :ENTIRE)
+    assert_match_anchored(:HOSTNAME1, "12",                :NULL)
+    assert_match_anchored(:HOSTNAME1, "12.34",             :NULL)
+    assert_match_anchored(:HOSTNAME1, "12.ab",             :ENTIRE)
+    #assert_match_anchored(:HOSTNAME1, "ab.12",             :NULL) 
+  end
+  
+  def test_hostname2
+    assert_match_anchored(:HOSTNAME2, "example.com",       :ENTIRE)
+    assert_match_anchored(:HOSTNAME2, "example",           :NULL)
+    assert_match_anchored(:HOSTNAME2, "12",                :NULL)
+    assert_match_anchored(:HOSTNAME2, "12.34",             :NULL)
+    assert_match_anchored(:HOSTNAME2, "12.ab",             :ENTIRE)
+    assert_match_anchored(:HOSTNAME2, "ab.12",             :NULL)
+    # assert_match_anchored(:HOSTNAME2, "ab.cd.12",          :NULL)#  /* errr... could we fail here?? */
+  end
+
+  def test_defs_ipv4
+    assert_match_anchored_extended(:DEFS, "(?&S4)", "0",                :ENTIRE)
+    assert_match_anchored_extended(:DEFS, "(?&S4)", "1",                :ENTIRE)
+    assert_match_anchored_extended(:DEFS, "(?&S4)", "9",                :ENTIRE)
+    assert_match_anchored_extended(:DEFS, "(?&S4)", "10",               :ENTIRE)
+    assert_match_anchored_extended(:DEFS, "(?&S4)", "99",               :ENTIRE)
+    assert_match_anchored_extended(:DEFS, "(?&S4)", "100",              :ENTIRE)
+    assert_match_anchored_extended(:DEFS, "(?&S4)", "200",              :ENTIRE)
+    assert_match_anchored_extended(:DEFS, "(?&S4)", "250",              :ENTIRE)
+    assert_match_anchored_extended(:DEFS, "(?&S4)", "255",              :ENTIRE)
+    assert_match_anchored_extended(:DEFS, "(?&S4)", "256",              :NULL)
+    assert_match_anchored_extended(:DEFS, "(?&S4)", "260",              :NULL)
+    assert_match_anchored_extended(:DEFS, "(?&S4)", "300",              :NULL)
+    assert_match_anchored_extended(:DEFS, "(?&S4)", "1000",             :NULL)
+    assert_match_anchored_extended(:DEFS, "(?&S4)", "",                 :NULL)
+    assert_match_anchored_extended(:DEFS, "(?&S4)", "a1b",              :NULL)
+    assert_match_anchored_extended(:DEFS, "(?&IPV4)", "11.22.33.44",    :ENTIRE)
+    assert_match_anchored_extended(:DEFS, "(?&IPV4)", "0.1.254.255",    :ENTIRE)
+    assert_match_anchored_extended(:DEFS, "(?&IPV4)", "75.150.225.300", :NULL)
+    assert_match_anchored_extended(:DEFS, "(?&IPV4)", "1.2.3.4.5",      "1.2.3.4") 
+  end
 end
 
 #  /* USER is nonempty, alphanumeric, dot, plus and dash */
-#
 #  /* PASS is optional colon-prefixed value, allowing quite some characters, but definitely not @ */
-#
 #  /* Hostname of at least 1 component, containing at least one non-digit in at least one of the segments */
-#  assert_match_anchored (HOSTNAME1, "example.com",       ENTIRE);
-#  assert_match_anchored (HOSTNAME1, "a-b.c-d",           ENTIRE);
-#  assert_match_anchored (HOSTNAME1, "a_b",               "a");    /* TODO: can/should we totally abort here? */
-#  assert_match_anchored (HOSTNAME1, "déjà-vu.com",       ENTIRE);
-#  assert_match_anchored (HOSTNAME1, "➡.ws",              ENTIRE);
-#  assert_match_anchored (HOSTNAME1, "cömbining-áccents", ENTIRE);
-#  assert_match_anchored (HOSTNAME1, "12",                NULL);
-#  assert_match_anchored (HOSTNAME1, "12.34",             NULL);
-#  assert_match_anchored (HOSTNAME1, "12.ab",             ENTIRE);
-#//  assert_match_anchored (HOSTNAME1, "ab.12",             NULL);  /* errr... could we fail here?? */
-#
 #  /* Hostname of at least 2 components, containing at least one non-digit in at least one of the segments */
-#  assert_match_anchored (HOSTNAME2, "example.com",       ENTIRE);
-#  assert_match_anchored (HOSTNAME2, "example",           NULL);
-#  assert_match_anchored (HOSTNAME2, "12",                NULL);
-#  assert_match_anchored (HOSTNAME2, "12.34",             NULL);
-#  assert_match_anchored (HOSTNAME2, "12.ab",             ENTIRE);
-#  assert_match_anchored (HOSTNAME2, "ab.12",             NULL);
-#//  assert_match_anchored (HOSTNAME2, "ab.cd.12",          NULL);  /* errr... could we fail here?? */
-#
 #  /* IPv4 segment (number between 0 and 255) */
 #  assert_match_anchored (DEFS "(?&S4)", "0",    ENTIRE);
 #  assert_match_anchored (DEFS "(?&S4)", "1",    ENTIRE);
