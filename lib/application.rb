@@ -37,18 +37,11 @@ class TopinambourApplication < Gtk::Application
     end
   end
 
-  #def update_css(new_props = nil)
-  #  css_properties
-  #  @props.merge!(new_props) if new_props
-  #  css = update_css_properties
-  #  merged_css = Sass::Engine.new(css, :syntax => :scss).render
-  #  replace_old_conf_with(merged_css)
-  #end
   def update_css(new_props)
     props = []
     new_props.each do |prop|
       props << {:name => prop[0], :value => prop[1]}
-    end 
+    end
     new_css = CssHandler.update_css(@css_file, props)
     replace_old_conf_with(new_css)
 
@@ -59,7 +52,7 @@ class TopinambourApplication < Gtk::Application
       load_default_css_config
     end
   end
-  
+
   private
 
   def replace_old_conf_with(new_conf)
