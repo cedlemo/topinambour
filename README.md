@@ -53,7 +53,7 @@ Topinambour is Terminal written with the Gtk3 and Vte3 ruby bindings from the pr
 
 ## User configuration
 
-It can be found in the file `$HOME/.config/Topinambour/topinambour.css` (Be carefull by default Topinambour use fish as a default shell, if you want to use another one specify it in the topinambour.css file)
+It can be found in the file `$HOME/.config/topinambour/topinambour.css` (Be carefull by default Topinambour use fish as a default shell, if you want to use another one specify it in the topinambour.css file)
 
 ```css
 *{
