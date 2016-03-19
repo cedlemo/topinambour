@@ -152,6 +152,6 @@ class TopinambourTerminal < Vte::Terminal
   end
   
   def manage_regex_on_click(widget, event)
-    puts match_check_event(event).inspect
+    #puts match_check_event(event).inspect
   end
 end
