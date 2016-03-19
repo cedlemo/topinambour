@@ -75,7 +75,7 @@ class TopinambourTerminal < Vte::Terminal
         true
       elsif event.button == Gdk::BUTTON_PRIMARY
         manage_regex_on_click(widget, event)
-        true
+        false # let false so that it doesn't block the event
       else
         false
       end

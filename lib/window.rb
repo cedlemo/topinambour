@@ -63,6 +63,7 @@ class TopinambourWindow < Gtk::ApplicationWindow
     @notebook.append_page(terminal, Gtk::Label.new)
     @notebook.set_tab_reorderable(terminal, true)
     @notebook.set_page(@notebook.n_pages - 1)
+    @notebook.current.grab_focus
   end
 
   def quit_gracefully
@@ -78,11 +79,13 @@ class TopinambourWindow < Gtk::ApplicationWindow
   def show_prev_tab
     exit_overlay_mode
     @notebook.cycle_prev_page
+    @notebook.current.grab_focus
   end
 
   def show_next_tab
     exit_overlay_mode
     @notebook.cycle_next_page
+    @notebook.current.grab_focus
   end
   
   def show_terminal_chooser
@@ -191,6 +194,7 @@ class TopinambourWindow < Gtk::ApplicationWindow
   def toggle_overlay(klass)
     if in_overlay_mode? && @overlay.children[1].class == klass
       exit_overlay_mode
+      @notebook.current.grab_focus
     else
       exit_overlay_mode
       add_overlay(klass.new(self))
