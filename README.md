@@ -23,7 +23,7 @@ Topinambour is Terminal written with the Gtk3 and Vte3 ruby bindings from the pr
 
 *    The Css file can be edited in a tab of Topinambour and saved. Each modifications are applied while you are writting them. (Use `Shift + Ctrl + w` to close the editor)
 <a href="https://raw.github.com/cedlemo/topinambour/master/screenshot5.png"><img src="https://raw.github.com/cedlemo/topinambour/master/screenshot5_prev.png" width="576" height="324" alt="Screenshot"></a>
-*   Topinambour allows users to modify existing modules. For example if a user copy the css_editor.rb in the directory *~/.config/Topinambour/lib/css_editor.rb*, he should be able to modify it in order to fit its needs. 
+*   Topinambour allows users to modify existing modules. For example if a user copy the css_editor.rb in the directory *~/.config/topinambour/lib/css_editor.rb*, he should be able to modify it in order to fit its needs. 
 
 ##  TODO:
 *   Regex support in the terminals in order to launch web navigator if there is an url or launch a media player if there is a match for avi file for example.
