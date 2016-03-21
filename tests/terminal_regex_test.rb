@@ -11,7 +11,7 @@ require "#{LIB_PATH}/terminal_regex"
 def assert_match_anchored(constant_name, string, result)
   pattern = TopinambourRegex.const_get(constant_name)
   regex = GLib::Regex.new(pattern)
-  match_info = regex.match(string, GLib::RegexMatchFlags::ANCHORED)
+  match_info = regex.match(string, :match_options => GLib::RegexMatchFlags::ANCHORED)
   case result
   when :ENTIRE
     reference = string
@@ -26,7 +26,7 @@ end
 def assert_match_anchored_extended(constant_name, additional_pattern, string, result)
   pattern = TopinambourRegex.const_get(constant_name)
   regex = GLib::Regex.new(pattern + additional_pattern)
-  match_info = regex.match(string, GLib::RegexMatchFlags::ANCHORED)
+  match_info = regex.match(string, :match_options => GLib::RegexMatchFlags::ANCHORED)
   case result
   when :ENTIRE
     reference = string
@@ -36,7 +36,24 @@ def assert_match_anchored_extended(constant_name, additional_pattern, string, re
     reference = result
   end
   assert_equal(reference, match_info.fetch(0))
+end
 
+def assert_match_anchored_added(constant_names, string, result)
+  pattern = ""
+  constant_names.each do |name|
+    pattern += TopinambourRegex.const_get(name)
+  end
+  regex = GLib::Regex.new(pattern)
+  match_info = regex.match(string, :match_options => GLib::RegexMatchFlags::ANCHORED)
+  case result
+  when :ENTIRE
+    reference = string
+  when :NULL
+    reference = nil
+  else
+    reference = result
+  end
+  assert_equal(reference, match_info.fetch(0))
 end
 
 class TestTerminalRegex < MiniTest::Test
@@ -101,124 +118,120 @@ class TestTerminalRegex < MiniTest::Test
     assert_match_anchored_extended(:DEFS, "(?&IPV4)", "0.1.254.255",    :ENTIRE)
     assert_match_anchored_extended(:DEFS, "(?&IPV4)", "75.150.225.300", :NULL)
     assert_match_anchored_extended(:DEFS, "(?&IPV4)", "1.2.3.4.5",      "1.2.3.4") 
+    assert_match_anchored_extended(:DEFS, "(?&S4)", "0",    :ENTIRE)
+    assert_match_anchored_extended(:DEFS, "(?&S4)", "1",    :ENTIRE)
+    assert_match_anchored_extended(:DEFS, "(?&S4)", "9",    :ENTIRE)
+    assert_match_anchored_extended(:DEFS, "(?&S4)", "10",   :ENTIRE)
+    assert_match_anchored_extended(:DEFS, "(?&S4)", "99",   :ENTIRE)
+    assert_match_anchored_extended(:DEFS, "(?&S4)", "100",  :ENTIRE)
+    assert_match_anchored_extended(:DEFS, "(?&S4)", "200",  :ENTIRE)
+    assert_match_anchored_extended(:DEFS, "(?&S4)", "250",  :ENTIRE)
+    assert_match_anchored_extended(:DEFS, "(?&S4)", "255",  :ENTIRE)
+    assert_match_anchored_extended(:DEFS, "(?&S4)", "256",  :NULL)
+    assert_match_anchored_extended(:DEFS, "(?&S4)", "260",  :NULL)
+    assert_match_anchored_extended(:DEFS, "(?&S4)", "300",  :NULL)
+    assert_match_anchored_extended(:DEFS, "(?&S4)", "1000", :NULL)
+    assert_match_anchored_extended(:DEFS, "(?&S4)", "",     :NULL)
+    assert_match_anchored_extended(:DEFS, "(?&S4)", "a1b",  :NULL)
+    assert_match_anchored_extended(:DEFS, "(?&IPV4)", "11.22.33.44",    :ENTIRE)
+    assert_match_anchored_extended(:DEFS, "(?&IPV4)", "0.1.254.255",    :ENTIRE)
+    assert_match_anchored_extended(:DEFS, "(?&IPV4)", "75.150.225.300", :NULL)
+    assert_match_anchored_extended(:DEFS, "(?&IPV4)", "1.2.3.4.5",      "1.2.3.4")#  /* we could also bail out and not match at all */ #  /* USER is nonempty, alphanumeric, dot, plus and dash */
+  end
+  def test_defs_ipv6
+    assert_match_anchored_extended(:DEFS, "(?&IPV6)", "11:::22",                           :NULL)
+    assert_match_anchored_extended(:DEFS, "(?&IPV6)", "11:22::33:44::55:66",               :NULL)
+    assert_match_anchored_extended(:DEFS, "(?&IPV6)", "dead::beef",                        :ENTIRE)
+    assert_match_anchored_extended(:DEFS, "(?&IPV6)", "faded::bee",                        :NULL)
+    assert_match_anchored_extended(:DEFS, "(?&IPV6)", "live::pork",                        :NULL)
+    assert_match_anchored_extended(:DEFS, "(?&IPV6)", "::1",                               :ENTIRE)
+    assert_match_anchored_extended(:DEFS, "(?&IPV6)", "11::22:33::44",                     :NULL)
+    assert_match_anchored_extended(:DEFS, "(?&IPV6)", "11:22:::33",                        :NULL)
+    assert_match_anchored_extended(:DEFS, "(?&IPV6)", "dead:beef::192.168.1.1",            :ENTIRE)
+    assert_match_anchored_extended(:DEFS, "(?&IPV6)", "192.168.1.1",                       :NULL)
+    assert_match_anchored_extended(:DEFS, "(?&IPV6)", "11:22:33:44:55:66:77:87654",        :NULL)
+    assert_match_anchored_extended(:DEFS, "(?&IPV6)", "11:22::33:45678",                   :NULL)
+    assert_match_anchored_extended(:DEFS, "(?&IPV6)", "11:22:33:44:55:66:192.168.1.12345", :NULL)
+    assert_match_anchored_extended(:DEFS, "(?&IPV6)", "11:22:33:44:55:66:77",              :NULL)   #/* no :: */
+    assert_match_anchored_extended(:DEFS, "(?&IPV6)", "11:22:33:44:55:66:77:88",           :ENTIRE)
+    assert_match_anchored_extended(:DEFS, "(?&IPV6)", "11:22:33:44:55:66:77:88:99",        :NULL)
+    assert_match_anchored_extended(:DEFS, "(?&IPV6)", "::11:22:33:44:55:66:77",            :ENTIRE) #/* :: at the start */
+    assert_match_anchored_extended(:DEFS, "(?&IPV6)", "::11:22:33:44:55:66:77:88",         :NULL)
+    assert_match_anchored_extended(:DEFS, "(?&IPV6)", "11:22:33::44:55:66:77",             :ENTIRE) #/* :: in the middle */
+    assert_match_anchored_extended(:DEFS, "(?&IPV6)", "11:22:33::44:55:66:77:88",          :NULL)
+    assert_match_anchored_extended(:DEFS, "(?&IPV6)", "11:22:33:44:55:66:77::",            :ENTIRE) #/* :: at the end */
+    assert_match_anchored_extended(:DEFS, "(?&IPV6)", "11:22:33:44:55:66:77:88::",         :NULL)
+    assert_match_anchored_extended(:DEFS, "(?&IPV6)", "::",                                :ENTIRE) #/* :: only */
+    assert_match_anchored_extended(:DEFS, "(?&IPV6)", "11:22:33:44:55:192.168.1.1",        :NULL)   #/* no :: */
+    assert_match_anchored_extended(:DEFS, "(?&IPV6)", "11:22:33:44:55:66:192.168.1.1",     :ENTIRE)
+    assert_match_anchored_extended(:DEFS, "(?&IPV6)", "11:22:33:44:55:66:77:192.168.1.1",  :NULL)
+    assert_match_anchored_extended(:DEFS, "(?&IPV6)", "::11:22:33:44:55:192.168.1.1",      :ENTIRE) #/* :: at the start */
+    assert_match_anchored_extended(:DEFS, "(?&IPV6)", "::11:22:33:44:55:66:192.168.1.1",   :NULL)
+    assert_match_anchored_extended(:DEFS, "(?&IPV6)", "11:22:33::44:55:192.168.1.1",       :ENTIRE) #/* :: in the imddle */
+    assert_match_anchored_extended(:DEFS, "(?&IPV6)", "11:22:33::44:55:66:192.168.1.1",    :NULL)
+    assert_match_anchored_extended(:DEFS, "(?&IPV6)", "11:22:33:44:55::192.168.1.1",       :ENTIRE) #/* :: at the end(ish) */
+    assert_match_anchored_extended(:DEFS, "(?&IPV6)", "11:22:33:44:55:66::192.168.1.1",    :NULL)
+    assert_match_anchored_extended(:DEFS, "(?&IPV6)", "::192.168.1.1",                     :ENTIRE) #/* :: only(ish) */
+  end
+  def test_url_host
+    assert_match_anchored_added([:DEFS, :URL_HOST], "example",       :ENTIRE)
+    assert_match_anchored_added([:DEFS, :URL_HOST], "example.com",   :ENTIRE)
+    assert_match_anchored_added([:DEFS, :URL_HOST], "11.22.33.44",   :ENTIRE)
+    assert_match_anchored_added([:DEFS, :URL_HOST], "[11.22.33.44]", :NULL)
+    assert_match_anchored_added([:DEFS, :URL_HOST], "dead::be:ef",   "dead")  #/* TODO: can/should we totally abort here? */
+    assert_match_anchored_added([:DEFS, :URL_HOST], "[dead::be:ef]", :ENTIRE)
+  end
+
+  def test_email_host
+    assert_match_anchored_added([:DEFS, :EMAIL_HOST], "example",        :NULL)
+    assert_match_anchored_added([:DEFS, :EMAIL_HOST], "example.com",    :ENTIRE)
+    assert_match_anchored_added([:DEFS, :EMAIL_HOST], "11.22.33.44",    :NULL)
+    assert_match_anchored_added([:DEFS, :EMAIL_HOST], "[11.22.33.44]",  :ENTIRE)
+    assert_match_anchored_added([:DEFS, :EMAIL_HOST], "[11.22.33.456]", :NULL)
+    assert_match_anchored_added([:DEFS, :EMAIL_HOST], "dead::be:ef",    :NULL)
+    assert_match_anchored_added([:DEFS, :EMAIL_HOST], "[dead::be:ef]",  :ENTIRE)
+  end
+  
+  def test_port_nums
+    assert_match_anchored(:N_1_65535, "0",      :NULL)
+    assert_match_anchored(:N_1_65535, "1",      :ENTIRE)
+    assert_match_anchored(:N_1_65535, "10",     :ENTIRE)
+    assert_match_anchored(:N_1_65535, "100",    :ENTIRE)
+    assert_match_anchored(:N_1_65535, "1000",   :ENTIRE)
+    assert_match_anchored(:N_1_65535, "10000",  :ENTIRE)
+    assert_match_anchored(:N_1_65535, "60000",  :ENTIRE)
+    assert_match_anchored(:N_1_65535, "65000",  :ENTIRE)
+    assert_match_anchored(:N_1_65535, "65500",  :ENTIRE)
+    assert_match_anchored(:N_1_65535, "65530",  :ENTIRE)
+    assert_match_anchored(:N_1_65535, "65535",  :ENTIRE)
+    assert_match_anchored(:N_1_65535, "65536",  :NULL)
+    assert_match_anchored(:N_1_65535, "65540",  :NULL)
+    assert_match_anchored(:N_1_65535, "65600",  :NULL)
+    assert_match_anchored(:N_1_65535, "66000",  :NULL)
+    assert_match_anchored(:N_1_65535, "70000",  :NULL)
+    assert_match_anchored(:N_1_65535, "100000", :NULL)
+    assert_match_anchored(:N_1_65535, "",       :NULL)
+    assert_match_anchored(:N_1_65535, "a1b",    :NULL)
   end
 end
-
-#  /* USER is nonempty, alphanumeric, dot, plus and dash */
 #  /* PASS is optional colon-prefixed value, allowing quite some characters, but definitely not @ */
 #  /* Hostname of at least 1 component, containing at least one non-digit in at least one of the segments */
 #  /* Hostname of at least 2 components, containing at least one non-digit in at least one of the segments */
 #  /* IPv4 segment (number between 0 and 255) */
-#  assert_match_anchored (DEFS "(?&S4)", "0",    ENTIRE);
-#  assert_match_anchored (DEFS "(?&S4)", "1",    ENTIRE);
-#  assert_match_anchored (DEFS "(?&S4)", "9",    ENTIRE);
-#  assert_match_anchored (DEFS "(?&S4)", "10",   ENTIRE);
-#  assert_match_anchored (DEFS "(?&S4)", "99",   ENTIRE);
-#  assert_match_anchored (DEFS "(?&S4)", "100",  ENTIRE);
-#  assert_match_anchored (DEFS "(?&S4)", "200",  ENTIRE);
-#  assert_match_anchored (DEFS "(?&S4)", "250",  ENTIRE);
-#  assert_match_anchored (DEFS "(?&S4)", "255",  ENTIRE);
-#  assert_match_anchored (DEFS "(?&S4)", "256",  NULL);
-#  assert_match_anchored (DEFS "(?&S4)", "260",  NULL);
-#  assert_match_anchored (DEFS "(?&S4)", "300",  NULL);
-#  assert_match_anchored (DEFS "(?&S4)", "1000", NULL);
-#  assert_match_anchored (DEFS "(?&S4)", "",     NULL);
-#  assert_match_anchored (DEFS "(?&S4)", "a1b",  NULL);
-#
 #  /* IPv4 addresses */
-#  assert_match_anchored (DEFS "(?&IPV4)", "11.22.33.44",    ENTIRE);
-#  assert_match_anchored (DEFS "(?&IPV4)", "0.1.254.255",    ENTIRE);
-#  assert_match_anchored (DEFS "(?&IPV4)", "75.150.225.300", NULL);
-#  assert_match_anchored (DEFS "(?&IPV4)", "1.2.3.4.5",      "1.2.3.4");  /* we could also bail out and not match at all */
-#
 #  /* IPv6 addresses */
-#  assert_match_anchored (DEFS "(?&IPV6)", "11:::22",                           NULL);
-#  assert_match_anchored (DEFS "(?&IPV6)", "11:22::33:44::55:66",               NULL);
-#  assert_match_anchored (DEFS "(?&IPV6)", "dead::beef",                        ENTIRE);
-#  assert_match_anchored (DEFS "(?&IPV6)", "faded::bee",                        NULL);
-#  assert_match_anchored (DEFS "(?&IPV6)", "live::pork",                        NULL);
-#  assert_match_anchored (DEFS "(?&IPV6)", "::1",                               ENTIRE);
-#  assert_match_anchored (DEFS "(?&IPV6)", "11::22:33::44",                     NULL);
-#  assert_match_anchored (DEFS "(?&IPV6)", "11:22:::33",                        NULL);
-#  assert_match_anchored (DEFS "(?&IPV6)", "dead:beef::192.168.1.1",            ENTIRE);
-#  assert_match_anchored (DEFS "(?&IPV6)", "192.168.1.1",                       NULL);
-#  assert_match_anchored (DEFS "(?&IPV6)", "11:22:33:44:55:66:77:87654",        NULL);
-#  assert_match_anchored (DEFS "(?&IPV6)", "11:22::33:45678",                   NULL);
-#  assert_match_anchored (DEFS "(?&IPV6)", "11:22:33:44:55:66:192.168.1.12345", NULL);
-#
-#  assert_match_anchored (DEFS "(?&IPV6)", "11:22:33:44:55:66:77",              NULL);   /* no :: */
-#  assert_match_anchored (DEFS "(?&IPV6)", "11:22:33:44:55:66:77:88",           ENTIRE);
-#  assert_match_anchored (DEFS "(?&IPV6)", "11:22:33:44:55:66:77:88:99",        NULL);
-#  assert_match_anchored (DEFS "(?&IPV6)", "::11:22:33:44:55:66:77",            ENTIRE); /* :: at the start */
-#  assert_match_anchored (DEFS "(?&IPV6)", "::11:22:33:44:55:66:77:88",         NULL);
-#  assert_match_anchored (DEFS "(?&IPV6)", "11:22:33::44:55:66:77",             ENTIRE); /* :: in the middle */
-#  assert_match_anchored (DEFS "(?&IPV6)", "11:22:33::44:55:66:77:88",          NULL);
-#  assert_match_anchored (DEFS "(?&IPV6)", "11:22:33:44:55:66:77::",            ENTIRE); /* :: at the end */
-#  assert_match_anchored (DEFS "(?&IPV6)", "11:22:33:44:55:66:77:88::",         NULL);
-#  assert_match_anchored (DEFS "(?&IPV6)", "::",                                ENTIRE); /* :: only */
-#
-#  assert_match_anchored (DEFS "(?&IPV6)", "11:22:33:44:55:192.168.1.1",        NULL);   /* no :: */
-#  assert_match_anchored (DEFS "(?&IPV6)", "11:22:33:44:55:66:192.168.1.1",     ENTIRE);
-#  assert_match_anchored (DEFS "(?&IPV6)", "11:22:33:44:55:66:77:192.168.1.1",  NULL);
-#  assert_match_anchored (DEFS "(?&IPV6)", "::11:22:33:44:55:192.168.1.1",      ENTIRE); /* :: at the start */
-#  assert_match_anchored (DEFS "(?&IPV6)", "::11:22:33:44:55:66:192.168.1.1",   NULL);
-#  assert_match_anchored (DEFS "(?&IPV6)", "11:22:33::44:55:192.168.1.1",       ENTIRE); /* :: in the imddle */
-#  assert_match_anchored (DEFS "(?&IPV6)", "11:22:33::44:55:66:192.168.1.1",    NULL);
-#  assert_match_anchored (DEFS "(?&IPV6)", "11:22:33:44:55::192.168.1.1",       ENTIRE); /* :: at the end(ish) */
-#  assert_match_anchored (DEFS "(?&IPV6)", "11:22:33:44:55:66::192.168.1.1",    NULL);
-#  assert_match_anchored (DEFS "(?&IPV6)", "::192.168.1.1",                     ENTIRE); /* :: only(ish) */
-#
 #  /* URL_HOST is either a hostname, or an IPv4 address, or a bracket-enclosed IPv6 address */
-#  assert_match_anchored (DEFS URL_HOST, "example",       ENTIRE);
-#  assert_match_anchored (DEFS URL_HOST, "example.com",   ENTIRE);
-#  assert_match_anchored (DEFS URL_HOST, "11.22.33.44",   ENTIRE);
-#  assert_match_anchored (DEFS URL_HOST, "[11.22.33.44]", NULL);
-#  assert_match_anchored (DEFS URL_HOST, "dead::be:ef",   "dead");  /* TODO: can/should we totally abort here? */
-#  assert_match_anchored (DEFS URL_HOST, "[dead::be:ef]", ENTIRE);
-#
 #  /* EMAIL_HOST is either an at least two-component hostname, or a bracket-enclosed IPv[46] address */
-#  assert_match_anchored (DEFS EMAIL_HOST, "example",        NULL);
-#  assert_match_anchored (DEFS EMAIL_HOST, "example.com",    ENTIRE);
-#  assert_match_anchored (DEFS EMAIL_HOST, "11.22.33.44",    NULL);
-#  assert_match_anchored (DEFS EMAIL_HOST, "[11.22.33.44]",  ENTIRE);
-#  assert_match_anchored (DEFS EMAIL_HOST, "[11.22.33.456]", NULL);
-#  assert_match_anchored (DEFS EMAIL_HOST, "dead::be:ef",    NULL);
-#  assert_match_anchored (DEFS EMAIL_HOST, "[dead::be:ef]",  ENTIRE);
-#
 #  /* Number between 1 and 65535 (helper for port) */
-#  assert_match_anchored (N_1_65535, "0",      NULL);
-#  assert_match_anchored (N_1_65535, "1",      ENTIRE);
-#  assert_match_anchored (N_1_65535, "10",     ENTIRE);
-#  assert_match_anchored (N_1_65535, "100",    ENTIRE);
-#  assert_match_anchored (N_1_65535, "1000",   ENTIRE);
-#  assert_match_anchored (N_1_65535, "10000",  ENTIRE);
-#  assert_match_anchored (N_1_65535, "60000",  ENTIRE);
-#  assert_match_anchored (N_1_65535, "65000",  ENTIRE);
-#  assert_match_anchored (N_1_65535, "65500",  ENTIRE);
-#  assert_match_anchored (N_1_65535, "65530",  ENTIRE);
-#  assert_match_anchored (N_1_65535, "65535",  ENTIRE);
-#  assert_match_anchored (N_1_65535, "65536",  NULL);
-#  assert_match_anchored (N_1_65535, "65540",  NULL);
-#  assert_match_anchored (N_1_65535, "65600",  NULL);
-#  assert_match_anchored (N_1_65535, "66000",  NULL);
-#  assert_match_anchored (N_1_65535, "70000",  NULL);
-#  assert_match_anchored (N_1_65535, "100000", NULL);
-#  assert_match_anchored (N_1_65535, "",       NULL);
-#  assert_match_anchored (N_1_65535, "a1b",    NULL);
-#
 #  /* PORT is an optional colon-prefixed value */
 #  assert_match_anchored (PORT, "",       ENTIRE);
 #  assert_match_anchored (PORT, ":1",     ENTIRE);
 #  assert_match_anchored (PORT, ":65535", ENTIRE);
 #  assert_match_anchored (PORT, ":65536", "");     /* TODO: can/should we totally abort here? */
-#
 #  /* TODO: add tests for PATHCHARS and PATHNONTERM; and/or URLPATH */
 #  assert_match_anchored (URLPATH, "/ab/cd",       ENTIRE);
 #  assert_match_anchored (URLPATH, "/ab/cd.html.", "/ab/cd.html");
-#
-#
 #  /* Put the components together and test the big picture */
-#
 #  assert_match (REGEX_URL_AS_IS, "There's no URL here http:/foo",               NULL);
 #  assert_match (REGEX_URL_AS_IS, "Visit http://example.com for details",        "http://example.com");
 #  assert_match (REGEX_URL_AS_IS, "Trailing dot http://foo/bar.html.",           "http://foo/bar.html");
