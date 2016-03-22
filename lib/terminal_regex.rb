@@ -87,8 +87,7 @@ module TopinambourRegex
   VOIP_PATH = "(?x: [;?]#{PATHCHARS_CLASS}* (?<! #{PATHNONTERM_CLASS} ) )?"
   # Now let's put these fragments together */
   DEFS = IP_DEF
-  #REGEX_URL_AS_IS = "#{SCHEME}://#{USERPASS}#{URL_HOST}#{PORT}#{URLPATH}"
-  REGEX_URL_AS_IS = "#{DEFS}#{SCHEME}#://#{USERPASS}#{URL_HOST}#{PORT}#{URLPATH}"
+  REGEX_URL_AS_IS = "#{DEFS}#{SCHEME}://#{USERPASS}#{URL_HOST}#{PORT}#{URLPATH}"
   # TODO: also support file:/etc/passwd */
   REGEX_URL_FILE = "#{DEFS}(?ix: file:/ (?: / (?: #{HOSTNAME1} )? / )? (?! / ) )(?x: #{PATHCHARS_CLASS}+ (?<! #{PATHNONTERM_CLASS} ) )?" 
   # Lookbehind so that we don't catch "abc.www.foo.bar", bug 739757. 
