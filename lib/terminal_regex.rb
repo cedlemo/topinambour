@@ -49,14 +49,14 @@ module TopinambourRegex
   IPV6_NULL = "(?x: :: )"
   # The same ones for IPv4-embedded notation, without the actual IPv4 part */
   IPV6V4_FULL = "(?x: (?&S6C){6} )"
-  IPV6V4_LEFT = "(?x: :: (?&S6C){0,5} )"  # includes "::<ipv4>" */
+  IPV6V4_LEFT = "(?x: :: (?&S6C){0,5} )" # includes "::<ipv4>" */
   IPV6V4_MID  = "(?x: (?! (?: [[:xdigit:]]*: ){7} ) (?&S6C){1,4} (?&CS6){1,4} ) :"
-  IPV6V4_RIGHT= "(?x: (?&S6C){1,5} : )"
+  IPV6V4_RIGHT = "(?x: (?&S6C){1,5} : )"
   # IPV6: An IPv6 address (possibly with an embedded IPv4).
   # This macro defines both IPV4 and IPV6, since the latter one requires the former. */
-  IP_DEF = "#{IPV4_DEF}#{S6_DEF}(?(DEFINE)(?<IPV6>(?x: (?: #{IPV6_NULL} | #{IPV6_LEFT} | #{IPV6_MID} | #{IPV6_RIGHT}" + 
-                           " | #{IPV6_FULL} | (?: #{IPV6V4_FULL} | #{IPV6V4_LEFT} | #{IPV6V4_MID} | #{IPV6V4_RIGHT}" + 
-                           " ) (?&IPV4) ) (?! [.:[:xdigit:]] ) )))"
+  IP_DEF = "#{IPV4_DEF}#{S6_DEF}(?(DEFINE)(?<IPV6>(?x: (?: #{IPV6_NULL} | #{IPV6_LEFT} | #{IPV6_MID} | #{IPV6_RIGHT} \
+                           | #{IPV6_FULL} | (?: #{IPV6V4_FULL} | #{IPV6V4_LEFT} | #{IPV6V4_MID} | #{IPV6V4_RIGHT} \
+                           ) (?&IPV4) ) (?! [.:[:xdigit:]] ) )))"
   # Either an alphanumeric character or dash; or if [negative lookahead] not ASCII
   # then any graphical Unicode character.
   # A segment can consist entirely of numbers.
@@ -71,7 +71,7 @@ module TopinambourRegex
   # For URL: Hostname, IPv4, or bracket-enclosed IPv6, e.g. "example.com", "1.2.3.4", "[::1]" */
   URL_HOST = "(?x: #{HOSTNAME1} | (?&IPV4) | \\[ (?&IPV6) \\] )"
   # For e-mail: Hostname of at least two segments, or bracket-enclosed IPv4 or IPv6, e.g. "example.com", "[1.2.3.4]", "[::1]".
-  # Technically an e-mail with a single-component hostname might be valid on a local network, 
+  # Technically an e-mail with a single-component hostname might be valid on a local network,
   # but let's avoid tons of false positives (e.g. in a typical shell prompt). */
   EMAIL_HOST = "(?x: #{HOSTNAME2} | \\[ (?: (?&IPV4) | (?&IPV6) ) \\] )"
   # Number between 1 and 65535, with lookahead at the end so that we don't match "6789" in the string "67890",
@@ -89,8 +89,8 @@ module TopinambourRegex
   DEFS = IP_DEF
   REGEX_URL_AS_IS = "#{DEFS}#{SCHEME}://#{USERPASS}#{URL_HOST}#{PORT}#{URLPATH}"
   # TODO: also support file:/etc/passwd */
-  REGEX_URL_FILE = "#{DEFS}(?ix: file:/ (?: / (?: #{HOSTNAME1} )? / )? (?! / ) )(?x: #{PATHCHARS_CLASS}+ (?<! #{PATHNONTERM_CLASS} ) )?" 
-  # Lookbehind so that we don't catch "abc.www.foo.bar", bug 739757. 
+  REGEX_URL_FILE = "#{DEFS}(?ix: file:/ (?: / (?: #{HOSTNAME1} )? / )? (?! / ) )(?x: #{PATHCHARS_CLASS}+ (?<! #{PATHNONTERM_CLASS} ) )?"
+  # Lookbehind so that we don't catch "abc.www.foo.bar", bug 739757.
   # Lookahead for www/ftp for convenience (so that we can reuse HOSTNAME1). */
   REGEX_URL_HTTP = "#{DEFS}(?<!(?:#{HOSTNAMESEGMENTCHARS_CLASS}|[.]))(?=(?i:www|ftp))#{HOSTNAME1}#{PORT}#{URLPATH}"
   REGEX_URL_VOIP = "#{DEFS}(?i:h323:|sips?:)#{USERPASS}#{URL_HOST}#{PORT}#{VOIP_PATH}"
