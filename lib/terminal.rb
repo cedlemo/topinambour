@@ -16,9 +16,7 @@
 
 ##
 # The default vte terminal customized
-#class TopinambourTerminal < Vte::Terminal
 class TopinambourTerminal
-#  extend TopinambourStyleProperties
   attr_reader :pid, :menu
   attr_accessor :preview, :colors, :tab_label
 
@@ -39,21 +37,14 @@ class TopinambourTerminal
       notebook.toplevel.application.quit unless notebook.n_pages >= 1
     end
 
-    signal_connect "window-title-changed" do |widget|
-      if parent && parent.current == self
-        current_label = parent.get_tab_label(widget)
-        if @tab_label.class == String
-          current_label.text = @tab_label
-        else
-          current_label.text = window_title
-          parent.toplevel.current_label.text = window_title
-        end
-      end
+    signal_connect "window-title-changed" do
+      when_terminal_title_change if parent && parent.current == self
     end
 
-    builder = Gtk::Builder.new(:resource => "/com/github/cedlemo/topinambour/terminal-menu.ui")
+    builder = Gtk::Builder.new(:resource =>
+                               "/com/github/cedlemo/topinambour/terminal-menu.ui")
     @menu = Gtk::Popover.new(self, builder["termmenu"])
-    
+
     signal_connect "button-press-event" do |widget, event|
       if event.type == Gdk::EventType::BUTTON_PRESS &&
          event.button == Gdk::BUTTON_SECONDARY
@@ -86,9 +77,7 @@ class TopinambourTerminal
 
   def css_font
     font = style_get_property("font")
-    unless font
-      font = Pango::FontDescription.new(DEFAULT_TERMINAL_FONT)
-    end
+    font = Pango::FontDescription.new(DEFAULT_TERMINAL_FONT) unless font
     font
   end
 
@@ -119,13 +108,13 @@ class TopinambourTerminal
                 :REGEX_URL_VOIP, :REGEX_EMAIL, :REGEX_NEWS_MAN]
     @REGEXES.each do |name|
       regex_name = TopinambourRegex.const_get(name)
-      flags = [GLib::RegexCompileFlags::OPTIMIZE, 
+      flags = [GLib::RegexCompileFlags::OPTIMIZE,
                GLib::RegexCompileFlags::MULTILINE]
       regex = GLib::Regex.new(regex_name, :compile_options => flags)
       match_add_gregex(regex, 0)
     end
   end
-  
+
   def display_copy_past_menu(widget, event)
     x, y = event.window.coords_to_parent(event.x,
                                          event.y)
@@ -136,8 +125,16 @@ class TopinambourTerminal
     widget.menu.set_pointing_to(rect)
     widget.menu.show
   end
-  
-  def manage_regex_on_click(widget, event)
-    match, regex_type =  match_check_event(event)
+
+  def manage_regex_on_click(_widget, event)
+    _match, _regex_type = match_check_event(event)
+  end
+
+  def current_terminal_title
+    @tab_label.class == String ? @tab_label : window_title
+  end
+
+  def when_terminal_title_change
+    parent.toplevel.current_label.text = current_terminal_title
   end
 end
