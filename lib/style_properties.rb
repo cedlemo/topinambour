@@ -54,3 +54,24 @@ module TopinambourStyleProperties
     install_style_property(property) if property
   end
 end
+
+TERMINAL_COLOR_NAMES = [:foreground, :background, :black, :red, :green, :yellow, :blue, :magenta, :cyan, :white,
+                        :brightblack, :brightred, :brightgreen, :brightyellow, :brightblue, :brightmagenta, :brightcyan, :brightwhite]
+DEFAULT_TERMINAL_COLORS = %w(#aeafad #323232 #000000 #b9214f #A6E22E #ff9800 #3399ff #8e33ff #06a2dc
+                             #B0B0B0 #5D5D5D #ff5c8d #CDEE69 #ffff00 #9CD9F0 #FBB1F9 #77DFD8 #F7F7F7)
+DEFAULT_TERMINAL_FONT = "Monospace 11"
+
+class TopinambourTerminal < Vte::Terminal
+  extend TopinambourStyleProperties
+  type_register
+  TERMINAL_COLOR_NAMES.each_with_index do |c|
+    name = c.to_s
+    self.install_style("boxed",
+                        name,
+                        GLib::Type["GdkRGBA"])
+  end
+  self.install_style("boxed",
+                     "font",
+                     GLib::Type["PangoFontDescription"])
+
+end
