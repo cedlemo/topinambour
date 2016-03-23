@@ -14,15 +14,8 @@
 # You should have received a copy of the GNU General Public License
 # along with Topinambour.  If not, see <http://www.gnu.org/licenses/>.
 
-class TopinambourWindow < Gtk::ApplicationWindow
-  extend TopinambourStyleProperties
+class TopinambourWindow
   attr_reader :notebook, :bar, :overlay, :current_label, :current_tab, :css_editor_style
-
-  type_register
-  install_style("string", "shell", "/usr/bin/fish")
-  install_style("int", "width", [-1, 2000, 1000])
-  install_style("int", "height", [-1, 2000, 500])
-  install_style("string", "css-editor-style", "classic")
 
   def initialize(application)
     super(:application => application)
