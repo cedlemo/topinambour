@@ -8,6 +8,6 @@ ratings:
   - "**.rb"
 exclude_paths:
   doc/*
-  test/*
+  tests/*
   data/*
 
