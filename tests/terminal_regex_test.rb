@@ -104,7 +104,7 @@ def assert_match_added(constant_names, string, result)
   assert_equal(reference, match_info.fetch(0))
 end
 
-class TestTerminalRegex < MiniTest::Test
+class TestTerminalRegexBasics < MiniTest::Test
   def test_scheme
     assert_match_anchored(:SCHEME, "http", :ENTIRE)
     assert_match_anchored(:SCHEME,"HTTPS",:ENTIRE)
@@ -281,7 +281,9 @@ class TestTerminalRegex < MiniTest::Test
     assert_match_anchored(:URLPATH, "/ab/cd",       :ENTIRE);
     assert_match_anchored(:URLPATH, "/ab/cd.html.", "/ab/cd.html");
   end
-  
+end
+
+class TestTerminalRegexComplex < MiniTest::Test
   def test_url_as_is_1
     assert_match_b(:REGEX_URL_AS_IS, "There's no URL here http:/foo",               :NULL)
     assert_match_b(:REGEX_URL_AS_IS, "Visit http://example.com for details",        "http://example.com")
