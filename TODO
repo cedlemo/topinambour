@@ -1,7 +1,6 @@
 Urgent:
-  see where is the problem with the regex copied from gnome-terminal
-  finish the tests for the regex
-  Use a module to manage css properties
+  centralize all the properties in lib/style_properties.rb
+  generate a preferences window/ tab in order to set them easily
 
   ubuntu => try add check vor methods that are specific to last Gtk version (ubuntu trusty)
 
