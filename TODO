@@ -1,7 +1,7 @@
 Urgent:
   centralize all the properties in lib/style_properties.rb
   generate a preferences window/ tab in order to set them easily
-
+  generate a plugin system and add the resize little window in it
   ubuntu => try add check vor methods that are specific to last Gtk version (ubuntu trusty)
 
 Ideas:
