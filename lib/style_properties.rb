@@ -66,6 +66,38 @@ DEFAULT_TERMINAL_COLORS = %w(#aeafad #323232 #000000 #b9214f #A6E22E #ff9800
                             )
 DEFAULT_TERMINAL_FONT = "Monospace 11"
 
+# boolean :
+#
+# audible_bell
+# allow_bold
+# scroll_on_output
+# scroll_on_keystroke
+# rewrap_on_resize
+# mouse_autohide
+#
+# VteCursorShape :
+# cursor_shape
+#   VTE_CURSOR_SHAPE_BLOCK      Draw a block cursor. This is the default.
+#   VTE_CURSOR_SHAPE_IBEAM      Draw a vertical bar on the left side of character. 
+#                               This is similar to the default cursor for other GTK+ widgets.
+#   VTE_CURSOR_SHAPE_UNDERLINE  Draw a horizontal bar below the character.
+#
+# VteCursorBlinkMode
+#  cursor_blink_mode
+#   VTE_CURSOR_BLINK_SYSTEM Follow GTK+ settings for cursor blinking.
+#   VTE_CURSOR_BLINK_ON     Cursor blinks.
+#   VTE_CURSOR_BLINK_OFF    Cursor does not blink.
+#
+# VteEraseBinding
+#  backspace_binding
+#  delete_binding
+#    VTE_ERASE_AUTO For backspace, attempt to determine the right value from the 
+#                   terminal's IO settings. For delete, use the control sequence.
+#    VTE_ERASE_ASCII_BACKSPACE Send an ASCII backspace character (0x08).
+#    VTE_ERASE_ASCII_DELETE    Send an ASCII delete character (0x7F).
+#    VTE_ERASE_DELETE_SEQUENCE Send the "@7 " control sequence.
+#    VTE_ERASE_TTY             Send terminal's "erase" setting.
+
 class TopinambourTerminal < Vte::Terminal
   extend TopinambourStyleProperties
   type_register
