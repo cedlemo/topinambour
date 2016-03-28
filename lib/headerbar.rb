@@ -37,12 +37,12 @@ SECTOOLTIP
 
   def self.generate_current_label_signals(label, window)
     label.signal_connect "activate" do |entry|
-      window.notebook.current.tab_label = entry.text
+      window.notebook.current.custom_title = entry.text
     end
 
     label.signal_connect "icon-release" do |entry, position|
       if position == :secondary
-        window.notebook.current.tab_label = nil
+        window.notebook.current.custom_title = nil
         entry.text = window.notebook.current.window_title
       end
     end

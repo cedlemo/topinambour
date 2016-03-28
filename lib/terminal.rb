@@ -18,7 +18,7 @@
 # The default vte terminal customized
 class TopinambourTerminal
   attr_reader :pid, :menu
-  attr_accessor :preview, :colors, :tab_label
+  attr_accessor :preview, :colors, :custom_title
 
   ##
   # Create a new TopinambourTerminal instance that runs command_string
@@ -85,6 +85,10 @@ class TopinambourTerminal
     set_colors(@colors[0], @colors[1], @colors[2..-1])
   end
 
+  def terminal_title
+    @custom_title.class == String ? @custom_title : window_title.to_s
+  end
+
   private
 
   def parse_css_color(color_name)
@@ -130,11 +134,7 @@ class TopinambourTerminal
     _match, _regex_type = match_check_event(event)
   end
 
-  def current_terminal_title
-    @tab_label.class == String ? @tab_label : window_title
-  end
-
   def when_terminal_title_change
-    parent.toplevel.current_label.text = current_terminal_title
+    parent.toplevel.current_label.text = terminal_title
   end
 end

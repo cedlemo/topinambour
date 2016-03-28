@@ -27,7 +27,7 @@ class TopinambourNotebook < Gtk::Notebook
     end
 
     signal_connect "switch-page" do |_widget, next_page, next_page_num|
-      toplevel.current_label.text = next_page.tab_label || get_tab_label(next_page).text
+      toplevel.current_label.text = next_page.terminal_title
       toplevel.current_tab.text = "#{next_page_num + 1}/#{n_pages}"
 
       if page >= 0 && @gen_preview

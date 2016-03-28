@@ -53,7 +53,7 @@ class TopinambourWindow
         add_resize_timeout
       end
     end
-    @notebook.append_page(terminal, Gtk::Label.new)
+    @notebook.append_page(terminal)
     @notebook.set_tab_reorderable(terminal, true)
     @notebook.set_page(@notebook.n_pages - 1)
     @notebook.current.grab_focus
