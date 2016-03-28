@@ -146,7 +146,7 @@ class TestTerminalRegex < MiniTest::Test
     # assert_match_anchored(:HOSTNAME2, "ab.cd.12",          :NULL)#  /* errr... could we fail here?? */
   end
 
-  def test_defs_ipv4
+  def test_defs_ipv4_1
     assert_match_anchored_extended(:DEFS, "(?&S4)", "0",                :ENTIRE)
     assert_match_anchored_extended(:DEFS, "(?&S4)", "1",                :ENTIRE)
     assert_match_anchored_extended(:DEFS, "(?&S4)", "9",                :ENTIRE)
@@ -164,6 +164,9 @@ class TestTerminalRegex < MiniTest::Test
     assert_match_anchored_extended(:DEFS, "(?&S4)", "a1b",              :NULL)
     assert_match_anchored_extended(:DEFS, "(?&IPV4)", "11.22.33.44",    :ENTIRE)
     assert_match_anchored_extended(:DEFS, "(?&IPV4)", "0.1.254.255",    :ENTIRE)
+  end
+
+  def test_defs_ipv4_2
     assert_match_anchored_extended(:DEFS, "(?&IPV4)", "75.150.225.300", :NULL)
     assert_match_anchored_extended(:DEFS, "(?&IPV4)", "1.2.3.4.5",      "1.2.3.4") 
     assert_match_anchored_extended(:DEFS, "(?&S4)", "0",    :ENTIRE)
@@ -187,7 +190,7 @@ class TestTerminalRegex < MiniTest::Test
     assert_match_anchored_extended(:DEFS, "(?&IPV4)", "1.2.3.4.5",      "1.2.3.4")#  /* we could also bail out and not match at all */ #  /* USER is nonempty, alphanumeric, dot, plus and dash */
   end
   
-  def test_defs_ipv6
+  def test_defs_ipv6_1
     assert_match_anchored_extended(:DEFS, "(?&IPV6)", "11:::22",                           :NULL)
     assert_match_anchored_extended(:DEFS, "(?&IPV6)", "11:22::33:44::55:66",               :NULL)
     assert_match_anchored_extended(:DEFS, "(?&IPV6)", "dead::beef",                        :ENTIRE)
@@ -206,6 +209,9 @@ class TestTerminalRegex < MiniTest::Test
     assert_match_anchored_extended(:DEFS, "(?&IPV6)", "11:22:33:44:55:66:77:88:99",        :NULL)
     assert_match_anchored_extended(:DEFS, "(?&IPV6)", "::11:22:33:44:55:66:77",            :ENTIRE) #/* :: at the start */
     assert_match_anchored_extended(:DEFS, "(?&IPV6)", "::11:22:33:44:55:66:77:88",         :NULL)
+  end
+
+  def test_defs_ipv6_2
     assert_match_anchored_extended(:DEFS, "(?&IPV6)", "11:22:33::44:55:66:77",             :ENTIRE) #/* :: in the middle */
     assert_match_anchored_extended(:DEFS, "(?&IPV6)", "11:22:33::44:55:66:77:88",          :NULL)
     assert_match_anchored_extended(:DEFS, "(?&IPV6)", "11:22:33:44:55:66:77::",            :ENTIRE) #/* :: at the end */
@@ -276,7 +282,7 @@ class TestTerminalRegex < MiniTest::Test
     assert_match_anchored(:URLPATH, "/ab/cd.html.", "/ab/cd.html");
   end
   
-  def test_url_as_is
+  def test_url_as_is_1
     assert_match_b(:REGEX_URL_AS_IS, "There's no URL here http:/foo",               :NULL)
     assert_match_b(:REGEX_URL_AS_IS, "Visit http://example.com for details",        "http://example.com")
     assert_match_b(:REGEX_URL_AS_IS, "Trailing dot http://foo/bar.html.",           "http://foo/bar.html")
@@ -296,6 +302,9 @@ class TestTerminalRegex < MiniTest::Test
     assert_match_b(:REGEX_URL_AS_IS, "http://aa.bb/c",   :ENTIRE)
     assert_match_b(:REGEX_URL_AS_IS, "http://aa.bb/cc",  :ENTIRE)
     assert_match_b(:REGEX_URL_AS_IS, "http://aa.bb/cc/", :ENTIRE)
+  end
+
+  def test_url_as_is_2
     assert_match_b(:REGEX_URL_AS_IS, "HtTp://déjà-vu.com:10000/déjà/vu",    :ENTIRE)
     assert_match_b(:REGEX_URL_AS_IS, "HTTP://joe:sEcReT@➡.ws:1080",         :ENTIRE)
     assert_match_b(:REGEX_URL_AS_IS, "https://cömbining-áccents",           :ENTIRE)
