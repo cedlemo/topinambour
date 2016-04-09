@@ -53,8 +53,6 @@ class TopinambourApplication < Gtk::Application
     end
   end
 
-  private
-
   def replace_old_conf_with(new_conf)
     if File.exist?(USR_CSS)
       new_name = "#{USR_CSS}_#{Time.new.strftime('%Y-%m-%d-%H-%M-%S')}.backup"
@@ -64,7 +62,10 @@ class TopinambourApplication < Gtk::Application
     File.open(USR_CSS, "w") do |file|
       file.puts new_conf
     end
+    @css_content = new_conf
   end
+
+  private
 
   def load_menu_ui_in(application)
     builder = Gtk::Builder.new(:resource => "/com/github/cedlemo/topinambour/app-menu.ui")

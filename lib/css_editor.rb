@@ -20,7 +20,7 @@ class TopinambourCssEditor < Gtk::Grid
     super()
     @window = window
     @provider = window.application.provider
-    @default_css = @provider.to_s
+    @default_css = window.application.css_content
     @modified_css = @default_css
     @tab_label = "Css Editor"
 
@@ -38,7 +38,7 @@ class TopinambourCssEditor < Gtk::Grid
     @style_button = gen_style_chooser_button
     attach(@style_button, 1, 1, 1, 1)
 
-    button = gen_save_button
+    button = gen_save_button(@view.buffer)
     attach(button, 2, 1, 1, 1)
     manage_buffer_changes
     manage_css_errors
@@ -92,10 +92,10 @@ class TopinambourCssEditor < Gtk::Grid
     button
   end
 
-  def gen_save_button
+  def gen_save_button(buffer)
     button = Gtk::Button.new(:label => "Save")
     button.signal_connect "clicked" do
-      @window.application.update_css
+      @window.application.replace_old_conf_with(buffer.text)
       reload_custom_css_properties
     end
     button.vexpand = false

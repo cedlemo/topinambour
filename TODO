@@ -1,12 +1,11 @@
 Urgent:
   centralize all the properties in lib/style_properties.rb
+  add regex like color (hexadecimal and rgb like in css) with button in contextual menu for it
   generate a preferences window/ tab in order to set them easily
   generate a plugin system and add the resize little window in it
-  ubuntu => try add check vor methods that are specific to last Gtk version (ubuntu trusty)
 
 Ideas:
   Use a treeview or listbox for terminal chooser
   Try create a tab that displays extending tab informations (name, pixbuff, process, pid, dir) in treeview
   Allow rename tab in terminal chooser
-  start testing regex
 
