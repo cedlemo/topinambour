@@ -22,12 +22,13 @@ class TopinambourNotebook < Gtk::Notebook
     signal_connect "hide" do
       @visible = false
     end
+
     signal_connect "show" do
       @visible = true
     end
 
     signal_connect "switch-page" do |_widget, next_page, next_page_num|
-      toplevel.current_label.text = next_page.terminal_title
+      toplevel.current_label.text = next_page.terminal_title if next_page.class == TopinambourTerminal
       toplevel.current_tab.text = "#{next_page_num + 1}/#{n_pages}"
 
       if page >= 0 && @gen_preview
