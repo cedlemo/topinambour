@@ -53,7 +53,16 @@ module TopinambourActions
 
   def self.generate_term_copy_action(application)
     action = generate_action("term_copy") do |_act, _param|
-      application.windows[0].notebook.current.copy_clipboard
+      term = application.windows[0].notebook.current
+      event = Gtk.current_event
+      
+      _match, regex_type = term.match_check_event(event)
+      if term.has_selection? || regex_type == -1
+        term.copy_clipboard
+      else
+        clipboard = Gtk::Clipboard.get_default(Gdk::Display.default)
+        clipboard.text = term.last_match
+      end
     end
     action
   end
