@@ -32,14 +32,17 @@ class TopinambourCssEditor < Gtk::Grid
     sw.add(@view)
     attach(sw, 0, 0, 3, 1)
 
-    button = gen_reset_button
+    button = gen_close_button
     attach(button, 0, 1, 1, 1)
 
+    button = gen_reset_button
+    attach(button, 1, 1, 1, 1)
+
     @style_button = gen_style_chooser_button
-    attach(@style_button, 1, 1, 1, 1)
+    attach(@style_button, 2, 1, 1, 1)
 
     button = gen_save_button(@view.buffer)
-    attach(button, 2, 1, 1, 1)
+    attach(button, 3, 1, 1, 1)
     manage_buffer_changes
     manage_css_errors
     show_all
@@ -62,6 +65,16 @@ class TopinambourCssEditor < Gtk::Grid
     @view.show_right_margin = true
     @view.right_margin_position = 80
     @view.smart_backspace = true
+  end
+
+  def gen_close_button
+    button = Gtk::Button.new(:label => "Close Tab")
+    button.signal_connect "clicked" do
+      toplevel.close_current_tab
+    end
+    button.vexpand = false
+    button.hexpand = false
+    button
   end
 
   def gen_reset_button
