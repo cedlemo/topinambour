@@ -12,23 +12,17 @@ Topinambour is Terminal written with the Gtk3 and Vte3 ruby bindings from the pr
 
 ## Features
 
-*    tabs supports
-*    tabs can be reordered or selected through the preview mode ( `Shift + Ctrl + o` )
-<a href="https://raw.github.com/cedlemo/topinambour/master/screenshot2.png"><img src="https://raw.github.com/cedlemo/topinambour/master/screenshot2_prev.png" width="576" height="324" alt="Screenshot"></a>
-
+*    Tabs supports
+*    Tabs can be reordered or selected through the preview mode ( `Shift + Ctrl + o` )
 *    Each tab can be named.
 *    The configuration can be done via a Css file
 *    Terminal colors can be changed on the fly and saved in the CSS configuration file
-<a href="https://raw.github.com/cedlemo/topinambour/master/screenshot3.png"><img src="https://raw.github.com/cedlemo/topinambour/master/screenshot3_prev.png" width="576" height="324" alt="Screenshot"></a>
 *    Terminal font can be changed on the fly and saved in the CSS configuration file
-<a href="https://raw.github.com/cedlemo/topinambour/master/screenshot4.png"><img src="https://raw.github.com/cedlemo/topinambour/master/screenshot4_prev.png" width="576" height="324" alt="Screenshot"></a>
-
 *    The Css file can be edited in a tab of Topinambour and saved. Each modifications are applied while you are writting them. (Use `Shift + Ctrl + w` to close the editor)
-<a href="https://raw.github.com/cedlemo/topinambour/master/screenshot5.png"><img src="https://raw.github.com/cedlemo/topinambour/master/screenshot5_prev.png" width="576" height="324" alt="Screenshot"></a>
-*   Topinambour allows users to modify existing modules. For example if a user copy the css_editor.rb in the directory *~/.config/topinambour/lib/css_editor.rb*, he should be able to modify it in order to fit its needs. 
+*    Topinambour allows users to modify existing modules. For example if a user copy the css_editor.rb in the directory *~/.config/topinambour/lib/css_editor.rb*, he should be able to modify it in order to fit its needs. 
 
 ##  TODO:
-*   Regex support in the terminals in order to launch web navigator if there is an url or launch a media player if there is a match for avi file for example.
+*   Extand the regex support for colors pattern (hexadecimal or rgb/css form).
 *   Create more Css properties in oder to configure the terminals (cursor shape or blink mode, audible bell or not ...)
 *   Make Topinambour allows users to easily create their own modules. For example create a tab that will act as a MPD client. There will be widgets that control a MPD server and a GtkTree widget that displays the playlist of the MPD server for example.
 
