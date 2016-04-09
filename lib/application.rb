@@ -100,18 +100,6 @@ class TopinambourApplication < Gtk::Application
     end
   end
 
-  def css_properties
-    @props = {}
-    return @props if windows[0].notebook.current.class == TopinambourTerminal
-
-    terminal_colors = windows[0].notebook.current.colors
-    TERMINAL_COLOR_NAMES.each_with_index do |c, i|
-      @props["-TopinambourTerminal-#{c}"] = terminal_colors[i].to_s
-    end
-    @props["-TopinambourTerminal-font"] = DEFAULT_TERMINAL_FONT
-    @props["-TopinambourWindow-shell"] = "\'/usr/bin/fish\'"
-  end
-
   def check_and_create_if_no_config_dir
     Dir.mkdir(CONFIG_DIR) unless Dir.exist?(CONFIG_DIR)
   end
