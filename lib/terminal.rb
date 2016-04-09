@@ -138,21 +138,21 @@ class TopinambourTerminal
   def manage_regex_on_click(_widget, event)
     match, regex_type = match_check_event(event)
     return nil if regex_type == -1
-    modified_match =  case @regexes[regex_type]
-      when :REGEX_EMAIL
-        "mailto:" + match
-      when :REGEX_URL_HTTP
-        "http://" + match
-      else
-        match
-    end
-    begin  
+    modified_match = case @regexes[regex_type]
+                     when :REGEX_EMAIL
+                       "mailto:" + match
+                     when :REGEX_URL_HTTP
+                       "http://" + match
+                     else
+                       match
+                     end
+    begin
       Gio::AppInfo.launch_default_for_uri(modified_match)
     rescue => e
       puts "error : #{e.message}\n\tfor match: #{match} of type :#{@regexes[regex_type]}"
     end
   end
-  
+
   def when_terminal_title_change
     parent.toplevel.current_label.text = terminal_title
   end
