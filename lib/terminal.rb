@@ -17,7 +17,7 @@
 ##
 # The default vte terminal customized
 class TopinambourTerminal
-  attr_reader :pid, :menu
+  attr_reader :pid, :menu, :regexes, :last_match
   attr_accessor :preview, :colors, :custom_title
 
   ##
@@ -48,6 +48,7 @@ class TopinambourTerminal
     signal_connect "button-press-event" do |widget, event|
       if event.type == Gdk::EventType::BUTTON_PRESS &&
          event.button == Gdk::BUTTON_SECONDARY
+        manage_regex_on_right_click(widget, event)
         display_copy_past_menu(widget, event)
         true
       elsif event.button == Gdk::BUTTON_PRIMARY
@@ -108,15 +109,15 @@ class TopinambourTerminal
   end
 
   def add_matches
-#    @REGEXES = [:REGEX_URL_AS_IS, :REGEX_URL_FILE, :REGEX_URL_HTTP,
-#                :REGEX_URL_VOIP, :REGEX_EMAIL, :REGEX_NEWS_MAN]
-#    @REGEXES.each do |name|
-#      regex_name = TopinambourRegex.const_get(name)
-#      flags = [GLib::RegexCompileFlags::OPTIMIZE,
-#               GLib::RegexCompileFlags::MULTILINE]
-#      regex = GLib::Regex.new(regex_name, :compile_options => flags)
-#      match_add_gregex(regex, 0)
-#    end
+    @regexes = [:REGEX_URL_AS_IS, :REGEX_URL_FILE, :REGEX_URL_HTTP,
+                :REGEX_URL_VOIP, :REGEX_EMAIL, :REGEX_NEWS_MAN]
+    @regexes.each do |name|
+      regex_name = TopinambourRegex.const_get(name)
+      flags = [GLib::RegexCompileFlags::OPTIMIZE,
+               GLib::RegexCompileFlags::MULTILINE]
+      regex = GLib::Regex.new(regex_name, :compile_options => flags)
+      match_add_gregex(regex, 0)
+    end
   end
 
   def display_copy_past_menu(widget, event)
@@ -130,10 +131,28 @@ class TopinambourTerminal
     widget.menu.show
   end
 
-  def manage_regex_on_click(_widget, event)
-    _match, _regex_type = match_check_event(event)
+  def manage_regex_on_right_click(_widget, event)
+    @last_match, _regex_type = match_check_event(event)
   end
 
+  def manage_regex_on_click(_widget, event)
+    match, regex_type = match_check_event(event)
+    return nil if regex_type == -1
+    modified_match =  case @regexes[regex_type]
+      when :REGEX_EMAIL
+        "mailto:" + match
+      when :REGEX_URL_AS_IS 
+        match
+      else
+        match
+    end
+    begin  
+      Gio::AppInfo.launch_default_for_uri(modified_match)
+    rescue => e
+      puts "error : #{e.message}\n\tfor match: #{match} of type :#{@regexes[regex_type]}"
+    end
+  end
+  
   def when_terminal_title_change
     parent.toplevel.current_label.text = terminal_title
   end
