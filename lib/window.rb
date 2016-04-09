@@ -19,7 +19,7 @@ class TopinambourWindow
 
   def initialize(application)
     super(:application => application)
-    set_icon_from_file("#{DATA_PATH}/topinambour-icon.png")
+    set_icon_name("utilities-terminal-symbolic")
     load_css_properties
     set_position(:center)
     create_header_bar
@@ -114,7 +114,7 @@ class TopinambourWindow
                           "comments" => "Terminal Emulator based on the ruby bindings of Gtk3 and Vte3",
                           "copyright" => "Copyright (C) 2015-2016 Cédric Le Moigne",
                           "license" => "This program is licenced under the licence GPL-3.0 and later.",
-                          "logo" => Gdk::Pixbuf.new("#{DATA_PATH}/topinambour-icon-128.png"),
+                          "logo_icon_name" => "utilities-terminal-symbolic",
                           "program_name" => "Topinambour",
                           "version" => "1.2.3",
                           "website" => "https://github.com/cedlemo/topinambour",
