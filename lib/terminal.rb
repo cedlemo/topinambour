@@ -141,8 +141,8 @@ class TopinambourTerminal
     modified_match =  case @regexes[regex_type]
       when :REGEX_EMAIL
         "mailto:" + match
-      when :REGEX_URL_AS_IS 
-        match
+      when :REGEX_URL_HTTP
+        "http://" + match
       else
         match
     end
