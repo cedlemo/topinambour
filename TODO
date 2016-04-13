@@ -1,4 +1,5 @@
 Urgent:
+  can we create the headerbar in the xml/ui file
   centralize all the properties in lib/style_properties.rb
   add regex like color (hexadecimal and rgb like in css) with button in contextual menu for it
   generate a preferences window/ tab in order to set them easily
