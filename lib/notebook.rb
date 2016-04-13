@@ -15,10 +15,8 @@
 # along with Topinambour.  If not, see <http://www.gnu.org/licenses/>.
 class TopinambourNotebook < Gtk::Notebook
   attr_reader :visible
-  attr_accessor :gen_preview
   def initialize
     super()
-    @gen_preview = true
     signal_connect "hide" do
       @visible = false
     end
@@ -30,15 +28,6 @@ class TopinambourNotebook < Gtk::Notebook
     signal_connect "switch-page" do |_widget, next_page, next_page_num|
       toplevel.current_label.text = next_page.terminal_title if next_page.class == TopinambourTerminal
       toplevel.current_tab.text = "#{next_page_num + 1}/#{n_pages}"
-
-      if page >= 0 && @gen_preview
-        current.queue_draw
-        _x, _y, w, h = current.allocation.to_a
-        pix = current.window.to_pixbuf(0, 0, w, h)
-        current.preview = pix if pix
-      elsif !@gen_preview
-        @gen_preview = true
-      end
     end
 
     signal_connect "page-reordered" do

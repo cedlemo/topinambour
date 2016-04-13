@@ -68,10 +68,6 @@ class TopinambourWindow
     @notebook.current.grab_focus
   end
   
-  def show_terminal_chooser
-    toggle_overlay(TopinambourTermChooser)
-  end
-
   def show_font_selector
     toggle_overlay(TopinambourFontSelector) if @notebook.current.class == TopinambourTerminal
   end
