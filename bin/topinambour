@@ -48,7 +48,7 @@ Gio::Resources.register(resource)
 # Load default libraries !!WARNING!! loading order matters
 #%w(actions style_properties css_handler application terminal notebook color_selector font_selector
 %w(actions style_properties css_handler application terminal_regex terminal notebook color_selector font_selector
-terminal_chooser headerbar shortcuts window resize_message css_editor).each do |l|
+terminal_chooser headerbar shortcuts window css_editor).each do |l|
   if File.exist?("#{USR_LIB_PATH}/#{l}.rb")
     require "#{USR_LIB_PATH}/#{l}.rb"
   else

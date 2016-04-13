@@ -40,19 +40,6 @@ class TopinambourWindow
 
     terminal = TopinambourTerminal.new(cmd, working_dir)
     terminal.show
-    terminal.signal_connect "size-allocate" do |widget|
-      w = widget.column_count
-      h = widget.row_count
-      size_infos = "#{w}x#{h}"
-      if @overlay.children.size == 1
-        add_overlay(TopinambourResizeMessage.new(size_infos))
-        add_resize_timeout
-      elsif @overlay.children[1].class == TopinambourResizeMessage
-        GLib::Source.remove(@resize_timeout) if @resize_timeout
-        @overlay.children[1].text = size_infos
-        add_resize_timeout
-      end
-    end
     @notebook.append_page(terminal)
     @notebook.set_tab_reorderable(terminal, true)
     @notebook.set_page(@notebook.n_pages - 1)
@@ -173,15 +160,6 @@ class TopinambourWindow
     @bar.pack_end(button)
     button = TopinambourHeaderBar.generate_term_overv_button(self)
     @bar.pack_end(button)
-  end
-
-  def add_resize_timeout
-    @resize_timeout = GLib::Timeout.add_seconds(2) do
-      second_child = @overlay.children[1] || nil
-      if second_child && second_child.class == TopinambourResizeMessage
-        @overlay.children[1].hide
-      end
-    end
   end
 
   def toggle_overlay(klass)
