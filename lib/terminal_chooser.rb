@@ -22,7 +22,7 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     set_valign(:center)
     set_name("terminal_chooser")
 
-    generate_previews_pixbufs
+    window.notebook.generate_tab_preview
     generate_grid
     fill_grid
 
@@ -92,10 +92,7 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     button = Gtk::Button.new
     button.add(generate_preview_image(child.preview))
     button.set_tooltip_text(i.to_s)
-    button.signal_connect "clicked" do
-      @window.notebook.gen_preview = false
-      @window.notebook.set_current_page(i)
-    end
+    button.signal_connect("clicked") { @window.notebook.current_page = i }
     button
   end
 
@@ -119,28 +116,6 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
       @window.quit_gracefully
     end
     button
-  end
-
-  def generate_previews_pixbufs
-    current_page = @window.notebook.page
-
-    if @window.notebook.children.size == 1
-      # If we have only one vte, just generate the preview
-      _x, _y, w, h = @window.notebook.current.allocation.to_a
-      @window.notebook.current.preview = @window.notebook.current.window.to_pixbuf(0, 0, w, h)
-    else
-      # If we have more terminals, just cycle through them
-      # the previews will be generated in the "switch-page" event of the notebook
-      begin
-        @window.notebook.cycle_next_page
-      end while @window.notebook.page == current_page
-      # Here I disable the preview generation in the notebook "switch-page" event
-      # before returning to the current page.
-      # This is a Hack, If I don't disable the preview, all the previews will be
-      # the same.
-      @window.notebook.gen_preview = false
-      @window.notebook.set_current_page(current_page)
-    end
   end
 
   def add_drag_and_drop_functionalities(button)

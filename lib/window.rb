@@ -51,7 +51,7 @@ class TopinambourWindow
     @notebook.remove_all_pages
     application.quit
   end
-  
+
   def show_color_selector
     toggle_overlay(TopinambourColorSelector) if @notebook.current.class == TopinambourTerminal
   end
@@ -67,7 +67,7 @@ class TopinambourWindow
     @notebook.cycle_next_page
     @notebook.current.grab_focus
   end
-  
+
   def show_font_selector
     toggle_overlay(TopinambourFontSelector) if @notebook.current.class == TopinambourTerminal
   end
@@ -76,6 +76,10 @@ class TopinambourWindow
     css_editor = TopinambourCssEditor.new(self)
     @notebook.append_page(css_editor, Gtk::Label.new)
     @notebook.set_page(@notebook.n_pages - 1)
+  end
+
+  def show_terminal_chooser
+    toggle_overlay(TopinambourTermChooser)
   end
 
   def exit_overlay_mode
@@ -104,7 +108,7 @@ class TopinambourWindow
                           "website_label" => "Topinambour github repository"
                          )
   end
-  
+
   def close_current_tab
     exit_overlay_mode
     @notebook.remove_current_page
@@ -127,7 +131,7 @@ class TopinambourWindow
     @overlay.add(@notebook)
     add(@overlay)
   end
-  
+
   def create_header_bar
     @bar = TopinambourHeaderBar.generate_header_bar(self)
     @current_label = TopinambourHeaderBar.generate_current_label(self)

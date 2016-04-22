@@ -28,6 +28,7 @@ class TopinambourNotebook < Gtk::Notebook
     signal_connect "switch-page" do |_widget, next_page, next_page_num|
       toplevel.current_label.text = next_page.terminal_title if next_page.class == TopinambourTerminal
       toplevel.current_tab.text = "#{next_page_num + 1}/#{n_pages}"
+      generate_tab_preview if page >= 0
     end
 
     signal_connect "page-reordered" do
@@ -71,5 +72,15 @@ class TopinambourNotebook < Gtk::Notebook
 
   def toggle_visibility
     @visible ? hide : show
+  end
+
+  def generate_tab_preview
+    _x, _y, w, h = current.allocation.to_a
+    surface = Cairo::ImageSurface.new(Cairo::FORMAT_ARGB32,
+                                      w, h)
+    cr = Cairo::Context.new(surface)
+    current.draw(cr)
+    pix = surface.to_pixbuf(0, 0, w, h)
+    current.preview = pix if pix
   end
 end

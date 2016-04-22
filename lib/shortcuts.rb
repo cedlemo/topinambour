@@ -55,6 +55,9 @@ module TopinambourShortcuts
     when Gdk::Keyval::KEY_Right # next tab
       window.show_next_tab
       true
+    when Gdk::Keyval::KEY_O
+      window.show_terminal_chooser
+      true
     when Gdk::Keyval::KEY_E
       window.show_css_editor
       true
