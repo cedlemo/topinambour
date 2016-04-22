@@ -85,7 +85,7 @@
 <p class="children">
   
     
-      <strong class="modules">Modules:</strong> <span class='object_link'><a href="TopinambourActions.html" title="TopinambourActions (module)">TopinambourActions</a></span>, <span class='object_link'><a href="TopinambourHeaderBar.html" title="TopinambourHeaderBar (module)">TopinambourHeaderBar</a></span>, <span class='object_link'><a href="TopinambourShortcuts.html" title="TopinambourShortcuts (module)">TopinambourShortcuts</a></span>, <span class='object_link'><a href="TopinambourStyleProperties.html" title="TopinambourStyleProperties (module)">TopinambourStyleProperties</a></span>
+      <strong class="modules">Modules:</strong> <span class='object_link'><a href="CssHandler.html" title="CssHandler (module)">CssHandler</a></span>, <span class='object_link'><a href="TopinambourActions.html" title="TopinambourActions (module)">TopinambourActions</a></span>, <span class='object_link'><a href="TopinambourHeaderBar.html" title="TopinambourHeaderBar (module)">TopinambourHeaderBar</a></span>, <span class='object_link'><a href="TopinambourRegex.html" title="TopinambourRegex (module)">TopinambourRegex</a></span>, <span class='object_link'><a href="TopinambourShortcuts.html" title="TopinambourShortcuts (module)">TopinambourShortcuts</a></span>, <span class='object_link'><a href="TopinambourStyleProperties.html" title="TopinambourStyleProperties (module)">TopinambourStyleProperties</a></span>
     
   
     
@@ -99,41 +99,20 @@
     <dl class="constants">
       
         <dt id="TERMINAL_COLOR_NAMES-constant" class="">TERMINAL_COLOR_NAMES =
-          <div class="docstring">
-  <div class="discussion">
-    
-<p>Copyright 2015-2016 Cédric LE MOIGNE, cedlemo@gmx.com This file is part of
-Topinambour.</p>
-
-<p>Topinambour is free software: you can redistribute it and/or modify it
-under the terms of the GNU General Public License as published by the Free
-Software Foundation, either version 3 of the License, or any later version.</p>
-
-<p>Topinambour is distributed in the hope that it will be useful, but WITHOUT
-ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-more details.</p>
-
-<p>You should have received a copy of the GNU General Public License along
-with Topinambour.  If not, see &lt;<a
-href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
+          
         </dt>
-        <dd><pre class="code"><span class='lbracket'>[</span><span class='symbol'>:foreground</span><span class='comma'>,</span> <span class='symbol'>:background</span><span class='comma'>,</span> <span class='symbol'>:black</span><span class='comma'>,</span> <span class='symbol'>:red</span><span class='comma'>,</span> <span class='symbol'>:green</span><span class='comma'>,</span> <span class='symbol'>:yellow</span><span class='comma'>,</span> <span class='symbol'>:blue</span><span class='comma'>,</span> <span class='symbol'>:magenta</span><span class='comma'>,</span> <span class='symbol'>:cyan</span><span class='comma'>,</span> <span class='symbol'>:white</span><span class='comma'>,</span>
-<span class='symbol'>:brightblack</span><span class='comma'>,</span> <span class='symbol'>:brightred</span><span class='comma'>,</span> <span class='symbol'>:brightgreen</span><span class='comma'>,</span> <span class='symbol'>:brightyellow</span><span class='comma'>,</span> <span class='symbol'>:brightblue</span><span class='comma'>,</span> <span class='symbol'>:brightmagenta</span><span class='comma'>,</span> <span class='symbol'>:brightcyan</span><span class='comma'>,</span> <span class='symbol'>:brightwhite</span><span class='rbracket'>]</span></pre></dd>
+        <dd><pre class="code"><span class='lbracket'>[</span><span class='symbol'>:foreground</span><span class='comma'>,</span> <span class='symbol'>:background</span><span class='comma'>,</span> <span class='symbol'>:black</span><span class='comma'>,</span> <span class='symbol'>:red</span><span class='comma'>,</span> <span class='symbol'>:green</span><span class='comma'>,</span> <span class='symbol'>:yellow</span><span class='comma'>,</span>
+ <span class='symbol'>:blue</span><span class='comma'>,</span> <span class='symbol'>:magenta</span><span class='comma'>,</span> <span class='symbol'>:cyan</span><span class='comma'>,</span> <span class='symbol'>:white</span><span class='comma'>,</span> <span class='symbol'>:brightblack</span><span class='comma'>,</span>
+ <span class='symbol'>:brightred</span><span class='comma'>,</span> <span class='symbol'>:brightgreen</span><span class='comma'>,</span> <span class='symbol'>:brightyellow</span><span class='comma'>,</span> <span class='symbol'>:brightblue</span><span class='comma'>,</span>
+ <span class='symbol'>:brightmagenta</span><span class='comma'>,</span> <span class='symbol'>:brightcyan</span><span class='comma'>,</span> <span class='symbol'>:brightwhite</span>
+<span class='rbracket'>]</span></pre></dd>
       
         <dt id="DEFAULT_TERMINAL_COLORS-constant" class="">DEFAULT_TERMINAL_COLORS =
           
         </dt>
-        <dd><pre class="code"><span class='qwords_beg'>%w(</span><span class='tstring_content'>#aeafad</span><span class='words_sep'> </span><span class='tstring_content'>#323232</span><span class='words_sep'> </span><span class='tstring_content'>#000000</span><span class='words_sep'> </span><span class='tstring_content'>#b9214f</span><span class='words_sep'> </span><span class='tstring_content'>#A6E22E</span><span class='words_sep'> </span><span class='tstring_content'>#ff9800</span><span class='words_sep'> </span><span class='tstring_content'>#3399ff</span><span class='words_sep'> </span><span class='tstring_content'>#8e33ff</span><span class='words_sep'> </span><span class='tstring_content'>#06a2dc</span><span class='words_sep'>
-</span><span class='tstring_content'>#B0B0B0</span><span class='words_sep'> </span><span class='tstring_content'>#5D5D5D</span><span class='words_sep'> </span><span class='tstring_content'>#ff5c8d</span><span class='words_sep'> </span><span class='tstring_content'>#CDEE69</span><span class='words_sep'> </span><span class='tstring_content'>#ffff00</span><span class='words_sep'> </span><span class='tstring_content'>#9CD9F0</span><span class='words_sep'> </span><span class='tstring_content'>#FBB1F9</span><span class='words_sep'> </span><span class='tstring_content'>#77DFD8</span><span class='words_sep'> </span><span class='tstring_content'>#F7F7F7</span><span class='words_sep'>)</span></pre></dd>
+        <dd><pre class="code"><span class='qwords_beg'>%w(</span><span class='tstring_content'>#aeafad</span><span class='words_sep'> </span><span class='tstring_content'>#323232</span><span class='words_sep'> </span><span class='tstring_content'>#000000</span><span class='words_sep'> </span><span class='tstring_content'>#b9214f</span><span class='words_sep'> </span><span class='tstring_content'>#A6E22E</span><span class='words_sep'> </span><span class='tstring_content'>#ff9800</span><span class='words_sep'>
+</span><span class='tstring_content'>#3399ff</span><span class='words_sep'> </span><span class='tstring_content'>#8e33ff</span><span class='words_sep'> </span><span class='tstring_content'>#06a2dc</span><span class='words_sep'> </span><span class='tstring_content'>#B0B0B0</span><span class='words_sep'> </span><span class='tstring_content'>#5D5D5D</span><span class='words_sep'> </span><span class='tstring_content'>#ff5c8d</span><span class='words_sep'>
+</span><span class='tstring_content'>#CDEE69</span><span class='words_sep'> </span><span class='tstring_content'>#ffff00</span><span class='words_sep'> </span><span class='tstring_content'>#9CD9F0</span><span class='words_sep'> </span><span class='tstring_content'>#FBB1F9</span><span class='words_sep'> </span><span class='tstring_content'>#77DFD8</span><span class='words_sep'> </span><span class='tstring_end'>#F7F7F7</span></span></pre></dd>
       
         <dt id="DEFAULT_TERMINAL_FONT-constant" class="">DEFAULT_TERMINAL_FONT =
           
@@ -154,7 +133,7 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
 </div>
 
     <div id="footer">
-  Generated on Fri Mar 11 15:35:35 2016 by
+  Generated on Fri Apr 22 16:09:23 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.3.0).
 </div>

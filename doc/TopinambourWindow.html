@@ -100,7 +100,9 @@
   
   
     <dt class="r1 last">Defined in:</dt>
-    <dd class="r1 last">lib/window.rb</dd>
+    <dd class="r1 last">lib/window.rb<span class="defines">,<br />
+  lib/style_properties.rb</span>
+</dd>
   
 </dl>
 <div class="clear"></div>
@@ -324,94 +326,6 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
 
     <ul class="summary">
       
-        <li class="private ">
-  <span class="summary_signature">
-    
-      <a href="#add_buttons_at_begining-instance_method" title="#add_buttons_at_begining (instance method)">- (Object) <strong>add_buttons_at_begining</strong> </a>
-    
-
-    
-  </span>
-  
-  
-  
-  <span class="note title private">private</span>
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
-        <li class="private ">
-  <span class="summary_signature">
-    
-      <a href="#add_buttons_at_end-instance_method" title="#add_buttons_at_end (instance method)">- (Object) <strong>add_buttons_at_end</strong> </a>
-    
-
-    
-  </span>
-  
-  
-  
-  <span class="note title private">private</span>
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
-        <li class="private ">
-  <span class="summary_signature">
-    
-      <a href="#add_overlay-instance_method" title="#add_overlay (instance method)">- (Object) <strong>add_overlay</strong>(widget) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  <span class="note title private">private</span>
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
-        <li class="private ">
-  <span class="summary_signature">
-    
-      <a href="#add_resize_timeout-instance_method" title="#add_resize_timeout (instance method)">- (Object) <strong>add_resize_timeout</strong> </a>
-    
-
-    
-  </span>
-  
-  
-  
-  <span class="note title private">private</span>
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
         <li class="public ">
   <span class="summary_signature">
     
@@ -446,50 +360,6 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
   
   
   
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
-        <li class="private ">
-  <span class="summary_signature">
-    
-      <a href="#create_containers-instance_method" title="#create_containers (instance method)">- (Object) <strong>create_containers</strong> </a>
-    
-
-    
-  </span>
-  
-  
-  
-  <span class="note title private">private</span>
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
-        <li class="private ">
-  <span class="summary_signature">
-    
-      <a href="#create_header_bar-instance_method" title="#create_header_bar (instance method)">- (Object) <strong>create_header_bar</strong> </a>
-    
-
-    
-  </span>
-  
-  
-  
-  <span class="note title private">private</span>
   
   
   
@@ -768,28 +638,6 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
 </li>
 
       
-        <li class="private ">
-  <span class="summary_signature">
-    
-      <a href="#toggle_overlay-instance_method" title="#toggle_overlay (instance method)">- (Object) <strong>toggle_overlay</strong>(klass) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  <span class="note title private">private</span>
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
     </ul>
   
 
@@ -834,25 +682,25 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
       <pre class="lines">
 
 
+20
+21
+22
+23
+24
+25
+26
 27
 28
 29
 30
-31
-32
-33
-34
-35
-36
-37
-38</pre>
+31</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/window.rb', line 27</span>
+      <pre class="code"><span class="info file"># File 'lib/window.rb', line 20</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_application'>application</span><span class='rparen'>)</span>
   <span class='kw'>super</span><span class='lparen'>(</span><span class='symbol'>:application</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_application'>application</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_set_icon_from_file'>set_icon_from_file</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='const'>DATA_PATH</span><span class='embexpr_end'>}</span><span class='tstring_content'>/topinambour-icon.png</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_set_icon_name'>set_icon_name</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>utilities-terminal-symbolic</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
   <span class='id identifier rubyid_load_css_properties'>load_css_properties</span>
   <span class='id identifier rubyid_set_position'>set_position</span><span class='lparen'>(</span><span class='symbol'>:center</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_create_header_bar'>create_header_bar</span>
@@ -900,12 +748,12 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
       <pre class="lines">
 
 
+18
 19
-20
-21</pre>
+20</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/window.rb', line 19</span>
+      <pre class="code"><span class="info file"># File 'lib/window.rb', line 18</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_bar'>bar</span>
   <span class='ivar'>@bar</span>
@@ -943,12 +791,12 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
       <pre class="lines">
 
 
+18
 19
-20
-21</pre>
+20</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/window.rb', line 19</span>
+      <pre class="code"><span class="info file"># File 'lib/window.rb', line 18</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_css_editor_style'>css_editor_style</span>
   <span class='ivar'>@css_editor_style</span>
@@ -986,12 +834,12 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
       <pre class="lines">
 
 
+18
 19
-20
-21</pre>
+20</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/window.rb', line 19</span>
+      <pre class="code"><span class="info file"># File 'lib/window.rb', line 18</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_current_label'>current_label</span>
   <span class='ivar'>@current_label</span>
@@ -1029,12 +877,12 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
       <pre class="lines">
 
 
+18
 19
-20
-21</pre>
+20</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/window.rb', line 19</span>
+      <pre class="code"><span class="info file"># File 'lib/window.rb', line 18</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_current_tab'>current_tab</span>
   <span class='ivar'>@current_tab</span>
@@ -1072,12 +920,12 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
       <pre class="lines">
 
 
+18
 19
-20
-21</pre>
+20</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/window.rb', line 19</span>
+      <pre class="code"><span class="info file"># File 'lib/window.rb', line 18</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_notebook'>notebook</span>
   <span class='ivar'>@notebook</span>
@@ -1115,12 +963,12 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
       <pre class="lines">
 
 
+18
 19
-20
-21</pre>
+20</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/window.rb', line 19</span>
+      <pre class="code"><span class="info file"># File 'lib/window.rb', line 18</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_overlay'>overlay</span>
   <span class='ivar'>@overlay</span>
@@ -1138,167 +986,7 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="add_buttons_at_begining-instance_method">
-  
-    - (<tt>Object</tt>) <strong>add_buttons_at_begining</strong>  <span class="extras">(private)</span>
-  
-
-  
-
-  
-</h3><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-160
-161
-162
-163
-164
-165
-166
-167
-168
-169</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/window.rb', line 160</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_add_buttons_at_begining'>add_buttons_at_begining</span>
-  <span class='id identifier rubyid_button'>button</span> <span class='op'>=</span> <span class='const'>TopinambourHeaderBar</span><span class='period'>.</span><span class='id identifier rubyid_generate_prev_button'>generate_prev_button</span><span class='lparen'>(</span><span class='kw'>self</span><span class='rparen'>)</span>
-  <span class='ivar'>@bar</span><span class='period'>.</span><span class='id identifier rubyid_pack_start'>pack_start</span><span class='lparen'>(</span><span class='id identifier rubyid_button'>button</span><span class='rparen'>)</span>
-  <span class='ivar'>@bar</span><span class='period'>.</span><span class='id identifier rubyid_pack_start'>pack_start</span><span class='lparen'>(</span><span class='ivar'>@current_tab</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_button'>button</span> <span class='op'>=</span> <span class='const'>TopinambourHeaderBar</span><span class='period'>.</span><span class='id identifier rubyid_generate_next_button'>generate_next_button</span><span class='lparen'>(</span><span class='kw'>self</span><span class='rparen'>)</span>
-  <span class='ivar'>@bar</span><span class='period'>.</span><span class='id identifier rubyid_pack_start'>pack_start</span><span class='lparen'>(</span><span class='id identifier rubyid_button'>button</span><span class='rparen'>)</span>
-  <span class='ivar'>@bar</span><span class='period'>.</span><span class='id identifier rubyid_pack_start'>pack_start</span><span class='lparen'>(</span><span class='ivar'>@current_label</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_button'>button</span> <span class='op'>=</span> <span class='const'>TopinambourHeaderBar</span><span class='period'>.</span><span class='id identifier rubyid_generate_new_tab_button'>generate_new_tab_button</span><span class='lparen'>(</span><span class='kw'>self</span><span class='rparen'>)</span>
-  <span class='ivar'>@bar</span><span class='period'>.</span><span class='id identifier rubyid_pack_start'>pack_start</span><span class='lparen'>(</span><span class='id identifier rubyid_button'>button</span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="add_buttons_at_end-instance_method">
-  
-    - (<tt>Object</tt>) <strong>add_buttons_at_end</strong>  <span class="extras">(private)</span>
-  
-
-  
-
-  
-</h3><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-171
-172
-173
-174
-175
-176
-177
-178
-179
-180</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/window.rb', line 171</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_add_buttons_at_end'>add_buttons_at_end</span>
-  <span class='id identifier rubyid_button'>button</span> <span class='op'>=</span> <span class='const'>TopinambourHeaderBar</span><span class='period'>.</span><span class='id identifier rubyid_generate_open_menu_button'>generate_open_menu_button</span><span class='lparen'>(</span><span class='kw'>self</span><span class='rparen'>)</span>
-  <span class='ivar'>@bar</span><span class='period'>.</span><span class='id identifier rubyid_pack_end'>pack_end</span><span class='lparen'>(</span><span class='id identifier rubyid_button'>button</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_button'>button</span> <span class='op'>=</span> <span class='const'>TopinambourHeaderBar</span><span class='period'>.</span><span class='id identifier rubyid_generate_font_sel_button'>generate_font_sel_button</span><span class='lparen'>(</span><span class='kw'>self</span><span class='rparen'>)</span>
-  <span class='ivar'>@bar</span><span class='period'>.</span><span class='id identifier rubyid_pack_end'>pack_end</span><span class='lparen'>(</span><span class='id identifier rubyid_button'>button</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_button'>button</span> <span class='op'>=</span> <span class='const'>TopinambourHeaderBar</span><span class='period'>.</span><span class='id identifier rubyid_generate_color_sel_button'>generate_color_sel_button</span><span class='lparen'>(</span><span class='kw'>self</span><span class='rparen'>)</span>
-  <span class='ivar'>@bar</span><span class='period'>.</span><span class='id identifier rubyid_pack_end'>pack_end</span><span class='lparen'>(</span><span class='id identifier rubyid_button'>button</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_button'>button</span> <span class='op'>=</span> <span class='const'>TopinambourHeaderBar</span><span class='period'>.</span><span class='id identifier rubyid_generate_term_overv_button'>generate_term_overv_button</span><span class='lparen'>(</span><span class='kw'>self</span><span class='rparen'>)</span>
-  <span class='ivar'>@bar</span><span class='period'>.</span><span class='id identifier rubyid_pack_end'>pack_end</span><span class='lparen'>(</span><span class='id identifier rubyid_button'>button</span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="add_overlay-instance_method">
-  
-    - (<tt>Object</tt>) <strong>add_overlay</strong>(widget)  <span class="extras">(private)</span>
-  
-
-  
-
-  
-</h3><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-140
-141
-142
-143</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/window.rb', line 140</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_add_overlay'>add_overlay</span><span class='lparen'>(</span><span class='id identifier rubyid_widget'>widget</span><span class='rparen'>)</span>
-  <span class='ivar'>@overlay</span><span class='period'>.</span><span class='id identifier rubyid_add_overlay'>add_overlay</span><span class='lparen'>(</span><span class='id identifier rubyid_widget'>widget</span><span class='rparen'>)</span>
-  <span class='ivar'>@overlay</span><span class='period'>.</span><span class='id identifier rubyid_set_overlay_pass_through'>set_overlay_pass_through</span><span class='lparen'>(</span><span class='id identifier rubyid_widget'>widget</span><span class='comma'>,</span> <span class='kw'>true</span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="add_resize_timeout-instance_method">
-  
-    - (<tt>Object</tt>) <strong>add_resize_timeout</strong>  <span class="extras">(private)</span>
-  
-
-  
-
-  
-</h3><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-182
-183
-184
-185
-186
-187
-188
-189</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/window.rb', line 182</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_add_resize_timeout'>add_resize_timeout</span>
-  <span class='ivar'>@resize_timeout</span> <span class='op'>=</span> <span class='const'>GLib</span><span class='op'>::</span><span class='const'>Timeout</span><span class='period'>.</span><span class='id identifier rubyid_add_seconds'>add_seconds</span><span class='lparen'>(</span><span class='int'>2</span><span class='rparen'>)</span> <span class='kw'>do</span>
-    <span class='id identifier rubyid_second_child'>second_child</span> <span class='op'>=</span> <span class='ivar'>@overlay</span><span class='period'>.</span><span class='id identifier rubyid_children'>children</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='kw'>nil</span>
-    <span class='kw'>if</span> <span class='id identifier rubyid_second_child'>second_child</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_second_child'>second_child</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span> <span class='op'>==</span> <span class='const'>TopinambourResizeMessage</span>
-      <span class='ivar'>@overlay</span><span class='period'>.</span><span class='id identifier rubyid_children'>children</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_hide'>hide</span>
-    <span class='kw'>end</span>
-  <span class='kw'>end</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="add_terminal-instance_method">
+  <h3 class="signature first" id="add_terminal-instance_method">
   
     - (<tt>Object</tt>) <strong>add_terminal</strong>(cmd = @shell) 
   
@@ -1312,6 +1000,13 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
       <pre class="lines">
 
 
+33
+34
+35
+36
+37
+38
+39
 40
 41
 42
@@ -1319,29 +1014,10 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
 44
 45
 46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66</pre>
+47</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/window.rb', line 40</span>
+      <pre class="code"><span class="info file"># File 'lib/window.rb', line 33</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_add_terminal'>add_terminal</span><span class='lparen'>(</span><span class='id identifier rubyid_cmd'>cmd</span> <span class='op'>=</span> <span class='ivar'>@shell</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_exit_overlay_mode'>exit_overlay_mode</span>
@@ -1353,22 +1029,10 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
 
   <span class='id identifier rubyid_terminal'>terminal</span> <span class='op'>=</span> <span class='const'>TopinambourTerminal</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_cmd'>cmd</span><span class='comma'>,</span> <span class='id identifier rubyid_working_dir'>working_dir</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_terminal'>terminal</span><span class='period'>.</span><span class='id identifier rubyid_show'>show</span>
-  <span class='id identifier rubyid_terminal'>terminal</span><span class='period'>.</span><span class='id identifier rubyid_signal_connect'>signal_connect</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>size-allocate</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_widget'>widget</span><span class='op'>|</span>
-    <span class='id identifier rubyid_w'>w</span> <span class='op'>=</span> <span class='id identifier rubyid_widget'>widget</span><span class='period'>.</span><span class='id identifier rubyid_column_count'>column_count</span>
-    <span class='id identifier rubyid_h'>h</span> <span class='op'>=</span> <span class='id identifier rubyid_widget'>widget</span><span class='period'>.</span><span class='id identifier rubyid_row_count'>row_count</span>
-    <span class='id identifier rubyid_size_infos'>size_infos</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_w'>w</span><span class='embexpr_end'>}</span><span class='tstring_content'>x</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_h'>h</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
-    <span class='kw'>if</span> <span class='ivar'>@overlay</span><span class='period'>.</span><span class='id identifier rubyid_children'>children</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span> <span class='op'>==</span> <span class='int'>1</span>
-      <span class='id identifier rubyid_add_overlay'>add_overlay</span><span class='lparen'>(</span><span class='const'>TopinambourResizeMessage</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_size_infos'>size_infos</span><span class='rparen'>)</span><span class='rparen'>)</span>
-      <span class='id identifier rubyid_add_resize_timeout'>add_resize_timeout</span>
-    <span class='kw'>elsif</span> <span class='ivar'>@overlay</span><span class='period'>.</span><span class='id identifier rubyid_children'>children</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span> <span class='op'>==</span> <span class='const'>TopinambourResizeMessage</span>
-      <span class='const'>GLib</span><span class='op'>::</span><span class='const'>Source</span><span class='period'>.</span><span class='id identifier rubyid_remove'>remove</span><span class='lparen'>(</span><span class='ivar'>@resize_timeout</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='ivar'>@resize_timeout</span>
-      <span class='ivar'>@overlay</span><span class='period'>.</span><span class='id identifier rubyid_children'>children</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_text'>text</span> <span class='op'>=</span> <span class='id identifier rubyid_size_infos'>size_infos</span>
-      <span class='id identifier rubyid_add_resize_timeout'>add_resize_timeout</span>
-    <span class='kw'>end</span>
-  <span class='kw'>end</span>
-  <span class='ivar'>@notebook</span><span class='period'>.</span><span class='id identifier rubyid_append_page'>append_page</span><span class='lparen'>(</span><span class='id identifier rubyid_terminal'>terminal</span><span class='comma'>,</span> <span class='const'>Gtk</span><span class='op'>::</span><span class='const'>Label</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='rparen'>)</span>
+  <span class='ivar'>@notebook</span><span class='period'>.</span><span class='id identifier rubyid_append_page'>append_page</span><span class='lparen'>(</span><span class='id identifier rubyid_terminal'>terminal</span><span class='rparen'>)</span>
   <span class='ivar'>@notebook</span><span class='period'>.</span><span class='id identifier rubyid_set_tab_reorderable'>set_tab_reorderable</span><span class='lparen'>(</span><span class='id identifier rubyid_terminal'>terminal</span><span class='comma'>,</span> <span class='kw'>true</span><span class='rparen'>)</span>
   <span class='ivar'>@notebook</span><span class='period'>.</span><span class='id identifier rubyid_set_page'>set_page</span><span class='lparen'>(</span><span class='ivar'>@notebook</span><span class='period'>.</span><span class='id identifier rubyid_n_pages'>n_pages</span> <span class='op'>-</span> <span class='int'>1</span><span class='rparen'>)</span>
+  <span class='ivar'>@notebook</span><span class='period'>.</span><span class='id identifier rubyid_current'>current</span><span class='period'>.</span><span class='id identifier rubyid_grab_focus'>grab_focus</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1390,91 +1054,17 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
       <pre class="lines">
 
 
-129
-130
-131
-132</pre>
+112
+113
+114
+115</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/window.rb', line 129</span>
+      <pre class="code"><span class="info file"># File 'lib/window.rb', line 112</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_close_current_tab'>close_current_tab</span>
   <span class='id identifier rubyid_exit_overlay_mode'>exit_overlay_mode</span>
   <span class='ivar'>@notebook</span><span class='period'>.</span><span class='id identifier rubyid_remove_current_page'>remove_current_page</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="create_containers-instance_method">
-  
-    - (<tt>Object</tt>) <strong>create_containers</strong>  <span class="extras">(private)</span>
-  
-
-  
-
-  
-</h3><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-145
-146
-147
-148
-149
-150</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/window.rb', line 145</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_create_containers'>create_containers</span>
-  <span class='ivar'>@notebook</span> <span class='op'>=</span> <span class='const'>TopinambourNotebook</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
-  <span class='ivar'>@overlay</span> <span class='op'>=</span> <span class='const'>Gtk</span><span class='op'>::</span><span class='const'>Overlay</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
-  <span class='ivar'>@overlay</span><span class='period'>.</span><span class='id identifier rubyid_add'>add</span><span class='lparen'>(</span><span class='ivar'>@notebook</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_add'>add</span><span class='lparen'>(</span><span class='ivar'>@overlay</span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="create_header_bar-instance_method">
-  
-    - (<tt>Object</tt>) <strong>create_header_bar</strong>  <span class="extras">(private)</span>
-  
-
-  
-
-  
-</h3><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-152
-153
-154
-155
-156
-157
-158</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/window.rb', line 152</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_create_header_bar'>create_header_bar</span>
-  <span class='ivar'>@bar</span> <span class='op'>=</span> <span class='const'>TopinambourHeaderBar</span><span class='period'>.</span><span class='id identifier rubyid_generate_header_bar'>generate_header_bar</span><span class='lparen'>(</span><span class='kw'>self</span><span class='rparen'>)</span>
-  <span class='ivar'>@current_label</span> <span class='op'>=</span> <span class='const'>TopinambourHeaderBar</span><span class='period'>.</span><span class='id identifier rubyid_generate_current_label'>generate_current_label</span><span class='lparen'>(</span><span class='kw'>self</span><span class='rparen'>)</span>
-  <span class='ivar'>@current_tab</span> <span class='op'>=</span> <span class='const'>TopinambourHeaderBar</span><span class='period'>.</span><span class='id identifier rubyid_generate_current_tab'>generate_current_tab</span>
-  <span class='id identifier rubyid_add_buttons_at_begining'>add_buttons_at_begining</span>
-  <span class='id identifier rubyid_add_buttons_at_end'>add_buttons_at_end</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1496,22 +1086,22 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
       <pre class="lines">
 
 
-115
-116
-117
-118
-119
-120
-121
-122
-123
-124
-125
-126
-127</pre>
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/window.rb', line 115</span>
+      <pre class="code"><span class="info file"># File 'lib/window.rb', line 98</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_display_about'>display_about</span>
   <span class='const'>Gtk</span><span class='op'>::</span><span class='const'>AboutDialog</span><span class='period'>.</span><span class='id identifier rubyid_show'>show</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span>
@@ -1519,9 +1109,9 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
                         <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>comments</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Terminal Emulator based on the ruby bindings of Gtk3 and Vte3</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
                         <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>copyright</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Copyright (C) 2015-2016 Cédric Le Moigne</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
                         <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>license</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>This program is licenced under the licence GPL-3.0 and later.</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
-                        <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>logo</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='const'>Gdk</span><span class='op'>::</span><span class='const'>Pixbuf</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='const'>DATA_PATH</span><span class='embexpr_end'>}</span><span class='tstring_content'>/topinambour-icon-128.png</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='comma'>,</span>
+                        <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>logo_icon_name</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>utilities-terminal-symbolic</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
                         <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>program_name</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Topinambour</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
-                        <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>version</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>1.2.3</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+                        <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>version</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>1.0.7</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
                         <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>website</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>https://github.com/cedlemo/topinambour</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
                         <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>website_label</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Topinambour github repository</span><span class='tstring_end'>&quot;</span></span>
                        <span class='rparen'>)</span>
@@ -1546,12 +1136,12 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
       <pre class="lines">
 
 
-102
-103
-104</pre>
+85
+86
+87</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/window.rb', line 102</span>
+      <pre class="code"><span class="info file"># File 'lib/window.rb', line 85</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_exit_overlay_mode'>exit_overlay_mode</span>
   <span class='ivar'>@overlay</span><span class='period'>.</span><span class='id identifier rubyid_children'>children</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_destroy'>destroy</span> <span class='kw'>if</span> <span class='id identifier rubyid_in_overlay_mode?'>in_overlay_mode?</span>
@@ -1598,12 +1188,12 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
       <pre class="lines">
 
 
-134
-135
-136</pre>
+117
+118
+119</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/window.rb', line 134</span>
+      <pre class="code"><span class="info file"># File 'lib/window.rb', line 117</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_in_overlay_mode?'>in_overlay_mode?</span>
   <span class='ivar'>@overlay</span><span class='period'>.</span><span class='id identifier rubyid_children'>children</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span> <span class='op'>&gt;</span> <span class='int'>1</span> <span class='op'>?</span> <span class='kw'>true</span> <span class='op'>:</span> <span class='kw'>false</span>
@@ -1628,17 +1218,17 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
       <pre class="lines">
 
 
-106
-107
-108
-109
-110
-111
-112
-113</pre>
+89
+90
+91
+92
+93
+94
+95
+96</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/window.rb', line 106</span>
+      <pre class="code"><span class="info file"># File 'lib/window.rb', line 89</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_load_css_properties'>load_css_properties</span>
   <span class='ivar'>@default_width</span> <span class='op'>=</span> <span class='id identifier rubyid_style_get_property'>style_get_property</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>width</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
@@ -1668,14 +1258,14 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
       <pre class="lines">
 
 
-68
-69
-70
-71
-72</pre>
+49
+50
+51
+52
+53</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/window.rb', line 68</span>
+      <pre class="code"><span class="info file"># File 'lib/window.rb', line 49</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_quit_gracefully'>quit_gracefully</span>
   <span class='id identifier rubyid_exit_overlay_mode'>exit_overlay_mode</span>
@@ -1702,12 +1292,12 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
       <pre class="lines">
 
 
-74
-75
-76</pre>
+55
+56
+57</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/window.rb', line 74</span>
+      <pre class="code"><span class="info file"># File 'lib/window.rb', line 55</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_show_color_selector'>show_color_selector</span>
   <span class='id identifier rubyid_toggle_overlay'>toggle_overlay</span><span class='lparen'>(</span><span class='const'>TopinambourColorSelector</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='ivar'>@notebook</span><span class='period'>.</span><span class='id identifier rubyid_current'>current</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span> <span class='op'>==</span> <span class='const'>TopinambourTerminal</span>
@@ -1732,14 +1322,14 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
       <pre class="lines">
 
 
-96
-97
-98
-99
-100</pre>
+75
+76
+77
+78
+79</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/window.rb', line 96</span>
+      <pre class="code"><span class="info file"># File 'lib/window.rb', line 75</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_show_css_editor'>show_css_editor</span>
   <span class='id identifier rubyid_css_editor'>css_editor</span> <span class='op'>=</span> <span class='const'>TopinambourCssEditor</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='rparen'>)</span>
@@ -1766,12 +1356,12 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
       <pre class="lines">
 
 
-92
-93
-94</pre>
+71
+72
+73</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/window.rb', line 92</span>
+      <pre class="code"><span class="info file"># File 'lib/window.rb', line 71</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_show_font_selector'>show_font_selector</span>
   <span class='id identifier rubyid_toggle_overlay'>toggle_overlay</span><span class='lparen'>(</span><span class='const'>TopinambourFontSelector</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='ivar'>@notebook</span><span class='period'>.</span><span class='id identifier rubyid_current'>current</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span> <span class='op'>==</span> <span class='const'>TopinambourTerminal</span>
@@ -1796,17 +1386,19 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
       <pre class="lines">
 
 
-83
-84
-85
-86</pre>
+65
+66
+67
+68
+69</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/window.rb', line 83</span>
+      <pre class="code"><span class="info file"># File 'lib/window.rb', line 65</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_show_next_tab'>show_next_tab</span>
   <span class='id identifier rubyid_exit_overlay_mode'>exit_overlay_mode</span>
   <span class='ivar'>@notebook</span><span class='period'>.</span><span class='id identifier rubyid_cycle_next_page'>cycle_next_page</span>
+  <span class='ivar'>@notebook</span><span class='period'>.</span><span class='id identifier rubyid_current'>current</span><span class='period'>.</span><span class='id identifier rubyid_grab_focus'>grab_focus</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1828,17 +1420,19 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
       <pre class="lines">
 
 
-78
-79
-80
-81</pre>
+59
+60
+61
+62
+63</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/window.rb', line 78</span>
+      <pre class="code"><span class="info file"># File 'lib/window.rb', line 59</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_show_prev_tab'>show_prev_tab</span>
   <span class='id identifier rubyid_exit_overlay_mode'>exit_overlay_mode</span>
   <span class='ivar'>@notebook</span><span class='period'>.</span><span class='id identifier rubyid_cycle_prev_page'>cycle_prev_page</span>
+  <span class='ivar'>@notebook</span><span class='period'>.</span><span class='id identifier rubyid_current'>current</span><span class='period'>.</span><span class='id identifier rubyid_grab_focus'>grab_focus</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1860,57 +1454,15 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
       <pre class="lines">
 
 
-88
-89
-90</pre>
+81
+82
+83</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/window.rb', line 88</span>
+      <pre class="code"><span class="info file"># File 'lib/window.rb', line 81</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_show_terminal_chooser'>show_terminal_chooser</span>
   <span class='id identifier rubyid_toggle_overlay'>toggle_overlay</span><span class='lparen'>(</span><span class='const'>TopinambourTermChooser</span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="toggle_overlay-instance_method">
-  
-    - (<tt>Object</tt>) <strong>toggle_overlay</strong>(klass)  <span class="extras">(private)</span>
-  
-
-  
-
-  
-</h3><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-191
-192
-193
-194
-195
-196
-197
-198
-199</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/window.rb', line 191</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_toggle_overlay'>toggle_overlay</span><span class='lparen'>(</span><span class='id identifier rubyid_klass'>klass</span><span class='rparen'>)</span>
-  <span class='kw'>if</span> <span class='id identifier rubyid_in_overlay_mode?'>in_overlay_mode?</span> <span class='op'>&amp;&amp;</span> <span class='ivar'>@overlay</span><span class='period'>.</span><span class='id identifier rubyid_children'>children</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span> <span class='op'>==</span> <span class='id identifier rubyid_klass'>klass</span>
-    <span class='id identifier rubyid_exit_overlay_mode'>exit_overlay_mode</span>
-  <span class='kw'>else</span>
-    <span class='id identifier rubyid_exit_overlay_mode'>exit_overlay_mode</span>
-    <span class='id identifier rubyid_add_overlay'>add_overlay</span><span class='lparen'>(</span><span class='id identifier rubyid_klass'>klass</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='rparen'>)</span><span class='rparen'>)</span>
-    <span class='ivar'>@overlay</span><span class='period'>.</span><span class='id identifier rubyid_children'>children</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_show_all'>show_all</span>
-  <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1922,7 +1474,7 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
 </div>
 
     <div id="footer">
-  Generated on Fri Mar 11 15:35:36 2016 by
+  Generated on Fri Apr 22 16:09:23 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.3.0).
 </div>

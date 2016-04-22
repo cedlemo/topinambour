@@ -63,36 +63,31 @@
 
     <div id="content"><div id='filecontents'><h1 id="topinambour">Topinambour</h1>
 
-<p><a href="https://badge.fury.io/rb/Topinambour"><img src="https://badge.fury.io/rb/Topinambour.svg" alt="Gem Version" /></a></p>
+<p><a href="https://badge.fury.io/rb/topinambour"><img src="https://badge.fury.io/rb/topinambour.svg" alt="Gem Version" /></a>
+<a href="https://codeclimate.com/github/cedlemo/topinambour"><img src="https://codeclimate.com/github/cedlemo/topinambour/badges/gpa.svg" alt="Code Climate" /></a></p>
 
-<p><a href="https://raw.github.com/cedlemo/topinambour/master/screenshot1.png"><img src="https://raw.github.com/cedlemo/topinambour/master/screenshot1_prev.png" width="576" height="324" alt="Screenshot" /></a></p>
+<p><a href="https://raw.github.com/cedlemo/topinambour/master/terminal_selector_screen.gif"><img src="https://raw.github.com/cedlemo/topinambour/master/terminal_selector_screen.gif" style="width:576px;height:324px;" alt="Color selection gif" /></a></p>
+
+<p><a href="https://raw.github.com/cedlemo/topinambour/master/color_selection_screen.gif"><img src="https://raw.github.com/cedlemo/topinambour/master/color_selection_screen.gif" style="width:576px;height:324px;" alt="Color selection gif" /></a></p>
 
 <p>Topinambour is Terminal written with the Gtk3 and Vte3 ruby bindings from the project <a href="https://github.com/ruby-gnome2/ruby-gnome2">ruby-gnome2</a>. I have written it for testing purpose, but Topinambour works well and I use it as my primary terminal emulator.</p>
 
 <h2 id="features">Features</h2>
 
 <ul>
-  <li>tabs supports</li>
-  <li>
-    <p>tabs can be reordered or selected through the preview mode ( <code>Shift + Ctrl + o</code> )
-<a href="https://raw.github.com/cedlemo/topinambour/master/screenshot2.png"><img src="https://raw.github.com/cedlemo/topinambour/master/screenshot2_prev.png" width="576" height="324" alt="Screenshot" /></a></p>
-  </li>
+  <li>Tabs supports</li>
+  <li>Tabs can be reordered or selected through the preview mode ( <code>Shift + Ctrl + o</code> )</li>
   <li>Each tab can be named.</li>
   <li>The configuration can be done via a Css file</li>
-  <li>Terminal colors can be changed on the fly and saved in the CSS configuration file
-<a href="https://raw.github.com/cedlemo/topinambour/master/screenshot3.png"><img src="https://raw.github.com/cedlemo/topinambour/master/screenshot3_prev.png" width="576" height="324" alt="Screenshot" /></a></li>
-  <li>
-    <p>Terminal font can be changed on the fly and saved in the CSS configuration file
-<a href="https://raw.github.com/cedlemo/topinambour/master/screenshot4.png"><img src="https://raw.github.com/cedlemo/topinambour/master/screenshot4_prev.png" width="576" height="324" alt="Screenshot" /></a></p>
-  </li>
-  <li>The Css file can be edited in a tab of Topinambour and saved. Each modifications are applied while you are writting them. (Use <code>Shift + Ctrl + w</code> to close the editor)
-<a href="https://raw.github.com/cedlemo/topinambour/master/screenshot5.png"><img src="https://raw.github.com/cedlemo/topinambour/master/screenshot5_prev.png" width="576" height="324" alt="Screenshot" /></a></li>
-  <li>Topinambour allows users to modify existing modules. For example if a user copy the css_editor.rb in the directory <em>~/.config/Topinambour/lib/css_editor.rb</em>, he should be able to modify it in order to fit its needs.</li>
+  <li>Terminal colors can be changed on the fly and saved in the CSS configuration file</li>
+  <li>Terminal font can be changed on the fly and saved in the CSS configuration file</li>
+  <li>The Css file can be edited in a tab of Topinambour and saved. Each modifications are applied while you are writting them. (Use <code>Shift + Ctrl + w</code> to close the editor)</li>
+  <li>Topinambour allows users to modify existing modules. For example if a user copy the css_editor.rb in the directory <em>~/.config/topinambour/lib/css_editor.rb</em>, he should be able to modify it in order to fit its needs.</li>
 </ul>
 
 <h2 id="todo">TODO:</h2>
 <ul>
-  <li>Regex support in the terminals in order to launch web navigator if there is an url or launch a media player if there is a match for avi file for example.</li>
+  <li>Extand the regex support for colors pattern (hexadecimal or rgb/css form).</li>
   <li>Create more Css properties in oder to configure the terminals (cursor shape or blink mode, audible bell or not …)</li>
   <li>Make Topinambour allows users to easily create their own modules. For example create a tab that will act as a MPD client. There will be widgets that control a MPD server and a GtkTree widget that displays the playlist of the MPD server for example.</li>
 </ul>
@@ -131,7 +126,7 @@
 
 <h2 id="user-configuration">User configuration</h2>
 
-<p>It can be found in the file <code>$HOME/.config/Topinambour/topinambour.css</code> (Be carefull by default Topinambour use fish as a default shell, if you want to use another one specify it in the topinambour.css file)</p>
+<p>It can be found in the file <code>$HOME/.config/topinambour/topinambour.css</code> (Be carefull by default Topinambour use fish as a default shell, if you want to use another one specify it in the topinambour.css file)</p>
 
 <p>```css
 <em>{
@@ -266,7 +261,7 @@ any later version.</p>
 </div></div>
 
     <div id="footer">
-  Generated on Fri Mar 11 15:35:35 2016 by
+  Generated on Fri Apr 22 16:09:23 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.3.0).
 </div>
