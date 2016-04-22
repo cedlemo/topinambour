@@ -25,32 +25,24 @@
   -TopinambourWindow-width: 1000;*/
 }
 
-TopinambourWindow GtkHeaderBar GtkEntry{
+TopinambourWindow headerbar entry{
   border-radius: 4px;
 }
-TopinambourWindow GtkOverlay GtkBox#resize_box{
-  background: rgba(49, 150, 188, 0.5);
-  border: solid 1px rgba(49, 150, 188, 1);
-  border-radius: 6px 0px 0px 0px;
-}
-TopinambourWindow GtkOverlay GtkScrolledWindow#terminal_chooser GtkBox{
-  background-color: rgba(49, 150, 188, 0.5);
+
+#OverviewBox {
+  background-color: rgba(0,0,0,0.2);
   border: solid 1px rgba(49, 150, 188, 1);
   border-radius: 6px 0px 0px 6px;
 }
 
-TopinambourWindow GtkOverlay GtkScrolledWindow GtkGrid GtkButton {
+grid button {
   margin: 0px;
   padding: 0px;
+
 }
 
-TopinambourWindow GtkOverlay GtkScrolledWindow GtkGrid GtkButton GtkImage {
+ grid button image {
   border: solid 3px rgba(0, 0, 0, 0.0);
-}
-
-.tooltip {
-  background:rgba(50, 50, 50,0.5);
-  border:none;
-  color: #ddd;
-  border-radius: 0px 6px 0px 6px;
+  margin: 0px;  
+  padding: 0px;
 }

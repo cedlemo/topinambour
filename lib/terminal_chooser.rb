@@ -27,6 +27,7 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     fill_grid
 
     @box = Gtk::Box.new(:vertical, 4)
+    @box.name = "OverviewBox"
     @box.pack_start(@grid, :expand => true, :fill => true, :padding => 4)
     add(@box)
   end
