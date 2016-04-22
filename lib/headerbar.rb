@@ -106,6 +106,11 @@ SECTOOLTIP
     end
   end
 
+  def self.generate_term_overv_button(window)
+    gen_icon_button("emblem-photos-symbolic", "Terminals overview") do
+      window.show_terminal_chooser
+    end
+  end
   def self.gen_icon_button(icon_name, tooltip)
     button = Gtk::Button.new
     image = Gtk::Image.new(:icon_name => icon_name, :size => :button)

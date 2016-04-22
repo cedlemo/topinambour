@@ -158,6 +158,8 @@ class TopinambourWindow
     @bar.pack_end(button)
     button = TopinambourHeaderBar.generate_color_sel_button(self)
     @bar.pack_end(button)
+    button = TopinambourHeaderBar.generate_term_overv_button(self)
+    @bar.pack_end(button)
   end
 
   def toggle_overlay(klass)
