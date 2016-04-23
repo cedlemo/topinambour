@@ -8,22 +8,29 @@
 
 <a href="https://raw.github.com/cedlemo/topinambour/master/color_selection_screen.gif"><img src="https://raw.github.com/cedlemo/topinambour/master/color_selection_screen.gif" style="width:576px;height:324px;" alt="Color selection gif"></a>
 
+<a href="https://raw.github.com/cedlemo/topinambour/master/terminal_regex_color.gif"><img src="https://raw.github.com/cedlemo/topinambour/master/terminal_regex_color.gif" style="width:576px;height:324px;" alt="Regex color gif"></a>
+
+
 Topinambour is Terminal written with the Gtk3 and Vte3 ruby bindings from the project [ruby-gnome2](https://github.com/ruby-gnome2/ruby-gnome2). I have written it for testing purpose, but Topinambour works well and I use it as my primary terminal emulator.
 
 ## Features
 
 *    Tabs supports
-*    Tabs can be reordered or selected through the preview mode ( `Shift + Ctrl + o` )
+*    Tabs can be reordered or selected through the preview mode ( `Shift + Ctrl + o` ).
 *    Each tab can be named.
-*    The configuration can be done via a Css file
-*    Terminal colors can be changed on the fly and saved in the CSS configuration file
-*    Terminal font can be changed on the fly and saved in the CSS configuration file
+*    The configuration can be done via a Css file.
+*    Terminal colors can be changed on the fly and saved in the CSS configuration file.
+*    Terminal font can be changed on the fly and saved in the CSS configuration file.
 *    The Css file can be edited in a tab of Topinambour and saved. Each modifications are applied while you are writting them. (Use `Shift + Ctrl + w` to close the editor)
+*    In the terminals, some patterns can be clicked (urls, emails, color names ...) in order to launch the appropriate application or a related dialog window.
 *    Topinambour allows users to modify existing modules. For example if a user copy the css_editor.rb in the directory *~/.config/topinambour/lib/css_editor.rb*, he should be able to modify it in order to fit its needs. 
 
 ##  TODO:
-*   Extand the regex support for colors pattern (hexadecimal or rgb/css form).
-*   Create more Css properties in oder to configure the terminals (cursor shape or blink mode, audible bell or not ...)
+*   Create more Css properties in order to configure the terminals (cursor shape or blink mode, audible bell or not ...)
+*   Finish preferences window.
+*   Name all the important widget so that they can be easily themed in Css.
+*   Write a description of the widgets that have a Css name/Id.
+*   Improve the Css editor with a part for the Css parsing error when the user writes. Add a color chooser widget in the related tab.
 *   Make Topinambour allows users to easily create their own modules. For example create a tab that will act as a MPD client. There will be widgets that control a MPD server and a GtkTree widget that displays the playlist of the MPD server for example.
 
 ## Shortcuts
@@ -79,43 +86,26 @@ It can be found in the file `$HOME/.config/topinambour/topinambour.css` (Be care
   -TopinambourWindow-width: 1000;*/
 }
 
-TopinambourWindow GtkHeaderBar GtkEntry{
+TopinambourWindow headerbar entry{
   border-radius: 4px;
 }
-TopinambourWindow GtkOverlay GtkBox#resize_box{
-    background: rgba(49, 150, 188, 0.5);
-    border-top: 1px;
-    border-left: 1px;
-    border-bottom: 1px;
-    border-style: solid;
-    border-color: rgba(49, 150, 188, 1);
-    border-radius: 6px 0px 0px 0px;
-}
-TopinambourWindow GtkOverlay GtkScrolledWindow#terminal_chooser GtkBox{
-    background-color: rgba(49, 150, 188, 0.5);
-    border-top: 1px;
-    border-left: 1px;
-    border-bottom: 1px;
-    border-style: solid;
-    border-color: rgba(49, 150, 188, 1);
-    border-radius: 6px 0px 0px 6px;
+
+#OverviewBox {
+  background-color: rgba(0,0,0,0.2);
+  border: solid 1px rgba(49, 150, 188, 1);
+  border-radius: 6px 0px 0px 6px;
 }
 
-TopinambourWindow GtkOverlay GtkScrolledWindow GtkGrid GtkButton {
+grid button {
   margin: 0px;
   padding: 0px;
+
 }
 
-TopinambourWindow GtkOverlay GtkScrolledWindow GtkGrid GtkButton GtkImage {
+ grid button image {
   border: solid 3px rgba(0, 0, 0, 0.0);
-}
-
-.tooltip {
-  background:rgba(50, 50, 50,0.5);
-  border:none;
-  color: #ddd;
-  border-top-right-radius: 6px;
-  border-bottom-left-radius: 6px;
+  margin: 0px;  
+  padding: 0px;
 }
 ```
 
