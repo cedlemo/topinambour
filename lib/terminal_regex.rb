@@ -15,8 +15,7 @@
 # along with Topinambour.  If not, see <http://www.gnu.org/licenses/>.
 
 # Stolen from https://github.com/GNOME/gnome-terminal/blob/master/src/terminal-regex.h
-module TopinambourRegex
-  SCHEME = "(?ix: news | telnet | nntp | https? | ftps? | sftp | webcal )"
+module UserPassRegexes
   USERCHARS = "-+.[:alnum:]"
   # Nonempty username, e.g. "john.smith"
   USER = "[#{USERCHARS}]+"
@@ -25,6 +24,9 @@ module TopinambourRegex
   PASS = "(?x: :#{PASSCHARS_CLASS}* )?"
   # Optional at-terminated username (with perhaps a password too), e.g. "joe@", "pete:secret@", "" */
   USERPASS = "(?:#{USER}#{PASS}@)?"
+end
+
+module IpRegexes
   # S4: IPv4 segment (number between 0 and 255) with lookahead at the end so that we don't match "25" in the string "256".
   # The lookahead could go to the last segment of IPv4 only but this construct allows nicer unittesting. */
   S4_DEF = "(?(DEFINE)(?<S4>(?x: (?: [0-9] | [1-9][0-9] | 1[0-9]{2} | 2[0-4][0-9] | 25[0-5] ) (?! [0-9] ) )))"
@@ -57,6 +59,9 @@ module TopinambourRegex
   IP_DEF = "#{IPV4_DEF}#{S6_DEF}(?(DEFINE)(?<IPV6>(?x: (?: #{IPV6_NULL} | #{IPV6_LEFT} | #{IPV6_MID} | #{IPV6_RIGHT} \
                            | #{IPV6_FULL} | (?: #{IPV6V4_FULL} | #{IPV6V4_LEFT} | #{IPV6V4_MID} | #{IPV6V4_RIGHT} \
                            ) (?&IPV4) ) (?! [.:[:xdigit:]] ) )))"
+end
+
+module HostnameRegexes
   # Either an alphanumeric character or dash; or if [negative lookahead] not ASCII
   # then any graphical Unicode character.
   # A segment can consist entirely of numbers.
@@ -74,17 +79,33 @@ module TopinambourRegex
   # Technically an e-mail with a single-component hostname might be valid on a local network,
   # but let's avoid tons of false positives (e.g. in a typical shell prompt). */
   EMAIL_HOST = "(?x: #{HOSTNAME2} | \\[ (?: (?&IPV4) | (?&IPV6) ) \\] )"
+end
+
+module PortRegexes
   # Number between 1 and 65535, with lookahead at the end so that we don't match "6789" in the string "67890",
   # and in turn we don't eventually match "http://host:6789" in "http://host:67890". */
   N_1_65535 = "(?x: (?: [1-9][0-9]{0,3} | [1-5][0-9]{4} | 6[0-4][0-9]{3} | 65[0-4][0-9]{2} | 655[0-2][0-9] | 6553[0-5] ) (?! [0-9] ) )"
   # Optional colon-prefixed port, e.g. ":1080", "" */
   PORT = "(?x: \\:#{N_1_65535} )?"
+end
+
+module PathRegexes
   PATHCHARS_CLASS = "[-[:alnum:]\\Q_$.+!*,:;@&=?/~#|%\\E]"
   # Chars not to end a URL */
   PATHNONTERM_CLASS = "[\\Q.!,?\\E]"
   # Lookbehind at the end, so that the last character (if we matched a character at all) is not from PATHTERM_CLASS */
   URLPATH = "(?x: /#{PATHCHARS_CLASS}* (?<! #{PATHNONTERM_CLASS} ) )?"
   VOIP_PATH = "(?x: [;?]#{PATHCHARS_CLASS}* (?<! #{PATHNONTERM_CLASS} ) )?"
+end
+
+module TopinambourRegex
+  SCHEME = "(?ix: news | telnet | nntp | https? | ftps? | sftp | webcal )"
+  include UserPassRegexes
+  include IpRegexes
+  include HostnameRegexes
+  include PortRegexes
+  include PathRegexes
+
   # Now let's put these fragments together */
   DEFS = IP_DEF
   REGEX_URL_AS_IS = "#{DEFS}#{SCHEME}://#{USERPASS}#{URL_HOST}#{PORT}#{URLPATH}"
