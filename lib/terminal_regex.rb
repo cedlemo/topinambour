@@ -98,6 +98,18 @@ module PathRegexes
   VOIP_PATH = "(?x: [;?]#{PATHCHARS_CLASS}* (?<! #{PATHNONTERM_CLASS} ) )?"
 end
 
+module ColorRegexes
+HEX_CLASS = "[a-fA-F0-9]"
+# /*http://www.regular-expressions.info/numericranges.html*/
+UINT8_CLASS = "\\b([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\\b"
+PERCENT_CLASS = "(0{0,2}[0-9]\\s*\\%|0?[1-9][0-9]\\s*\\%|100\\s*\\%)"
+HEX_COLOR  = "#(#{HEX_CLASS}{16}|#{HEX_CLASS}{12}|#{HEX_CLASS}{9}|#{HEX_CLASS}{8}|#{HEX_CLASS}{6}|#{HEX_CLASS}{4}|#{HEX_CLASS}{3})"
+RGB_COLOR = "rgb\\s*\\(\\s*#{UINT8_CLASS}\\s*\\,\\s*#{UINT8_CLASS}\\s*\\,\\s*#{UINT8_CLASS}\\s*\\)"
+RGBPERC_COLOR = "rgb\\s*\\(\\s*#{PERCENT_CLASS}\\s*\\,\\s*#{PERCENT_CLASS}\\s*\\,\\s*#{PERCENT_CLASS}\\s*\\)"
+RGBA_COLOR = "rgba\\s*\\(\\s*#{UINT8_CLASS}\\s*\\,\\s*#{UINT8_CLASS}\\s*\\,\\s*#{UINT8_CLASS}\\s*\\,\\s*[0-1](\\.[0-9]*)?\\s*\\)"
+RGBAPERC_COLOR = "rgba\\s*\\(\\s*#{PERCENT_CLASS}\\s*\\,\\s*#{PERCENT_CLASS}\\s*\\,\\s*#{PERCENT_CLASS}\\s*\\,\\s*[0-1](\\.[0-9]*)?\\s*\\)"
+end
+
 module TopinambourRegex
   SCHEME = "(?ix: news | telnet | nntp | https? | ftps? | sftp | webcal )"
   include UserPassRegexes
@@ -117,4 +129,5 @@ module TopinambourRegex
   REGEX_URL_VOIP = "#{DEFS}(?i:h323:|sips?:)#{USERPASS}#{URL_HOST}#{PORT}#{VOIP_PATH}"
   REGEX_EMAIL = "#{DEFS}(?i:mailto:)?#{USER}@#{EMAIL_HOST}"
   REGEX_NEWS_MAN = "(?i:news:|man:|info:)[-[:alnum:]\\Q^_{|}~!\"#$%&'()*+,./;:=?`\\E]+"
+  include ColorRegexes
 end

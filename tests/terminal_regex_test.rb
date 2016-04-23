@@ -109,7 +109,7 @@ class TestTerminalRegexBasics < MiniTest::Test
     assert_match_anchored(:SCHEME, "http", :ENTIRE)
     assert_match_anchored(:SCHEME,"HTTPS",:ENTIRE)
   end
-  
+
   def test_user
     assert_match_anchored(:USER, "",              :NULL);
     assert_match_anchored(:USER, "dr.john-smith", :ENTIRE);
@@ -122,7 +122,7 @@ class TestTerminalRegexBasics < MiniTest::Test
     assert_match_anchored(:PASS, ":s3cr3T",   :ENTIRE);
     assert_match_anchored(:PASS, ":$?\#@host", ":$?#");
   end
-  
+
   def test_hostname1
     assert_match_anchored(:HOSTNAME1, "example.com",       :ENTIRE)
     assert_match_anchored(:HOSTNAME1, "a-b.c-d",           :ENTIRE)
@@ -133,9 +133,9 @@ class TestTerminalRegexBasics < MiniTest::Test
     assert_match_anchored(:HOSTNAME1, "12",                :NULL)
     assert_match_anchored(:HOSTNAME1, "12.34",             :NULL)
     assert_match_anchored(:HOSTNAME1, "12.ab",             :ENTIRE)
-    #assert_match_anchored(:HOSTNAME1, "ab.12",             :NULL) 
+    #assert_match_anchored(:HOSTNAME1, "ab.12",             :NULL)
   end
-  
+
   def test_hostname2
     assert_match_anchored(:HOSTNAME2, "example.com",       :ENTIRE)
     assert_match_anchored(:HOSTNAME2, "example",           :NULL)
@@ -168,7 +168,7 @@ class TestTerminalRegexBasics < MiniTest::Test
 
   def test_defs_ipv4_2
     assert_match_anchored_extended(:DEFS, "(?&IPV4)", "75.150.225.300", :NULL)
-    assert_match_anchored_extended(:DEFS, "(?&IPV4)", "1.2.3.4.5",      "1.2.3.4") 
+    assert_match_anchored_extended(:DEFS, "(?&IPV4)", "1.2.3.4.5",      "1.2.3.4")
     assert_match_anchored_extended(:DEFS, "(?&S4)", "0",    :ENTIRE)
     assert_match_anchored_extended(:DEFS, "(?&S4)", "1",    :ENTIRE)
     assert_match_anchored_extended(:DEFS, "(?&S4)", "9",    :ENTIRE)
@@ -189,7 +189,7 @@ class TestTerminalRegexBasics < MiniTest::Test
     assert_match_anchored_extended(:DEFS, "(?&IPV4)", "75.150.225.300", :NULL)
     assert_match_anchored_extended(:DEFS, "(?&IPV4)", "1.2.3.4.5",      "1.2.3.4")#  /* we could also bail out and not match at all */ #  /* USER is nonempty, alphanumeric, dot, plus and dash */
   end
-  
+
   def test_defs_ipv6_1
     assert_match_anchored_extended(:DEFS, "(?&IPV6)", "11:::22",                           :NULL)
     assert_match_anchored_extended(:DEFS, "(?&IPV6)", "11:22::33:44::55:66",               :NULL)
@@ -228,7 +228,7 @@ class TestTerminalRegexBasics < MiniTest::Test
     assert_match_anchored_extended(:DEFS, "(?&IPV6)", "11:22:33:44:55:66::192.168.1.1",    :NULL)
     assert_match_anchored_extended(:DEFS, "(?&IPV6)", "::192.168.1.1",                     :ENTIRE) #/* :: only(ish) */
   end
-  
+
   def test_url_host
     assert_match_anchored_added([:DEFS, :URL_HOST], "example",       :ENTIRE)
     assert_match_anchored_added([:DEFS, :URL_HOST], "example.com",   :ENTIRE)
@@ -247,7 +247,7 @@ class TestTerminalRegexBasics < MiniTest::Test
     assert_match_anchored_added([:DEFS, :EMAIL_HOST], "dead::be:ef",    :NULL)
     assert_match_anchored_added([:DEFS, :EMAIL_HOST], "[dead::be:ef]",  :ENTIRE)
   end
-  
+
   def test_port_nums
     assert_match_anchored(:N_1_65535, "0",      :NULL)
     assert_match_anchored(:N_1_65535, "1",      :ENTIRE)
@@ -387,5 +387,66 @@ class TestTerminalRegexComplex < MiniTest::Test
     assert_match_b(:REGEX_URL_VOIP, "sip:atlanta.com;method=REGISTER?to=alice%40atlanta.com",     :ENTIRE)
     assert_match_b(:REGEX_URL_VOIP, "SIP:alice;day=tuesday@atlanta.com",                          :ENTIRE)
     assert_match_b(:REGEX_URL_VOIP, "Dial sip:alice@192.0.2.4.",                                  "sip:alice@192.0.2.4");
+  end
+end
+
+class TestColorsRegex < MiniTest::Test
+  def test_hex_class
+    assert_match_b(:HEX_CLASS, "a", :ENTIRE)
+    assert_match_b(:HEX_CLASS, "c", :ENTIRE)
+    assert_match_b(:HEX_CLASS, "f", :ENTIRE)
+    assert_match_b(:HEX_CLASS, "A", :ENTIRE)
+    assert_match_b(:HEX_CLASS, "C", :ENTIRE)
+    assert_match_b(:HEX_CLASS, "F", :ENTIRE)
+    assert_match_b(:HEX_CLASS, "0", :ENTIRE)
+    assert_match_b(:HEX_CLASS, "5", :ENTIRE)
+    assert_match_b(:HEX_CLASS, "9", :ENTIRE)
+    assert_match_b(:HEX_CLASS, "_", :NULL)
+  end
+
+  def test_uint8_class
+    assert_match_b(:UINT8_CLASS, "0", :ENTIRE)
+    assert_match_b(:UINT8_CLASS, "000", :ENTIRE)
+    assert_match_b(:UINT8_CLASS, "10", :ENTIRE)
+    assert_match_b(:UINT8_CLASS, "010", :ENTIRE)
+    assert_match_b(:UINT8_CLASS, "125", :ENTIRE)
+    assert_match_b(:UINT8_CLASS, "255", :ENTIRE)
+    assert_match_b(:UINT8_CLASS, "256", :NULL)
+  end
+
+  def test_percent_class
+    assert_match_b(:PERCENT_CLASS, "02%", :ENTIRE)
+    assert_match_b(:PERCENT_CLASS, "30%", :ENTIRE)
+    assert_match_b(:PERCENT_CLASS, "100%", :ENTIRE)
+    assert_match_b(:PERCENT_CLASS, "toto%", :NULL)
+  end
+
+  def test_hex_color
+    assert_match_b(:HEX_COLOR, "#00ff00", :ENTIRE)
+    assert_match_b(:HEX_COLOR, "#0f0", :ENTIRE)
+    assert_match_b(:HEX_COLOR, "#00ff00ff", :ENTIRE)
+  end
+
+  def test_rgb_color
+    assert_match_b(:RGB_COLOR, "rgb(100,150,255)", :ENTIRE)
+    assert_match_b(:RGB_COLOR, "rgb(100|150,255)", :NULL)
+    assert_match_b(:RGB_COLOR, "rgb(350, 150,255)", :NULL)
+  end
+
+  def test_rgbperc_color
+    assert_match_b(:RGBPERC_COLOR, "rgb(100%,15%,0%)", :ENTIRE)
+    assert_match_b(:RGBPERC_COLOR, "rgb(100,150,255)", :NULL)
+    assert_match_b(:RGBPERC_COLOR, "rgb(350, 150,255)", :NULL)
+  end
+  def test_rgba_color
+    assert_match_b(:RGBA_COLOR, "rgba(100,150,255, 0.5)", :ENTIRE)
+    assert_match_b(:RGBA_COLOR, "rgba(100|150,255)", :NULL)
+    assert_match_b(:RGBA_COLOR, "rgba(350, 150,255,123)", :NULL)
+  end
+
+  def test_rgbaperc_color
+    assert_match_b(:RGBAPERC_COLOR, "rgba(100%,15%,0%, 1.0)", :ENTIRE)
+    assert_match_b(:RGBAPERC_COLOR, "rgba(100,150,255)", :NULL)
+    assert_match_b(:RGBAPERC_COLOR, "rgba(350, 150,255)", :NULL)
   end
 end
