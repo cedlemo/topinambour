@@ -11,7 +11,7 @@
 <a href="https://raw.github.com/cedlemo/topinambour/master/terminal_regex_color.gif"><img src="https://raw.github.com/cedlemo/topinambour/master/terminal_regex_color.gif" style="width:576px;height:324px;" alt="Regex color gif"></a>
 
 
-Topinambour is Terminal written with the Gtk3 and Vte3 ruby bindings from the project [ruby-gnome2](https://github.com/ruby-gnome2/ruby-gnome2). I have written it for testing purpose, but Topinambour works well and I use it as my primary terminal emulator.
+Topinambour is Terminal written with the Gtk3 and Vte3 ruby bindings from the project [Ruby-GNOME2](https://github.com/ruby-gnome2/ruby-gnome2). I have written it for testing purpose, but Topinambour works well and I use it as my primary terminal emulator.
 
 ## Features
 
