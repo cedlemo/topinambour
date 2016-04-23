@@ -93,7 +93,9 @@ class TopinambourTerminal
   private
 
   def parse_css_color(color_name)
-    default_color = Gdk::RGBA.parse(DEFAULT_TERMINAL_COLORS[TERMINAL_COLOR_NAMES.index(color_name.to_sym)])
+    color_index = TERMINAL_COLOR_NAMES.index(color_name.to_sym)
+    color_value = DEFAULT_TERMINAL_COLORS[color_index]
+    default_color = Gdk::RGBA.parse(color_value)
     color_from_css = style_get_property(color_name)
     color = color_from_css ? color_from_css : default_color
     color
@@ -110,7 +112,8 @@ class TopinambourTerminal
 
   def add_matches
     @regexes = [:REGEX_URL_AS_IS, :REGEX_URL_FILE, :REGEX_URL_HTTP,
-                :REGEX_URL_VOIP, :REGEX_EMAIL, :REGEX_NEWS_MAN]
+                :REGEX_URL_VOIP, :REGEX_EMAIL, :REGEX_NEWS_MAN,
+                :CSS_COLORS]
     @regexes.each do |name|
       regex_name = TopinambourRegex.const_get(name)
       flags = [GLib::RegexCompileFlags::OPTIMIZE,
@@ -138,22 +141,40 @@ class TopinambourTerminal
   def manage_regex_on_click(_widget, event)
     match, regex_type = match_check_event(event)
     return nil if regex_type == -1
-    modified_match = case @regexes[regex_type]
-                     when :REGEX_EMAIL
-                       "mailto:" + match
-                     when :REGEX_URL_HTTP
-                       "http://" + match
-                     else
-                       match
-                     end
-    begin
-      Gio::AppInfo.launch_default_for_uri(modified_match)
-    rescue => e
-      puts "error : #{e.message}\n\tfor match: #{match} of type :#{@regexes[regex_type]}"
+    case @regexes[regex_type]
+    when :REGEX_EMAIL
+      launch_default_for_regex_match("mailto:" + match, @regexes[regex_type])
+    when :REGEX_URL_HTTP
+      launch_default_for_regex_match("http://" + match, @regexes[regex_type])
+    when :CSS_COLORS
+      launch_color_visualizer(match)
+    else
+      launch_default_for_regex_match(match, @regexes[regex_type])
     end
   end
 
   def when_terminal_title_change
     parent.toplevel.current_label.text = terminal_title
+  end
+
+  def launch_default_for_regex_match(match, regex_type)
+    begin
+      Gio::AppInfo.launch_default_for_uri(match)
+    rescue => e
+      puts "error : #{e.message}\n\tfor match: #{match} of type :#{regex_type}"
+    end
+  end
+
+  def launch_color_visualizer(color_name)
+    dialog = Gtk::ColorChooserDialog.new(:title => color_name,
+                                         :parent => parent.toplevel)
+    dialog.show_editor = true
+    dialog.use_alpha = true
+    dialog.rgba = Gdk::RGBA.parse(color_name)
+    if dialog.run == Gtk::ResponseType::OK
+      clipboard = Gtk::Clipboard.get_default(Gdk::Display.default)
+      clipboard.text = dialog.rgba.to_s
+    end
+    dialog.destroy
   end
 end
