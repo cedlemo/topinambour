@@ -1,0 +1,325 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Module: IpRegexes
+  
+    &mdash; Documentation by YARD 0.8.7.6
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '';
+  framesUrl = "frames.html#!IpRegexes.html";
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index (I)</a> &raquo;
+    
+    
+    <span class="title">IpRegexes</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><h1>Module: IpRegexes
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+  
+    
+  
+    
+  
+  
+    <dt class="r1">Included in:</dt>
+    <dd class="r1"><span class='object_link'><a href="TopinambourRegex.html" title="TopinambourRegex (module)">TopinambourRegex</a></span></dd>
+    
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">lib/terminal_regex.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+
+  <h2>Constant Summary</h2>
+  
+    <dl class="constants">
+      
+        <dt id="S4_DEF-constant" class="">S4_DEF =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>S4: IPv4 segment (number between 0 and 255) with lookahead at the end so
+that we don&#39;t match “25” in the string “256”. The lookahead could go to
+the last segment of IPv4 only but this construct allows nicer unittesting.
+*/</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(?(DEFINE)(?&lt;S4&gt;(?x: (?: [0-9] | [1-9][0-9] | 1[0-9]{2} | 2[0-4][0-9] | 25[0-5] ) (?! [0-9] ) )))</span><span class='tstring_end'>&quot;</span></span></pre></dd>
+      
+        <dt id="IPV4_DEF-constant" class="">IPV4_DEF =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>IPV4: Decimal IPv4, e.g. “1.2.3.4”, with lookahead (implemented in S4) at
+the end so that we don&#39;t match “192.168.1.123” in the string
+“192.168.1.1234”. */</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='const'>S4_DEF</span><span class='embexpr_end'>}</span><span class='tstring_content'>(?(DEFINE)(?&lt;IPV4&gt;(?x: (?: (?&amp;S4) \\. ){3} (?&amp;S4) )))</span><span class='tstring_end'>&quot;</span></span></pre></dd>
+      
+        <dt id="S6_DEF-constant" class="">S6_DEF =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>IPv6, including embedded IPv4, e.g. “::1”, “dead:beef::1.2.3.4”. Lookahead
+for the next char not being a dot or digit, so it doesn&#39;t get stuck
+matching “dead:beef::1” in “dead:beef::1.2.3.4”. This is not required since
+the surrounding brackets would trigger backtracking, but it allows nicer
+unittesting. TODO: more strict check (right number of colons, etc.) TODO:
+add zone_id: RFC 4007 section 11, RFC 6874 */ S6: IPv6 segment, S6C: IPv6
+segment followed by a comma, CS6: comma followed by an IPv6 segment */</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(?(DEFINE)(?&lt;S6&gt;[[:xdigit:]]{1,4})(?&lt;CS6&gt;:(?&amp;S6))(?&lt;S6C&gt;(?&amp;S6):))</span><span class='tstring_end'>&quot;</span></span></pre></dd>
+      
+        <dt id="IPV6_FULL-constant" class="">IPV6_FULL =
+          <div class="docstring">
+  <div class="discussion">
+    <dl class="rdoc-list note-list"><dt>No 
+<dd>
+<p>shorthand */</p>
+</dd></dl>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(?x: (?&amp;S6C){7} (?&amp;S6) )</span><span class='tstring_end'>&quot;</span></span></pre></dd>
+      
+        <dt id="IPV6_LEFT-constant" class="">IPV6_LEFT =
+          <div class="docstring">
+  <div class="discussion">
+    <dl class="rdoc-list note-list"><dt>Begins with 
+<dd>
+<p>*/</p>
+</dd></dl>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(?x: : (?&amp;CS6){1,7} )</span><span class='tstring_end'>&quot;</span></span></pre></dd>
+      
+        <dt id="IPV6_MID-constant" class="">IPV6_MID =
+          <div class="docstring">
+  <div class="discussion">
+    <dl class="rdoc-list note-list"><dt>
+<dd>
+<p>somewhere in the middle - use negative lookahead to make sure there
+aren&#39;t too many colons in total */</p>
+</dd></dl>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(?x: (?! (?: [[:xdigit:]]*: ){8} ) (?&amp;S6C){1,6} (?&amp;CS6){1,6} )</span><span class='tstring_end'>&quot;</span></span></pre></dd>
+      
+        <dt id="IPV6_RIGHT-constant" class="">IPV6_RIGHT =
+          <div class="docstring">
+  <div class="discussion">
+    <dl class="rdoc-list note-list"><dt>Ends with 
+<dd>
+<p>*/</p>
+</dd></dl>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(?x: (?&amp;S6C){1,7} : )</span><span class='tstring_end'>&quot;</span></span></pre></dd>
+      
+        <dt id="IPV6_NULL-constant" class="">IPV6_NULL =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>Is “::” and nothing more */</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(?x: :: )</span><span class='tstring_end'>&quot;</span></span></pre></dd>
+      
+        <dt id="IPV6V4_FULL-constant" class="">IPV6V4_FULL =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>The same ones for IPv4-embedded notation, without the actual IPv4 part */</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(?x: (?&amp;S6C){6} )</span><span class='tstring_end'>&quot;</span></span></pre></dd>
+      
+        <dt id="IPV6V4_LEFT-constant" class="">IPV6V4_LEFT =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>includes “::&lt;ipv4&gt;” */</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(?x: :: (?&amp;S6C){0,5} )</span><span class='tstring_end'>&quot;</span></span></pre></dd>
+      
+        <dt id="IPV6V4_MID-constant" class="">IPV6V4_MID =
+          
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(?x: (?! (?: [[:xdigit:]]*: ){7} ) (?&amp;S6C){1,4} (?&amp;CS6){1,4} ) :</span><span class='tstring_end'>&quot;</span></span></pre></dd>
+      
+        <dt id="IPV6V4_RIGHT-constant" class="">IPV6V4_RIGHT =
+          
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(?x: (?&amp;S6C){1,5} : )</span><span class='tstring_end'>&quot;</span></span></pre></dd>
+      
+        <dt id="IP_DEF-constant" class="">IP_DEF =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>IPV6: An IPv6 address (possibly with an embedded IPv4). This macro defines
+both IPV4 and IPV6, since the latter one requires the former. */</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='const'>IPV4_DEF</span><span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span><span class='const'>S6_DEF</span><span class='embexpr_end'>}</span><span class='tstring_content'>(?(DEFINE)(?&lt;IPV6&gt;(?x: (?: </span><span class='embexpr_beg'>#{</span><span class='const'>IPV6_NULL</span><span class='embexpr_end'>}</span><span class='tstring_content'> | </span><span class='embexpr_beg'>#{</span><span class='const'>IPV6_LEFT</span><span class='embexpr_end'>}</span><span class='tstring_content'> | </span><span class='embexpr_beg'>#{</span><span class='const'>IPV6_MID</span><span class='embexpr_end'>}</span><span class='tstring_content'> | </span><span class='embexpr_beg'>#{</span><span class='const'>IPV6_RIGHT</span><span class='embexpr_end'>}</span><span class='tstring_content'> \
+| </span><span class='embexpr_beg'>#{</span><span class='const'>IPV6_FULL</span><span class='embexpr_end'>}</span><span class='tstring_content'> | (?: </span><span class='embexpr_beg'>#{</span><span class='const'>IPV6V4_FULL</span><span class='embexpr_end'>}</span><span class='tstring_content'> | </span><span class='embexpr_beg'>#{</span><span class='const'>IPV6V4_LEFT</span><span class='embexpr_end'>}</span><span class='tstring_content'> | </span><span class='embexpr_beg'>#{</span><span class='const'>IPV6V4_MID</span><span class='embexpr_end'>}</span><span class='tstring_content'> | </span><span class='embexpr_beg'>#{</span><span class='const'>IPV6V4_RIGHT</span><span class='embexpr_end'>}</span><span class='tstring_content'> \
+) (?&amp;IPV4) ) (?! [.:[:xdigit:]] ) )))</span><span class='tstring_end'>&quot;</span></span></pre></dd>
+      
+    </dl>
+  
+
+
+
+
+
+
+
+
+
+</div>
+
+    <div id="footer">
+  Generated on Sat Apr 23 14:55:35 2016 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.7.6 (ruby-2.3.0).
+</div>
+
+  </body>
+</html>

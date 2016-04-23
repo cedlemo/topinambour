@@ -215,7 +215,8 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
 29
 30
 31
-32</pre>
+32
+33</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/terminal_chooser.rb', line 17</span>
@@ -233,6 +234,7 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
   <span class='id identifier rubyid_fill_grid'>fill_grid</span>
 
   <span class='ivar'>@box</span> <span class='op'>=</span> <span class='const'>Gtk</span><span class='op'>::</span><span class='const'>Box</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='symbol'>:vertical</span><span class='comma'>,</span> <span class='int'>4</span><span class='rparen'>)</span>
+  <span class='ivar'>@box</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>OverviewBox</span><span class='tstring_end'>&quot;</span></span>
   <span class='ivar'>@box</span><span class='period'>.</span><span class='id identifier rubyid_pack_start'>pack_start</span><span class='lparen'>(</span><span class='ivar'>@grid</span><span class='comma'>,</span> <span class='symbol'>:expand</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='comma'>,</span> <span class='symbol'>:fill</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='comma'>,</span> <span class='symbol'>:padding</span> <span class='op'>=&gt;</span> <span class='int'>4</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_add'>add</span><span class='lparen'>(</span><span class='ivar'>@box</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
@@ -247,7 +249,7 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
 </div>
 
     <div id="footer">
-  Generated on Fri Apr 22 16:09:24 2016 by
+  Generated on Sat Apr 23 14:55:36 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.3.0).
 </div>

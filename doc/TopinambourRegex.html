@@ -75,28 +75,20 @@
     
   
     
+      <dt class="r1">Includes:</dt>
+      <dd class="r1"><span class='object_link'><a href="ColorRegexes.html" title="ColorRegexes (module)">ColorRegexes</a></span>, <span class='object_link'><a href="HostnameRegexes.html" title="HostnameRegexes (module)">HostnameRegexes</a></span>, <span class='object_link'><a href="IpRegexes.html" title="IpRegexes (module)">IpRegexes</a></span>, <span class='object_link'><a href="PathRegexes.html" title="PathRegexes (module)">PathRegexes</a></span>, <span class='object_link'><a href="PortRegexes.html" title="PortRegexes (module)">PortRegexes</a></span>, <span class='object_link'><a href="UserPassRegexes.html" title="UserPassRegexes (module)">UserPassRegexes</a></span></dd>
+      
+    
   
   
   
-    <dt class="r1 last">Defined in:</dt>
-    <dd class="r1 last">lib/terminal_regex.rb</dd>
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">lib/terminal_regex.rb</dd>
   
 </dl>
 <div class="clear"></div>
 
-<h2>Overview</h2><div class="docstring">
-  <div class="discussion">
-    
-<p>Stolen from <a
-href="https://github.com/GNOME/gnome-terminal/blob/master/src/terminal-regex.h">github.com/GNOME/gnome-terminal/blob/master/src/terminal-regex.h</a></p>
 
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
   <h2>Constant Summary</h2>
   
     <dl class="constants">
@@ -105,443 +97,6 @@ href="https://github.com/GNOME/gnome-terminal/blob/master/src/terminal-regex.h">
           
         </dt>
         <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(?ix: news | telnet | nntp | https? | ftps? | sftp | webcal )</span><span class='tstring_end'>&quot;</span></span></pre></dd>
-      
-        <dt id="USERCHARS-constant" class="">USERCHARS =
-          
-        </dt>
-        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>-+.[:alnum:]</span><span class='tstring_end'>&quot;</span></span></pre></dd>
-      
-        <dt id="USER-constant" class="">USER =
-          <div class="docstring">
-  <div class="discussion">
-    
-<p>Nonempty username, e.g. “john.smith”</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-        </dt>
-        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>[</span><span class='embexpr_beg'>#{</span><span class='const'>USERCHARS</span><span class='embexpr_end'>}</span><span class='tstring_content'>]+</span><span class='tstring_end'>&quot;</span></span></pre></dd>
-      
-        <dt id="PASSCHARS_CLASS-constant" class="">PASSCHARS_CLASS =
-          
-        </dt>
-        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>[-[:alnum:]\\Q,?;.:/!%$^*&amp;~\&quot;#\&#39;\\E]</span><span class='tstring_end'>&#39;</span></span></pre></dd>
-      
-        <dt id="PASS-constant" class="">PASS =
-          <div class="docstring">
-  <div class="discussion">
-    
-<p>Optional colon-prefixed password. I guess empty password should be allowed,
-right? E.g. “:secret”, “:”, “” */</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-        </dt>
-        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(?x: :</span><span class='embexpr_beg'>#{</span><span class='const'>PASSCHARS_CLASS</span><span class='embexpr_end'>}</span><span class='tstring_content'>* )?</span><span class='tstring_end'>&quot;</span></span></pre></dd>
-      
-        <dt id="USERPASS-constant" class="">USERPASS =
-          <div class="docstring">
-  <div class="discussion">
-    
-<p>Optional at-terminated username (with perhaps a password too), e.g. “joe@”,
-“pete:secret@”, “” */</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-        </dt>
-        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(?:</span><span class='embexpr_beg'>#{</span><span class='const'>USER</span><span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span><span class='const'>PASS</span><span class='embexpr_end'>}</span><span class='tstring_content'>@)?</span><span class='tstring_end'>&quot;</span></span></pre></dd>
-      
-        <dt id="S4_DEF-constant" class="">S4_DEF =
-          <div class="docstring">
-  <div class="discussion">
-    
-<p>S4: IPv4 segment (number between 0 and 255) with lookahead at the end so
-that we don&#39;t match “25” in the string “256”. The lookahead could go to
-the last segment of IPv4 only but this construct allows nicer unittesting.
-*/</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-        </dt>
-        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(?(DEFINE)(?&lt;S4&gt;(?x: (?: [0-9] | [1-9][0-9] | 1[0-9]{2} | 2[0-4][0-9] | 25[0-5] ) (?! [0-9] ) )))</span><span class='tstring_end'>&quot;</span></span></pre></dd>
-      
-        <dt id="IPV4_DEF-constant" class="">IPV4_DEF =
-          <div class="docstring">
-  <div class="discussion">
-    
-<p>IPV4: Decimal IPv4, e.g. “1.2.3.4”, with lookahead (implemented in S4) at
-the end so that we don&#39;t match “192.168.1.123” in the string
-“192.168.1.1234”. */</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-        </dt>
-        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='const'>S4_DEF</span><span class='embexpr_end'>}</span><span class='tstring_content'>(?(DEFINE)(?&lt;IPV4&gt;(?x: (?: (?&amp;S4) \\. ){3} (?&amp;S4) )))</span><span class='tstring_end'>&quot;</span></span></pre></dd>
-      
-        <dt id="S6_DEF-constant" class="">S6_DEF =
-          <div class="docstring">
-  <div class="discussion">
-    
-<p>IPv6, including embedded IPv4, e.g. “::1”, “dead:beef::1.2.3.4”. Lookahead
-for the next char not being a dot or digit, so it doesn&#39;t get stuck
-matching “dead:beef::1” in “dead:beef::1.2.3.4”. This is not required since
-the surrounding brackets would trigger backtracking, but it allows nicer
-unittesting. TODO: more strict check (right number of colons, etc.) TODO:
-add zone_id: RFC 4007 section 11, RFC 6874 */ S6: IPv6 segment, S6C: IPv6
-segment followed by a comma, CS6: comma followed by an IPv6 segment */</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-        </dt>
-        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(?(DEFINE)(?&lt;S6&gt;[[:xdigit:]]{1,4})(?&lt;CS6&gt;:(?&amp;S6))(?&lt;S6C&gt;(?&amp;S6):))</span><span class='tstring_end'>&quot;</span></span></pre></dd>
-      
-        <dt id="IPV6_FULL-constant" class="">IPV6_FULL =
-          <div class="docstring">
-  <div class="discussion">
-    <dl class="rdoc-list note-list"><dt>No 
-<dd>
-<p>shorthand */</p>
-</dd></dl>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-        </dt>
-        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(?x: (?&amp;S6C){7} (?&amp;S6) )</span><span class='tstring_end'>&quot;</span></span></pre></dd>
-      
-        <dt id="IPV6_LEFT-constant" class="">IPV6_LEFT =
-          <div class="docstring">
-  <div class="discussion">
-    <dl class="rdoc-list note-list"><dt>Begins with 
-<dd>
-<p>*/</p>
-</dd></dl>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-        </dt>
-        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(?x: : (?&amp;CS6){1,7} )</span><span class='tstring_end'>&quot;</span></span></pre></dd>
-      
-        <dt id="IPV6_MID-constant" class="">IPV6_MID =
-          <div class="docstring">
-  <div class="discussion">
-    <dl class="rdoc-list note-list"><dt>
-<dd>
-<p>somewhere in the middle - use negative lookahead to make sure there
-aren&#39;t too many colons in total */</p>
-</dd></dl>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-        </dt>
-        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(?x: (?! (?: [[:xdigit:]]*: ){8} ) (?&amp;S6C){1,6} (?&amp;CS6){1,6} )</span><span class='tstring_end'>&quot;</span></span></pre></dd>
-      
-        <dt id="IPV6_RIGHT-constant" class="">IPV6_RIGHT =
-          <div class="docstring">
-  <div class="discussion">
-    <dl class="rdoc-list note-list"><dt>Ends with 
-<dd>
-<p>*/</p>
-</dd></dl>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-        </dt>
-        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(?x: (?&amp;S6C){1,7} : )</span><span class='tstring_end'>&quot;</span></span></pre></dd>
-      
-        <dt id="IPV6_NULL-constant" class="">IPV6_NULL =
-          <div class="docstring">
-  <div class="discussion">
-    
-<p>Is “::” and nothing more */</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-        </dt>
-        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(?x: :: )</span><span class='tstring_end'>&quot;</span></span></pre></dd>
-      
-        <dt id="IPV6V4_FULL-constant" class="">IPV6V4_FULL =
-          <div class="docstring">
-  <div class="discussion">
-    
-<p>The same ones for IPv4-embedded notation, without the actual IPv4 part */</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-        </dt>
-        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(?x: (?&amp;S6C){6} )</span><span class='tstring_end'>&quot;</span></span></pre></dd>
-      
-        <dt id="IPV6V4_LEFT-constant" class="">IPV6V4_LEFT =
-          <div class="docstring">
-  <div class="discussion">
-    
-<p>includes “::&lt;ipv4&gt;” */</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-        </dt>
-        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(?x: :: (?&amp;S6C){0,5} )</span><span class='tstring_end'>&quot;</span></span></pre></dd>
-      
-        <dt id="IPV6V4_MID-constant" class="">IPV6V4_MID =
-          
-        </dt>
-        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(?x: (?! (?: [[:xdigit:]]*: ){7} ) (?&amp;S6C){1,4} (?&amp;CS6){1,4} ) :</span><span class='tstring_end'>&quot;</span></span></pre></dd>
-      
-        <dt id="IPV6V4_RIGHT-constant" class="">IPV6V4_RIGHT =
-          
-        </dt>
-        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(?x: (?&amp;S6C){1,5} : )</span><span class='tstring_end'>&quot;</span></span></pre></dd>
-      
-        <dt id="IP_DEF-constant" class="">IP_DEF =
-          <div class="docstring">
-  <div class="discussion">
-    
-<p>IPV6: An IPv6 address (possibly with an embedded IPv4). This macro defines
-both IPV4 and IPV6, since the latter one requires the former. */</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-        </dt>
-        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='const'>IPV4_DEF</span><span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span><span class='const'>S6_DEF</span><span class='embexpr_end'>}</span><span class='tstring_content'>(?(DEFINE)(?&lt;IPV6&gt;(?x: (?: </span><span class='embexpr_beg'>#{</span><span class='const'>IPV6_NULL</span><span class='embexpr_end'>}</span><span class='tstring_content'> | </span><span class='embexpr_beg'>#{</span><span class='const'>IPV6_LEFT</span><span class='embexpr_end'>}</span><span class='tstring_content'> | </span><span class='embexpr_beg'>#{</span><span class='const'>IPV6_MID</span><span class='embexpr_end'>}</span><span class='tstring_content'> | </span><span class='embexpr_beg'>#{</span><span class='const'>IPV6_RIGHT</span><span class='embexpr_end'>}</span><span class='tstring_content'> \
-| </span><span class='embexpr_beg'>#{</span><span class='const'>IPV6_FULL</span><span class='embexpr_end'>}</span><span class='tstring_content'> | (?: </span><span class='embexpr_beg'>#{</span><span class='const'>IPV6V4_FULL</span><span class='embexpr_end'>}</span><span class='tstring_content'> | </span><span class='embexpr_beg'>#{</span><span class='const'>IPV6V4_LEFT</span><span class='embexpr_end'>}</span><span class='tstring_content'> | </span><span class='embexpr_beg'>#{</span><span class='const'>IPV6V4_MID</span><span class='embexpr_end'>}</span><span class='tstring_content'> | </span><span class='embexpr_beg'>#{</span><span class='const'>IPV6V4_RIGHT</span><span class='embexpr_end'>}</span><span class='tstring_content'> \
-) (?&amp;IPV4) ) (?! [.:[:xdigit:]] ) )))</span><span class='tstring_end'>&quot;</span></span></pre></dd>
-      
-        <dt id="HOSTNAMESEGMENTCHARS_CLASS-constant" class="">HOSTNAMESEGMENTCHARS_CLASS =
-          <div class="docstring">
-  <div class="discussion">
-    
-<p>Either an alphanumeric character or dash; or if [negative lookahead] not
-ASCII then any graphical Unicode character. A segment can consist entirely
-of numbers. (Note: PCRE doesn&#39;t support character class
-subtraction/intersection.) */</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-        </dt>
-        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(?x: [-[:alnum:]] | (?! [[:ascii:]] ) [[:graph:]] )</span><span class='tstring_end'>&quot;</span></span></pre></dd>
-      
-        <dt id="HOSTNAME1-constant" class="">HOSTNAME1 =
-          <div class="docstring">
-  <div class="discussion">
-    
-<p>A hostname of at least 1 component. The last component cannot be entirely
-numbers. E.g. “foo”, “example.com”, “1234.com”, but not “foo.123” */</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-        </dt>
-        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(?x: (?: </span><span class='embexpr_beg'>#{</span><span class='const'>HOSTNAMESEGMENTCHARS_CLASS</span><span class='embexpr_end'>}</span><span class='tstring_content'>+ \\. )* </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='const'>HOSTNAMESEGMENTCHARS_CLASS</span><span class='embexpr_end'>}</span><span class='tstring_content'>* (?! [0-9] ) </span><span class='embexpr_beg'>#{</span><span class='const'>HOSTNAMESEGMENTCHARS_CLASS</span><span class='embexpr_end'>}</span><span class='tstring_content'>+ )</span><span class='tstring_end'>&quot;</span></span></pre></dd>
-      
-        <dt id="HOSTNAME2-constant" class="">HOSTNAME2 =
-          <div class="docstring">
-  <div class="discussion">
-    
-<p>A hostname of at least 2 components. The last component cannot be entirely
-numbers. E.g. “example.com”, “1234.com”, but not “1234.56” */</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-        </dt>
-        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(?x: (?: </span><span class='embexpr_beg'>#{</span><span class='const'>HOSTNAMESEGMENTCHARS_CLASS</span><span class='embexpr_end'>}</span><span class='tstring_content'>+ \\.)+ </span><span class='embexpr_beg'>#{</span><span class='const'>HOSTNAME1</span><span class='embexpr_end'>}</span><span class='tstring_content'> )</span><span class='tstring_end'>&quot;</span></span></pre></dd>
-      
-        <dt id="URL_HOST-constant" class="">URL_HOST =
-          <div class="docstring">
-  <div class="discussion">
-    
-<p>For URL: Hostname, IPv4, or bracket-enclosed IPv6, e.g. “example.com”,
-“1.2.3.4”, “[::1]” */</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-        </dt>
-        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(?x: </span><span class='embexpr_beg'>#{</span><span class='const'>HOSTNAME1</span><span class='embexpr_end'>}</span><span class='tstring_content'> | (?&amp;IPV4) | \\[ (?&amp;IPV6) \\] )</span><span class='tstring_end'>&quot;</span></span></pre></dd>
-      
-        <dt id="EMAIL_HOST-constant" class="">EMAIL_HOST =
-          <div class="docstring">
-  <div class="discussion">
-    
-<p>For e-mail: Hostname of at least two segments, or bracket-enclosed IPv4 or
-IPv6, e.g. “example.com”, “[1.2.3.4]”, “[::1]”. Technically an e-mail with
-a single-component hostname might be valid on a local network, but
-let&#39;s avoid tons of false positives (e.g. in a typical shell prompt).
-*/</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-        </dt>
-        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(?x: </span><span class='embexpr_beg'>#{</span><span class='const'>HOSTNAME2</span><span class='embexpr_end'>}</span><span class='tstring_content'> | \\[ (?: (?&amp;IPV4) | (?&amp;IPV6) ) \\] )</span><span class='tstring_end'>&quot;</span></span></pre></dd>
-      
-        <dt id="N_1_65535-constant" class="">N_1_65535 =
-          <div class="docstring">
-  <div class="discussion">
-    
-<p>Number between 1 and 65535, with lookahead at the end so that we don&#39;t
-match “6789” in the string “67890”, and in turn we don&#39;t eventually
-match “<a href="http://host:6789">host:6789</a>” in “<a
-href="http://host:67890">host:67890</a>”. */</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-        </dt>
-        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(?x: (?: [1-9][0-9]{0,3} | [1-5][0-9]{4} | 6[0-4][0-9]{3} | 65[0-4][0-9]{2} | 655[0-2][0-9] | 6553[0-5] ) (?! [0-9] ) )</span><span class='tstring_end'>&quot;</span></span></pre></dd>
-      
-        <dt id="PORT-constant" class="">PORT =
-          <div class="docstring">
-  <div class="discussion">
-    
-<p>Optional colon-prefixed port, e.g. “:1080”, “” */</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-        </dt>
-        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(?x: \\:</span><span class='embexpr_beg'>#{</span><span class='const'>N_1_65535</span><span class='embexpr_end'>}</span><span class='tstring_content'> )?</span><span class='tstring_end'>&quot;</span></span></pre></dd>
-      
-        <dt id="PATHCHARS_CLASS-constant" class="">PATHCHARS_CLASS =
-          
-        </dt>
-        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>[-[:alnum:]\\Q_$.+!*,:;@&amp;=?/~#|%\\E]</span><span class='tstring_end'>&quot;</span></span></pre></dd>
-      
-        <dt id="PATHNONTERM_CLASS-constant" class="">PATHNONTERM_CLASS =
-          <div class="docstring">
-  <div class="discussion">
-    
-<p>Chars not to end a URL */</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-        </dt>
-        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>[\\Q.!,?\\E]</span><span class='tstring_end'>&quot;</span></span></pre></dd>
-      
-        <dt id="URLPATH-constant" class="">URLPATH =
-          <div class="docstring">
-  <div class="discussion">
-    
-<p>Lookbehind at the end, so that the last character (if we matched a
-character at all) is not from PATHTERM_CLASS */</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-        </dt>
-        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(?x: /</span><span class='embexpr_beg'>#{</span><span class='const'>PATHCHARS_CLASS</span><span class='embexpr_end'>}</span><span class='tstring_content'>* (?&lt;! </span><span class='embexpr_beg'>#{</span><span class='const'>PATHNONTERM_CLASS</span><span class='embexpr_end'>}</span><span class='tstring_content'> ) )?</span><span class='tstring_end'>&quot;</span></span></pre></dd>
-      
-        <dt id="VOIP_PATH-constant" class="">VOIP_PATH =
-          
-        </dt>
-        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(?x: [;?]</span><span class='embexpr_beg'>#{</span><span class='const'>PATHCHARS_CLASS</span><span class='embexpr_end'>}</span><span class='tstring_content'>* (?&lt;! </span><span class='embexpr_beg'>#{</span><span class='const'>PATHNONTERM_CLASS</span><span class='embexpr_end'>}</span><span class='tstring_content'> ) )?</span><span class='tstring_end'>&quot;</span></span></pre></dd>
       
         <dt id="DEFS-constant" class="">DEFS =
           <div class="docstring">
@@ -618,16 +173,88 @@ convenience (so that we can reuse HOSTNAME1). */</p>
 
 
 
+  
+  
+  <h3 class="inherited">Constants included
+     from <span class='object_link'><a href="ColorRegexes.html" title="ColorRegexes (module)">ColorRegexes</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="ColorRegexes.html#CSS_COLORS-constant" title="ColorRegexes::CSS_COLORS (constant)">ColorRegexes::CSS_COLORS</a></span>, <span class='object_link'><a href="ColorRegexes.html#HEX_CLASS-constant" title="ColorRegexes::HEX_CLASS (constant)">ColorRegexes::HEX_CLASS</a></span>, <span class='object_link'><a href="ColorRegexes.html#HEX_COLOR-constant" title="ColorRegexes::HEX_COLOR (constant)">ColorRegexes::HEX_COLOR</a></span>, <span class='object_link'><a href="ColorRegexes.html#PERCENT_CLASS-constant" title="ColorRegexes::PERCENT_CLASS (constant)">ColorRegexes::PERCENT_CLASS</a></span>, <span class='object_link'><a href="ColorRegexes.html#RGBAPERC_COLOR-constant" title="ColorRegexes::RGBAPERC_COLOR (constant)">ColorRegexes::RGBAPERC_COLOR</a></span>, <span class='object_link'><a href="ColorRegexes.html#RGBA_COLOR-constant" title="ColorRegexes::RGBA_COLOR (constant)">ColorRegexes::RGBA_COLOR</a></span>, <span class='object_link'><a href="ColorRegexes.html#RGBPERC_COLOR-constant" title="ColorRegexes::RGBPERC_COLOR (constant)">ColorRegexes::RGBPERC_COLOR</a></span>, <span class='object_link'><a href="ColorRegexes.html#RGB_COLOR-constant" title="ColorRegexes::RGB_COLOR (constant)">ColorRegexes::RGB_COLOR</a></span>, <span class='object_link'><a href="ColorRegexes.html#UINT8_CLASS-constant" title="ColorRegexes::UINT8_CLASS (constant)">ColorRegexes::UINT8_CLASS</a></span></p>
+
+  
+  
+  <h3 class="inherited">Constants included
+     from <span class='object_link'><a href="PathRegexes.html" title="PathRegexes (module)">PathRegexes</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="PathRegexes.html#PATHCHARS_CLASS-constant" title="PathRegexes::PATHCHARS_CLASS (constant)">PathRegexes::PATHCHARS_CLASS</a></span>, <span class='object_link'><a href="PathRegexes.html#PATHNONTERM_CLASS-constant" title="PathRegexes::PATHNONTERM_CLASS (constant)">PathRegexes::PATHNONTERM_CLASS</a></span>, <span class='object_link'><a href="PathRegexes.html#URLPATH-constant" title="PathRegexes::URLPATH (constant)">PathRegexes::URLPATH</a></span>, <span class='object_link'><a href="PathRegexes.html#VOIP_PATH-constant" title="PathRegexes::VOIP_PATH (constant)">PathRegexes::VOIP_PATH</a></span></p>
+
+  
+  
+  <h3 class="inherited">Constants included
+     from <span class='object_link'><a href="PortRegexes.html" title="PortRegexes (module)">PortRegexes</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="PortRegexes.html#N_1_65535-constant" title="PortRegexes::N_1_65535 (constant)">PortRegexes::N_1_65535</a></span>, <span class='object_link'><a href="PortRegexes.html#PORT-constant" title="PortRegexes::PORT (constant)">PortRegexes::PORT</a></span></p>
+
+  
+  
+  <h3 class="inherited">Constants included
+     from <span class='object_link'><a href="HostnameRegexes.html" title="HostnameRegexes (module)">HostnameRegexes</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="HostnameRegexes.html#EMAIL_HOST-constant" title="HostnameRegexes::EMAIL_HOST (constant)">HostnameRegexes::EMAIL_HOST</a></span>, <span class='object_link'><a href="HostnameRegexes.html#HOSTNAME1-constant" title="HostnameRegexes::HOSTNAME1 (constant)">HostnameRegexes::HOSTNAME1</a></span>, <span class='object_link'><a href="HostnameRegexes.html#HOSTNAME2-constant" title="HostnameRegexes::HOSTNAME2 (constant)">HostnameRegexes::HOSTNAME2</a></span>, <span class='object_link'><a href="HostnameRegexes.html#HOSTNAMESEGMENTCHARS_CLASS-constant" title="HostnameRegexes::HOSTNAMESEGMENTCHARS_CLASS (constant)">HostnameRegexes::HOSTNAMESEGMENTCHARS_CLASS</a></span>, <span class='object_link'><a href="HostnameRegexes.html#URL_HOST-constant" title="HostnameRegexes::URL_HOST (constant)">HostnameRegexes::URL_HOST</a></span></p>
+
+  
+  
+  <h3 class="inherited">Constants included
+     from <span class='object_link'><a href="IpRegexes.html" title="IpRegexes (module)">IpRegexes</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="IpRegexes.html#IPV4_DEF-constant" title="IpRegexes::IPV4_DEF (constant)">IpRegexes::IPV4_DEF</a></span>, <span class='object_link'><a href="IpRegexes.html#IPV6V4_FULL-constant" title="IpRegexes::IPV6V4_FULL (constant)">IpRegexes::IPV6V4_FULL</a></span>, <span class='object_link'><a href="IpRegexes.html#IPV6V4_LEFT-constant" title="IpRegexes::IPV6V4_LEFT (constant)">IpRegexes::IPV6V4_LEFT</a></span>, <span class='object_link'><a href="IpRegexes.html#IPV6V4_MID-constant" title="IpRegexes::IPV6V4_MID (constant)">IpRegexes::IPV6V4_MID</a></span>, <span class='object_link'><a href="IpRegexes.html#IPV6V4_RIGHT-constant" title="IpRegexes::IPV6V4_RIGHT (constant)">IpRegexes::IPV6V4_RIGHT</a></span>, <span class='object_link'><a href="IpRegexes.html#IPV6_FULL-constant" title="IpRegexes::IPV6_FULL (constant)">IpRegexes::IPV6_FULL</a></span>, <span class='object_link'><a href="IpRegexes.html#IPV6_LEFT-constant" title="IpRegexes::IPV6_LEFT (constant)">IpRegexes::IPV6_LEFT</a></span>, <span class='object_link'><a href="IpRegexes.html#IPV6_MID-constant" title="IpRegexes::IPV6_MID (constant)">IpRegexes::IPV6_MID</a></span>, <span class='object_link'><a href="IpRegexes.html#IPV6_NULL-constant" title="IpRegexes::IPV6_NULL (constant)">IpRegexes::IPV6_NULL</a></span>, <span class='object_link'><a href="IpRegexes.html#IPV6_RIGHT-constant" title="IpRegexes::IPV6_RIGHT (constant)">IpRegexes::IPV6_RIGHT</a></span>, <span class='object_link'><a href="IpRegexes.html#IP_DEF-constant" title="IpRegexes::IP_DEF (constant)">IpRegexes::IP_DEF</a></span>, <span class='object_link'><a href="IpRegexes.html#S4_DEF-constant" title="IpRegexes::S4_DEF (constant)">IpRegexes::S4_DEF</a></span>, <span class='object_link'><a href="IpRegexes.html#S6_DEF-constant" title="IpRegexes::S6_DEF (constant)">IpRegexes::S6_DEF</a></span></p>
+
+  
+  
+  <h3 class="inherited">Constants included
+     from <span class='object_link'><a href="UserPassRegexes.html" title="UserPassRegexes (module)">UserPassRegexes</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="UserPassRegexes.html#PASS-constant" title="UserPassRegexes::PASS (constant)">UserPassRegexes::PASS</a></span>, <span class='object_link'><a href="UserPassRegexes.html#PASSCHARS_CLASS-constant" title="UserPassRegexes::PASSCHARS_CLASS (constant)">UserPassRegexes::PASSCHARS_CLASS</a></span>, <span class='object_link'><a href="UserPassRegexes.html#USER-constant" title="UserPassRegexes::USER (constant)">UserPassRegexes::USER</a></span>, <span class='object_link'><a href="UserPassRegexes.html#USERCHARS-constant" title="UserPassRegexes::USERCHARS (constant)">UserPassRegexes::USERCHARS</a></span>, <span class='object_link'><a href="UserPassRegexes.html#USERPASS-constant" title="UserPassRegexes::USERPASS (constant)">UserPassRegexes::USERPASS</a></span></p>
 
 
 
 
 
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 
 </div>
 
     <div id="footer">
-  Generated on Fri Apr 22 16:09:23 2016 by
+  Generated on Sat Apr 23 14:55:35 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.3.0).
 </div>

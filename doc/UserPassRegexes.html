@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Module: UserPassRegexes
+  
+    &mdash; Documentation by YARD 0.8.7.6
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '';
+  framesUrl = "frames.html#!UserPassRegexes.html";
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index (U)</a> &raquo;
+    
+    
+    <span class="title">UserPassRegexes</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><h1>Module: UserPassRegexes
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+  
+    
+  
+    
+  
+  
+    <dt class="r1">Included in:</dt>
+    <dd class="r1"><span class='object_link'><a href="TopinambourRegex.html" title="TopinambourRegex (module)">TopinambourRegex</a></span></dd>
+    
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">lib/terminal_regex.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Stolen from <a
+href="https://github.com/GNOME/gnome-terminal/blob/master/src/terminal-regex.h">github.com/GNOME/gnome-terminal/blob/master/src/terminal-regex.h</a></p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+  <h2>Constant Summary</h2>
+  
+    <dl class="constants">
+      
+        <dt id="USERCHARS-constant" class="">USERCHARS =
+          
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>-+.[:alnum:]</span><span class='tstring_end'>&quot;</span></span></pre></dd>
+      
+        <dt id="USER-constant" class="">USER =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>Nonempty username, e.g. “john.smith”</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>[</span><span class='embexpr_beg'>#{</span><span class='const'>USERCHARS</span><span class='embexpr_end'>}</span><span class='tstring_content'>]+</span><span class='tstring_end'>&quot;</span></span></pre></dd>
+      
+        <dt id="PASSCHARS_CLASS-constant" class="">PASSCHARS_CLASS =
+          
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>[-[:alnum:]\\Q,?;.:/!%$^*&amp;~\&quot;#\&#39;\\E]</span><span class='tstring_end'>&#39;</span></span></pre></dd>
+      
+        <dt id="PASS-constant" class="">PASS =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>Optional colon-prefixed password. I guess empty password should be allowed,
+right? E.g. “:secret”, “:”, “” */</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(?x: :</span><span class='embexpr_beg'>#{</span><span class='const'>PASSCHARS_CLASS</span><span class='embexpr_end'>}</span><span class='tstring_content'>* )?</span><span class='tstring_end'>&quot;</span></span></pre></dd>
+      
+        <dt id="USERPASS-constant" class="">USERPASS =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>Optional at-terminated username (with perhaps a password too), e.g. “joe@”,
+“pete:secret@”, “” */</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(?:</span><span class='embexpr_beg'>#{</span><span class='const'>USER</span><span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span><span class='const'>PASS</span><span class='embexpr_end'>}</span><span class='tstring_content'>@)?</span><span class='tstring_end'>&quot;</span></span></pre></dd>
+      
+    </dl>
+  
+
+
+
+
+
+
+
+
+
+</div>
+
+    <div id="footer">
+  Generated on Sat Apr 23 14:55:35 2016 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.7.6 (ruby-2.3.0).
+</div>
+
+  </body>
+</html>

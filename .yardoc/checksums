@@ -1,6 +1,6 @@
 lib/window.rb 7027ee2427c1be754c0ebfb3e33a4654a920d13d
 lib/actions.rb 4de309285b3f129a8602f762d497a9b867993f7e
-lib/terminal.rb d9079b886d1745734e6baf9dca04f0d1878e858f
+lib/terminal.rb 0b453da1f58c3f437f2f9073c889520c5988200b
 lib/notebook.rb 8429941002bb854a419fa9b961073b6760010114
 lib/shortcuts.rb 1010b7de8b4738e28c264da3957e2c1013d09ea3
 lib/headerbar.rb 92533c24ccafa63a7ad5eb244a725b079a469699
@@ -9,7 +9,7 @@ lib/css_handler.rb db59098ac8d524c96dd3452f7db9ddbe54313ab5
 lib/application.rb 0f21bbb0a633bbfb36140b83db3ce03644ccb9d1
 lib/font_selector.rb 0aea0041fbf0a525ac43c1094b7244e4301f00ce
 lib/resize_message.rb 23d4fc45301a313dabf1cd87e4239a00817ffdb6
-lib/terminal_regex.rb 0a3925f27abb74517b2eb4a732c9b8b16f4c16c3
+lib/terminal_regex.rb c922da3e7d5b43077b93150bbd0ca7d3f58c6dde
 lib/color_selector.rb 35e696371cf15de1df7a2b546f38b2e85818e36c
 lib/style_properties.rb d66c2fad06763bb7a25854c712892cfc8277d691
-lib/terminal_chooser.rb e0eea5649115830eae16c9380c378f88f5d9f801
+lib/terminal_chooser.rb 934e16b80d49487e5536dda48b65cb17aec634af
