@@ -438,6 +438,7 @@ class TestColorsRegex < MiniTest::Test
     assert_match_b(:RGBPERC_COLOR, "rgb(100,150,255)", :NULL)
     assert_match_b(:RGBPERC_COLOR, "rgb(350, 150,255)", :NULL)
   end
+  
   def test_rgba_color
     assert_match_b(:RGBA_COLOR, "rgba(100,150,255, 0.5)", :ENTIRE)
     assert_match_b(:RGBA_COLOR, "rgba(100|150,255)", :NULL)
@@ -448,5 +449,15 @@ class TestColorsRegex < MiniTest::Test
     assert_match_b(:RGBAPERC_COLOR, "rgba(100%,15%,0%, 1.0)", :ENTIRE)
     assert_match_b(:RGBAPERC_COLOR, "rgba(100,150,255)", :NULL)
     assert_match_b(:RGBAPERC_COLOR, "rgba(350, 150,255)", :NULL)
+  end
+  
+  def test_css_colors
+    assert_match_b(:CSS_COLORS, "rgba(100%,15%,0%, 1.0)", :ENTIRE)
+    assert_match_b(:CSS_COLORS, "rgba(100,150,255, 0.5)", :ENTIRE)
+    assert_match_b(:CSS_COLORS, "rgb(100%,15%,0%)", :ENTIRE)
+    assert_match_b(:CSS_COLORS, "rgb(100,150,255)", :ENTIRE)
+    assert_match_b(:CSS_COLORS, "#00ff00", :ENTIRE)
+    assert_match_b(:CSS_COLORS, "#0f0", :ENTIRE)
+    assert_match_b(:CSS_COLORS, "#00ff00ff", :ENTIRE)
   end
 end
