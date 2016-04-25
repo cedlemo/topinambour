@@ -84,13 +84,15 @@ SECTOOLTIP
   def self.generate_open_menu_button(window)
     gen_icon_button("open-menu-symbolic", "Main Menu") do |button|
       builder = Gtk::Builder.new(:resource => "/com/github/cedlemo/topinambour/window-menu.ui")
-      menu = Gtk::Menu.new(builder["winmenu"])
-      menu.attach_to_widget(button)
-      menu.children[0].signal_connect("activate") { window.show_css_editor }
-
-      menu.show_all
       event = Gtk.current_event
-      menu.popup(nil, nil, event.button, event.time)
+      menu = Gtk::Popover.new(button, builder["winmenu"])
+      x, y = event.window.coords_to_parent(event.x,
+                                         event.y)
+      rect = Gdk::Rectangle.new(x - button.allocation.x,
+                                y - button.allocation.y,
+                                1, 1)
+      menu.set_pointing_to(rect)
+      menu.show
     end
   end
 
@@ -111,6 +113,7 @@ SECTOOLTIP
       window.show_terminal_chooser
     end
   end
+  
   def self.gen_icon_button(icon_name, tooltip)
     button = Gtk::Button.new
     image = Gtk::Image.new(:icon_name => icon_name, :size => :button)
