@@ -24,6 +24,15 @@ module TopinambourStyleProperties
                             GLib::Param::WRITABLE)
   end
 
+  def generate_boolean_rw_property(name, args)
+    GLib::Param::Boolean.new(name.downcase,
+                             name.capitalize,
+                             name.upcase,
+                             args,
+                             GLib::Param::READABLE |
+                             GLib::Param::WRITABLE)
+  end
+
   def generate_int_rw_property(name, args)
     GLib::Param::Int.new(name.downcase,
                          name.capitalize,
@@ -68,13 +77,6 @@ DEFAULT_TERMINAL_FONT = "Monospace 11"
 
 # boolean :
 #
-# audible_bell
-# allow_bold
-# scroll_on_output
-# scroll_on_keystroke
-# rewrap_on_resize
-# mouse_autohide
-#
 # VteCursorShape :
 # cursor_shape
 #   VTE_CURSOR_SHAPE_BLOCK      Draw a block cursor. This is the default.
@@ -107,9 +109,14 @@ class TopinambourTerminal < Vte::Terminal
                   name,
                   GLib::Type["GdkRGBA"])
   end
-  install_style("boxed",
-                "font",
+  install_style("boxed", "font",
                 GLib::Type["PangoFontDescription"])
+  install_style("boolean", "audible_bell", false)
+  install_style("boolean", "allow_bold", true)
+  install_style("boolean", "scroll_on_output", true)
+  install_style("boolean", "scroll_on_keystroke", true)
+  install_style("boolean", "rewrap_on_resize", true)
+  install_style("boolean", "mouse_autohide", true)
 end
 
 class TopinambourWindow < Gtk::ApplicationWindow
