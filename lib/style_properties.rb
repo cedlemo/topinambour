@@ -42,6 +42,15 @@ module TopinambourStyleProperties
                          GLib::Param::WRITABLE)
   end
 
+  def generate_enum_rw_property(name, args)
+    GLib::Param::Enum.new(name.downcase,
+                          name.capitalize,
+                          name.upcase,
+                          *args,
+                          GLib::Param::READABLE |
+                          GLib::Param::WRITABLE)
+  end
+
   def generate_boxed_rw_property(name, args)
     GLib::Param::Boxed.new(name.downcase,
                            name.capitalize,
@@ -71,34 +80,8 @@ TERMINAL_COLOR_NAMES = [:foreground, :background, :black, :red, :green, :yellow,
                        ]
 DEFAULT_TERMINAL_COLORS = %w(#aeafad #323232 #000000 #b9214f #A6E22E #ff9800
                              #3399ff #8e33ff #06a2dc #B0B0B0 #5D5D5D #ff5c8d
-                             #CDEE69 #ffff00 #9CD9F0 #FBB1F9 #77DFD8 #F7F7F7
-                            )
+                             #CDEE69 #ffff00 #9CD9F0 #FBB1F9 #77DFD8 #F7F7F7)
 DEFAULT_TERMINAL_FONT = "Monospace 11"
-
-# boolean :
-#
-# VteCursorShape :
-# cursor_shape
-#   VTE_CURSOR_SHAPE_BLOCK      Draw a block cursor. This is the default.
-#   VTE_CURSOR_SHAPE_IBEAM      Draw a vertical bar on the left side of character. 
-#                               This is similar to the default cursor for other GTK+ widgets.
-#   VTE_CURSOR_SHAPE_UNDERLINE  Draw a horizontal bar below the character.
-#
-# VteCursorBlinkMode
-#  cursor_blink_mode
-#   VTE_CURSOR_BLINK_SYSTEM Follow GTK+ settings for cursor blinking.
-#   VTE_CURSOR_BLINK_ON     Cursor blinks.
-#   VTE_CURSOR_BLINK_OFF    Cursor does not blink.
-#
-# VteEraseBinding
-#  backspace_binding
-#  delete_binding
-#    VTE_ERASE_AUTO For backspace, attempt to determine the right value from the 
-#                   terminal's IO settings. For delete, use the control sequence.
-#    VTE_ERASE_ASCII_BACKSPACE Send an ASCII backspace character (0x08).
-#    VTE_ERASE_ASCII_DELETE    Send an ASCII delete character (0x7F).
-#    VTE_ERASE_DELETE_SEQUENCE Send the "@7 " control sequence.
-#    VTE_ERASE_TTY             Send terminal's "erase" setting.
 
 class TopinambourTerminal < Vte::Terminal
   extend TopinambourStyleProperties
@@ -117,6 +100,14 @@ class TopinambourTerminal < Vte::Terminal
   install_style("boolean", "scroll_on_keystroke", true)
   install_style("boolean", "rewrap_on_resize", true)
   install_style("boolean", "mouse_autohide", true)
+  install_style("enum", "cursor_shape", [GLib::Type["VteCursorShape"],
+                                         Vte::CursorShape::BLOCK])
+  install_style("enum", "cursor_blink", [GLib::Type["VteCursorBlinkMode"],
+                                         Vte::CursorBlinkMode::SYSTEM])
+  install_style("enum", "backspace_binding", [GLib::Type["VteEraseBinding"],
+                                              Vte::EraseBinding::AUTO])
+  install_style("enum", "delete_binding", [GLib::Type["VteEraseBinding"],
+                                           Vte::EraseBinding::AUTO])
 end
 
 class TopinambourWindow < Gtk::ApplicationWindow
