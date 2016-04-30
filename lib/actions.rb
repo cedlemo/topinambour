@@ -47,7 +47,7 @@ module TopinambourActions
   def self.generate_preferences_action(application)
     action = generate_action("preferences") do |_act, _param|
       dialog = TopinambourPreferences.new(:title => "Preferences", :parent => application.windows.first)
-      dialog.show
+      dialog.show_all
     end
     action
   end
