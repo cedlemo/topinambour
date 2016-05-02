@@ -5,6 +5,7 @@
     <file preprocess="xml-stripblanks">app-menu.ui</file>
     <file preprocess="xml-stripblanks">window-menu.ui</file>
     <file preprocess="xml-stripblanks">terminal-menu.ui</file>
+    <file preprocess="xml-stripblanks">prefs-dialog.ui</file>
     <file>topinambour.css</file>
     <file>application-exit-symbolic.svg</file>
     <file>color-select-symbolic.svg</file>
