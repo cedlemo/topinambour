@@ -17,13 +17,17 @@
     <property name="title" translatable="yes">Preferences</property>
     <property name="modal">True</property>
     <property name="window_position">center</property>
+    <property name="default_width">800</property>
+    <property name="default_height">400</property>
     <property name="destroy_with_parent">True</property>
+    <property name="icon_name">preferences-system</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
       <object class="GtkBox">
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <property name="spacing">2</property>
+        <property name="baseline_position">top</property>
         <child internal-child="action_area">
           <object class="GtkButtonBox">
             <property name="can_focus">False</property>
@@ -205,6 +209,33 @@
                             <property name="position">6</property>
                           </packing>
                         </child>
+                        <child>
+                          <object class="GtkButton" id="css_editor_button">
+                            <property name="label" translatable="yes">Css Editor Style</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">7</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="pixel_size">0</property>
+                            <property name="icon_name">utilities-terminal</property>
+                            <property name="icon_size">6</property>
+                          </object>
+                          <packing>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
+                            <property name="position">8</property>
+                          </packing>
+                        </child>
                       </object>
                     </child>
                   </object>
@@ -239,166 +270,300 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="orientation">vertical</property>
+                        <property name="baseline_position">bottom</property>
                         <child>
-                          <object class="GtkLabel" id="audible_bell_label">
+                          <object class="GtkGrid">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="halign">start</property>
-                            <property name="valign">start</property>
-                            <property name="label" translatable="yes">Audible Bell</property>
+                            <property name="row_homogeneous">True</property>
+                            <property name="column_homogeneous">True</property>
+                            <child>
+                              <object class="GtkLabel" id="audible_bell_label">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="halign">start</property>
+                                <property name="valign">start</property>
+                                <property name="label" translatable="yes">Audible Bell</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkSwitch" id="audible_bell_switch">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="halign">end</property>
+                                <property name="valign">center</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="top_attach">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="allow_bold_label">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="halign">start</property>
+                                <property name="valign">start</property>
+                                <property name="label" translatable="yes">Allow Bold</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkSwitch" id="allow_bold_switch">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="halign">end</property>
+                                <property name="valign">start</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="top_attach">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="scroll_on_output_label">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="halign">start</property>
+                                <property name="valign">start</property>
+                                <property name="label" translatable="yes">Scroll On Output</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">2</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkSwitch" id="scroll_on_output_switch">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="halign">end</property>
+                                <property name="valign">start</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="top_attach">2</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="scroll_on_keystroke_label">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="halign">start</property>
+                                <property name="valign">start</property>
+                                <property name="label" translatable="yes">Scroll On Keystroke</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">3</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkSwitch" id="scroll_on_keystroke_switch">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="halign">end</property>
+                                <property name="valign">start</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="top_attach">3</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="rewrap_on_resize_label">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="halign">start</property>
+                                <property name="valign">start</property>
+                                <property name="label" translatable="yes">Rewrap On Resize</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">4</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkSwitch" id="rewrap_on_resize_switch">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="halign">end</property>
+                                <property name="valign">start</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="top_attach">4</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkSwitch" id="mouse_autohide_switch">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="halign">end</property>
+                                <property name="valign">start</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="top_attach">5</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="mouse_autohide_label1">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="halign">start</property>
+                                <property name="valign">start</property>
+                                <property name="label" translatable="yes">Mouse Autohide</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">5</property>
+                              </packing>
+                            </child>
                           </object>
                           <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
                             <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkSwitch" id="audible_bell_switch">
+                          <object class="GtkLabel" id="cursor_shape_label">
                             <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="halign">end</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">start</property>
                             <property name="valign">start</property>
+                            <property name="label" translatable="yes">Cursor Shape</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
-                            <property name="fill">True</property>
+                            <property name="fill">False</property>
                             <property name="position">1</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkLabel" id="allow_bold_label">
+                          <object class="GtkComboBoxText" id="cursor_shape_sel">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="halign">start</property>
                             <property name="valign">start</property>
-                            <property name="label" translatable="yes">Allow Bold</property>
+                            <property name="active_id">block_id</property>
+                            <items>
+                              <item id="block_id" translatable="yes">BLOCK</item>
+                              <item id="ibeam_id" translatable="yes">IBEAM</item>
+                              <item id="underline_id" translatable="yes">UNDERLINE</item>
+                            </items>
                           </object>
                           <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
                             <property name="position">2</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkSwitch" id="allow_bold_switch">
+                          <object class="GtkLabel" id="cursor_blink_label">
                             <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="halign">end</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">start</property>
                             <property name="valign">start</property>
+                            <property name="label" translatable="yes">Cursor Blink</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
-                            <property name="fill">True</property>
+                            <property name="fill">False</property>
                             <property name="position">3</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkLabel" id="scroll_on_output_label">
+                          <object class="GtkComboBoxText" id="cursor_blink_sel">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="halign">start</property>
                             <property name="valign">start</property>
-                            <property name="label" translatable="yes">Scroll On Output</property>
+                            <property name="active_id">system_id</property>
+                            <items>
+                              <item id="system_id" translatable="yes">SYSTEM</item>
+                              <item id="on_id" translatable="yes">ON</item>
+                              <item id="off_id" translatable="yes">OFF</item>
+                            </items>
                           </object>
                           <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
                             <property name="position">4</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkSwitch" id="scroll_on_output_switch">
+                          <object class="GtkLabel" id="back_space_binding_label">
                             <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="halign">end</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">start</property>
                             <property name="valign">start</property>
+                            <property name="label" translatable="yes">Backspace Binding</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
-                            <property name="fill">True</property>
+                            <property name="fill">False</property>
                             <property name="position">5</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkLabel" id="scroll_on_keystroke_label">
+                          <object class="GtkComboBoxText" id="backspace_binding_sel">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="halign">start</property>
                             <property name="valign">start</property>
-                            <property name="label" translatable="yes">Scroll On Keystroke</property>
+                            <property name="active_id">auto_id</property>
+                            <items>
+                              <item id="auto_id" translatable="yes">AUTO</item>
+                              <item id="ascii_backspace_id" translatable="yes">ASCII_BACKSPACE</item>
+                              <item id="ascii_delete_id" translatable="yes">ASCII_DELETE</item>
+                              <item id="delete_sequence_id" translatable="yes">DELETE_SEQUENCE</item>
+                              <item id="tty_id" translatable="yes">TTY</item>
+                            </items>
                           </object>
                           <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
                             <property name="position">6</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkSwitch" id="scroll_on_keystroke_switch">
+                          <object class="GtkLabel" id="delete_binding_label1">
                             <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="halign">end</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">start</property>
                             <property name="valign">start</property>
+                            <property name="label" translatable="yes">Delete Binding</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
-                            <property name="fill">True</property>
+                            <property name="fill">False</property>
                             <property name="position">7</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkLabel" id="rewrap_on_resize_label">
+                          <object class="GtkComboBoxText" id="delete_binding_sel">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="halign">start</property>
                             <property name="valign">start</property>
-                            <property name="label" translatable="yes">Rewrap On Resize</property>
+                            <property name="active_id">auto_id</property>
+                            <items>
+                              <item id="auto_id" translatable="yes">AUTO</item>
+                              <item id="ascii_backspace_id" translatable="yes">ASCII_BACKSPACE</item>
+                              <item id="ascii_delete_id" translatable="yes">ASCII_DELETE</item>
+                              <item id="delete_sequence_id" translatable="yes">DELETE_SEQUENCE</item>
+                              <item id="tty_id" translatable="yes">TTY</item>
+                            </items>
                           </object>
                           <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
                             <property name="position">8</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkSwitch" id="rewrap_on_resize_switch">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="halign">end</property>
-                            <property name="valign">start</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">9</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="mouse_autohide_label">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="halign">start</property>
-                            <property name="valign">start</property>
-                            <property name="label" translatable="yes">Mouse Autohide</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                            <property name="position">10</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkSwitch" id="mouse_autohide_switch">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="halign">end</property>
-                            <property name="valign">start</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">11</property>
                           </packing>
                         </child>
                       </object>
@@ -428,10 +593,10 @@
         </child>
       </object>
     </child>
-  <action-widgets>
-    <action-widget response="cancel">button_cancel</action-widget>
-    <action-widget response="ok" default="true">button_validate</action-widget>
-    <action-widget response="apply">button_apply</action-widget>
-  </action-widgets>
+    <action-widgets>
+      <action-widget response="0">button_validate</action-widget>
+      <action-widget response="0">button_apply</action-widget>
+      <action-widget response="0">button_cancel</action-widget>
+    </action-widgets>
   </object>
 </interface>

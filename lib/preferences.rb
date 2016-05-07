@@ -19,38 +19,39 @@ module TopinambourPreferences
   def self.generate_dialog(parent)
     builder = Gtk::Builder.new(:resource => "/com/github/cedlemo/topinambour/prefs-dialog.ui")
     dialog = builder["Preferences_dialog"]
+    #dialog.set_default_size(800, 400)
     dialog.transient_for = parent
     dialog.signal_connect "response" do |widget, response|
       case response 
       when Gtk::ResponseType::OK
-        on_OK_response(widget)
+        on_ok_response(widget)
       when Gtk::ResponseType::APPLY
-        on_APPLY_response(widget)
+        on_apply_response(widget)
       when Gtk::ResponseType::CANCEL
-        on_CANCEL_response(widget)
+        on_cancel_response(widget)
       else
-        on_OTHER_response(widget)
+        on_other_response(widget)
       end
     end
     dialog
   end
 
-  def self.on_OK_response(widget)
+  def self.on_ok_response(widget)
     puts "accept"
     widget.destroy
   end
 
-  def self.on_APPLY_response(widget)
+  def self.on_apply_response(widget)
     puts "apply"
     widget.destroy
   end
 
-  def self.on_CANCEL_response(widget)
+  def self.on_cancel_response(widget)
     puts "cancel"
     widget.destroy
   end
   
-  def self.on_OTHER_response(widget)
+  def self.on_other_response(widget)
     widget.destroy
   end
 end
