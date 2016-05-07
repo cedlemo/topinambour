@@ -1,11 +1,12 @@
 Urgent:
-  can we create the headerbar in the xml/ui file
-  centralize all the properties in lib/style_properties.rb
-  add regex like color (hexadecimal and rgb like in css) with button in contextual menu for it
   generate a preferences window/ tab in order to set them easily
+  expand color regexes in order to match color names (red, blue ...)
   generate a plugin system and add the resize little window in it
 
 Ideas:
+  can we create the headerbar in the xml/ui file
+  Add shortcut Ctr+Shit + mouse scroll -> increase/decrease opacity
+  Add shortcut that just show the title bar of the terminal
   Use a treeview or listbox for terminal chooser
   Try create a tab that displays extending tab informations (name, pixbuff, process, pid, dir) in treeview
   Allow rename tab in terminal chooser
