@@ -16,7 +16,7 @@
 
 class TopinambourWindow
   attr_reader :notebook, :bar, :overlay, :current_label, :current_tab, :css_editor_style
-
+  attr_accessor :shell
   def initialize(application)
     super(:application => application)
     set_icon_name("utilities-terminal-symbolic")
