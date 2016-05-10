@@ -467,7 +467,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkLabel" id="cursor_blink_label">
+                          <object class="GtkLabel" id="cursor_blink_mode_label">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="halign">start</property>
@@ -481,7 +481,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkComboBoxText" id="cursor_blink_sel">
+                          <object class="GtkComboBoxText" id="cursor_blink_mode_sel">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="valign">start</property>
