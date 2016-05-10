@@ -19,10 +19,9 @@ module TopinambourPreferences
   def self.generate_dialog(parent)
     builder = Gtk::Builder.new(:resource => "/com/github/cedlemo/topinambour/prefs-dialog.ui")
     dialog = builder["Preferences_dialog"]
-    #dialog.set_default_size(800, 400)
     dialog.transient_for = parent
     dialog.signal_connect "response" do |widget, response|
-      case response 
+      case response
       when Gtk::ResponseType::OK
         on_ok_response(widget)
       when Gtk::ResponseType::APPLY
@@ -33,6 +32,7 @@ module TopinambourPreferences
         on_other_response(widget)
       end
     end
+    add_actions(builder, parent)
     dialog
   end
 
@@ -50,8 +50,30 @@ module TopinambourPreferences
     puts "cancel"
     widget.destroy
   end
-  
+
   def self.on_other_response(widget)
     widget.destroy
+  end
+
+  def self.add_actions(builder, parent)
+    %w(audible_bell allow_bold scroll_on_output
+       scroll_on_keystroke rewrap_on_resize mouse_autohide).each do |prop_name|
+      gen_switch_actions(prop_name, builder, parent)
+    end
+  end
+
+  def self.gen_switch_actions(property_name, builder, parent)
+    switch = builder["#{property_name}_switch"]
+    switch.active = parent.notebook.current.style_get_property(property_name)
+    switch.signal_connect "state-set" do |_widget, state|
+      send_to_all_terminals(parent.notebook, "#{property_name}=", state)
+      false
+    end
+  end
+  def self.send_to_all_terminals(notebook, method_name, values)
+    notebook.each do |tab|
+      next unless tab.class == TopinambourTerminal
+      tab.send(method_name, *values)
+    end
   end
 end
