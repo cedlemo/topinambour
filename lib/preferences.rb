@@ -20,6 +20,7 @@ module TopinambourPreferences
     builder = Gtk::Builder.new(:resource => "/com/github/cedlemo/topinambour/prefs-dialog.ui")
     dialog = builder["Preferences_dialog"]
     dialog.transient_for = parent
+    add_source_view_style_chooser(builder, parent)
     add_actions(builder, parent)
     connect_response(dialog)
     dialog
@@ -97,9 +98,7 @@ module TopinambourPreferences
 
     entry.signal_connect "icon-release" do |widget, position|
       if position == :secondary
-        prop_value = parent.style_get_property(property_name)
-        parent.shell = prop_value
-        widget.text = prop_value
+        parent.shell = widget.text = parent.style_get_property(property_name)
       end
     end
   end
@@ -112,5 +111,19 @@ module TopinambourPreferences
       value = widget.active_id.gsub(/_id/,"").to_sym
       send_to_all_terminals(parent.notebook, "#{property_name}=", value)
     end
+  end
+  
+  # Hack because when added via glade, the builder fail to load the ui.
+  def self.add_source_view_style_chooser(builder, parent)
+    box = builder["gen_prefs_box"]
+    button = GtkSource::StyleSchemeChooserButton.new
+    sm = GtkSource::StyleSchemeManager.default
+    puts parent.css_editor_style
+    button.style_scheme = sm.get_scheme(parent.css_editor_style)
+    button.show
+    button.signal_connect "style-updated" do |widget|
+      parent.css_editor_style = widget.style_scheme.id
+    end
+    box.pack_start(button, :expand => true, :fill => false)
   end
 end
