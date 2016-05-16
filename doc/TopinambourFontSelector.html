@@ -272,9 +272,7 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
 53
 54
 55
-56
-57
-58</pre>
+56</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/font_selector.rb', line 18</span>
@@ -309,9 +307,7 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
     <span class='id identifier rubyid_font'>font</span> <span class='op'>=</span> <span class='ivar'>@window</span><span class='period'>.</span><span class='id identifier rubyid_notebook'>notebook</span><span class='period'>.</span><span class='id identifier rubyid_current'>current</span><span class='period'>.</span><span class='id identifier rubyid_font'>font</span>
     <span class='id identifier rubyid_new_props'>new_props</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>-TopinambourTerminal-font</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_font'>font</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
     <span class='id identifier rubyid_toplevel'>toplevel</span><span class='period'>.</span><span class='id identifier rubyid_application'>application</span><span class='period'>.</span><span class='id identifier rubyid_update_css'>update_css</span><span class='lparen'>(</span><span class='id identifier rubyid_new_props'>new_props</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_toplevel'>toplevel</span><span class='period'>.</span><span class='id identifier rubyid_notebook'>notebook</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_tab'>tab</span><span class='op'>|</span>
-      <span class='id identifier rubyid_tab'>tab</span><span class='period'>.</span><span class='id identifier rubyid_set_font'>set_font</span><span class='lparen'>(</span><span class='id identifier rubyid_font'>font</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_tab'>tab</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span> <span class='op'>==</span> <span class='const'>TopinambourTerminal</span>
-    <span class='kw'>end</span>
+    <span class='id identifier rubyid_toplevel'>toplevel</span><span class='period'>.</span><span class='id identifier rubyid_notebook'>notebook</span><span class='period'>.</span><span class='id identifier rubyid_send_to_all_terminals'>send_to_all_terminals</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>set_font</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_font'>font</span><span class='rparen'>)</span>
     <span class='id identifier rubyid_toplevel'>toplevel</span><span class='period'>.</span><span class='id identifier rubyid_exit_overlay_mode'>exit_overlay_mode</span>
   <span class='kw'>end</span>
   <span class='id identifier rubyid_pack_start'>pack_start</span><span class='lparen'>(</span><span class='id identifier rubyid_save_button'>save_button</span><span class='comma'>,</span> <span class='symbol'>:expand</span> <span class='op'>=&gt;</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='symbol'>:fill</span> <span class='op'>=&gt;</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='symbol'>:padding</span> <span class='op'>=&gt;</span> <span class='int'>0</span><span class='rparen'>)</span>
@@ -379,9 +375,9 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
 </div>
 
     <div id="footer">
-  Generated on Sat Apr 23 14:55:36 2016 by
+  Generated on Mon May 16 19:40:39 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.3.0).
+  0.8.7.6 (ruby-2.3.1).
 </div>
 
   </body>

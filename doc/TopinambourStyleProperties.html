@@ -131,7 +131,51 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#generate_boolean_rw_property-instance_method" title="#generate_boolean_rw_property (instance method)">- (Object) <strong>generate_boolean_rw_property</strong>(name, args) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#generate_boxed_rw_property-instance_method" title="#generate_boxed_rw_property (instance method)">- (Object) <strong>generate_boxed_rw_property</strong>(name, args) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#generate_enum_rw_property-instance_method" title="#generate_enum_rw_property (instance method)">- (Object) <strong>generate_enum_rw_property</strong>(name, args) </a>
     
 
     
@@ -248,49 +292,9 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="generate_boxed_rw_property-instance_method">
+  <h3 class="signature first" id="generate_boolean_rw_property-instance_method">
   
-    - (<tt>Object</tt>) <strong>generate_boxed_rw_property</strong>(name, args) 
-  
-
-  
-
-  
-</h3><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-36
-37
-38
-39
-40
-41
-42
-43</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/style_properties.rb', line 36</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_generate_boxed_rw_property'>generate_boxed_rw_property</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span>
-  <span class='const'>GLib</span><span class='op'>::</span><span class='const'>Param</span><span class='op'>::</span><span class='const'>Boxed</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='period'>.</span><span class='id identifier rubyid_downcase'>downcase</span><span class='comma'>,</span>
-                         <span class='id identifier rubyid_name'>name</span><span class='period'>.</span><span class='id identifier rubyid_capitalize'>capitalize</span><span class='comma'>,</span>
-                         <span class='id identifier rubyid_name'>name</span><span class='period'>.</span><span class='id identifier rubyid_upcase'>upcase</span><span class='comma'>,</span>
-                         <span class='id identifier rubyid_args'>args</span><span class='comma'>,</span>
-                         <span class='const'>GLib</span><span class='op'>::</span><span class='const'>Param</span><span class='op'>::</span><span class='const'>READABLE</span> <span class='op'>|</span>
-                         <span class='const'>GLib</span><span class='op'>::</span><span class='const'>Param</span><span class='op'>::</span><span class='const'>WRITABLE</span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="generate_int_rw_property-instance_method">
-  
-    - (<tt>Object</tt>) <strong>generate_int_rw_property</strong>(name, args) 
+    - (<tt>Object</tt>) <strong>generate_boolean_rw_property</strong>(name, args) 
   
 
   
@@ -313,6 +317,126 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/style_properties.rb', line 27</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_generate_boolean_rw_property'>generate_boolean_rw_property</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span>
+  <span class='const'>GLib</span><span class='op'>::</span><span class='const'>Param</span><span class='op'>::</span><span class='const'>Boolean</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='period'>.</span><span class='id identifier rubyid_downcase'>downcase</span><span class='comma'>,</span>
+                           <span class='id identifier rubyid_name'>name</span><span class='period'>.</span><span class='id identifier rubyid_capitalize'>capitalize</span><span class='comma'>,</span>
+                           <span class='id identifier rubyid_name'>name</span><span class='period'>.</span><span class='id identifier rubyid_upcase'>upcase</span><span class='comma'>,</span>
+                           <span class='id identifier rubyid_args'>args</span><span class='comma'>,</span>
+                           <span class='const'>GLib</span><span class='op'>::</span><span class='const'>Param</span><span class='op'>::</span><span class='const'>READABLE</span> <span class='op'>|</span>
+                           <span class='const'>GLib</span><span class='op'>::</span><span class='const'>Param</span><span class='op'>::</span><span class='const'>WRITABLE</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="generate_boxed_rw_property-instance_method">
+  
+    - (<tt>Object</tt>) <strong>generate_boxed_rw_property</strong>(name, args) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+54
+55
+56
+57
+58
+59
+60
+61</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/style_properties.rb', line 54</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_generate_boxed_rw_property'>generate_boxed_rw_property</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span>
+  <span class='const'>GLib</span><span class='op'>::</span><span class='const'>Param</span><span class='op'>::</span><span class='const'>Boxed</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='period'>.</span><span class='id identifier rubyid_downcase'>downcase</span><span class='comma'>,</span>
+                         <span class='id identifier rubyid_name'>name</span><span class='period'>.</span><span class='id identifier rubyid_capitalize'>capitalize</span><span class='comma'>,</span>
+                         <span class='id identifier rubyid_name'>name</span><span class='period'>.</span><span class='id identifier rubyid_upcase'>upcase</span><span class='comma'>,</span>
+                         <span class='id identifier rubyid_args'>args</span><span class='comma'>,</span>
+                         <span class='const'>GLib</span><span class='op'>::</span><span class='const'>Param</span><span class='op'>::</span><span class='const'>READABLE</span> <span class='op'>|</span>
+                         <span class='const'>GLib</span><span class='op'>::</span><span class='const'>Param</span><span class='op'>::</span><span class='const'>WRITABLE</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="generate_enum_rw_property-instance_method">
+  
+    - (<tt>Object</tt>) <strong>generate_enum_rw_property</strong>(name, args) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+45
+46
+47
+48
+49
+50
+51
+52</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/style_properties.rb', line 45</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_generate_enum_rw_property'>generate_enum_rw_property</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span>
+  <span class='const'>GLib</span><span class='op'>::</span><span class='const'>Param</span><span class='op'>::</span><span class='const'>Enum</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='period'>.</span><span class='id identifier rubyid_downcase'>downcase</span><span class='comma'>,</span>
+                        <span class='id identifier rubyid_name'>name</span><span class='period'>.</span><span class='id identifier rubyid_capitalize'>capitalize</span><span class='comma'>,</span>
+                        <span class='id identifier rubyid_name'>name</span><span class='period'>.</span><span class='id identifier rubyid_upcase'>upcase</span><span class='comma'>,</span>
+                        <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span>
+                        <span class='const'>GLib</span><span class='op'>::</span><span class='const'>Param</span><span class='op'>::</span><span class='const'>READABLE</span> <span class='op'>|</span>
+                        <span class='const'>GLib</span><span class='op'>::</span><span class='const'>Param</span><span class='op'>::</span><span class='const'>WRITABLE</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="generate_int_rw_property-instance_method">
+  
+    - (<tt>Object</tt>) <strong>generate_int_rw_property</strong>(name, args) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+36
+37
+38
+39
+40
+41
+42
+43</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/style_properties.rb', line 36</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_generate_int_rw_property'>generate_int_rw_property</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span>
   <span class='const'>GLib</span><span class='op'>::</span><span class='const'>Param</span><span class='op'>::</span><span class='const'>Int</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='period'>.</span><span class='id identifier rubyid_downcase'>downcase</span><span class='comma'>,</span>
@@ -342,15 +466,15 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
       <pre class="lines">
 
 
-45
-46
-47
-48
-49
-50</pre>
+63
+64
+65
+66
+67
+68</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/style_properties.rb', line 45</span>
+      <pre class="code"><span class="info file"># File 'lib/style_properties.rb', line 63</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_generate_rw_property'>generate_rw_property</span><span class='lparen'>(</span><span class='id identifier rubyid_type'>type</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_type'>type</span> <span class='op'>=</span> <span class='id identifier rubyid_type'>type</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='period'>.</span><span class='id identifier rubyid_downcase'>downcase</span>
@@ -418,13 +542,13 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
       <pre class="lines">
 
 
-52
-53
-54
-55</pre>
+70
+71
+72
+73</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/style_properties.rb', line 52</span>
+      <pre class="code"><span class="info file"># File 'lib/style_properties.rb', line 70</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_install_style'>install_style</span><span class='lparen'>(</span><span class='id identifier rubyid_type'>type</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_property'>property</span> <span class='op'>=</span> <span class='id identifier rubyid_generate_rw_property'>generate_rw_property</span><span class='lparen'>(</span><span class='id identifier rubyid_type'>type</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span>
@@ -440,9 +564,9 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
 </div>
 
     <div id="footer">
-  Generated on Sat Apr 23 14:55:35 2016 by
+  Generated on Mon May 16 19:40:39 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.3.0).
+  0.8.7.6 (ruby-2.3.1).
 </div>
 
   </body>

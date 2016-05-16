@@ -215,6 +215,28 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#generate_css_editor_action-class_method" title="generate_css_editor_action (class method)">+ (Object) <strong>generate_css_editor_action</strong>(application) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#generate_preferences_action-class_method" title="generate_preferences_action (class method)">+ (Object) <strong>generate_preferences_action</strong>(application) </a>
     
 
@@ -360,17 +382,17 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
       <pre class="lines">
 
 
-77
-78
-79
-80
-81</pre>
+87
+88
+89
+90
+91</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/actions.rb', line 77</span>
+      <pre class="code"><span class="info file"># File 'lib/actions.rb', line 87</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_add_actions_to'>add_actions_to</span><span class='lparen'>(</span><span class='id identifier rubyid_application'>application</span><span class='rparen'>)</span>
-  <span class='qwords_beg'>%w(</span><span class='tstring_content'>about</span><span class='words_sep'> </span><span class='tstring_content'>preferences</span><span class='words_sep'> </span><span class='tstring_content'>quit</span><span class='words_sep'> </span><span class='tstring_content'>term_copy</span><span class='words_sep'> </span><span class='tstring_content'>term_paste</span><span class='words_sep'>)</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_name'>name</span><span class='op'>|</span>
+  <span class='qwords_beg'>%w(</span><span class='tstring_content'>about</span><span class='words_sep'> </span><span class='tstring_content'>preferences</span><span class='words_sep'> </span><span class='tstring_content'>quit</span><span class='words_sep'> </span><span class='tstring_content'>term_copy</span><span class='words_sep'> </span><span class='tstring_content'>term_paste</span><span class='words_sep'> </span><span class='tstring_content'>css_editor</span><span class='words_sep'>)</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_name'>name</span><span class='op'>|</span>
     <span class='id identifier rubyid_add_action_to'>add_action_to</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_application'>application</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
@@ -454,9 +476,9 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="generate_preferences_action-class_method">
+  <h3 class="signature " id="generate_css_editor_action-class_method">
   
-    + (<tt>Object</tt>) <strong>generate_preferences_action</strong>(application) 
+    + (<tt>Object</tt>) <strong>generate_css_editor_action</strong>(application) 
   
 
   
@@ -478,9 +500,51 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
     <td>
       <pre class="code"><span class="info file"># File 'lib/actions.rb', line 40</span>
 
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_generate_css_editor_action'>generate_css_editor_action</span><span class='lparen'>(</span><span class='id identifier rubyid_application'>application</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_action'>action</span> <span class='op'>=</span> <span class='id identifier rubyid_generate_action'>generate_action</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>css_editor</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid__act'>_act</span><span class='comma'>,</span> <span class='id identifier rubyid__param'>_param</span><span class='op'>|</span>
+    <span class='id identifier rubyid_application'>application</span><span class='period'>.</span><span class='id identifier rubyid_windows'>windows</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_show_css_editor'>show_css_editor</span>
+  <span class='kw'>end</span>
+  <span class='id identifier rubyid_action'>action</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="generate_preferences_action-class_method">
+  
+    + (<tt>Object</tt>) <strong>generate_preferences_action</strong>(application) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+47
+48
+49
+50
+51
+52
+53
+54
+55</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/actions.rb', line 47</span>
+
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_generate_preferences_action'>generate_preferences_action</span><span class='lparen'>(</span><span class='id identifier rubyid_application'>application</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_action'>action</span> <span class='op'>=</span> <span class='id identifier rubyid_generate_action'>generate_action</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>preferences</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid__act'>_act</span><span class='comma'>,</span> <span class='id identifier rubyid__param'>_param</span><span class='op'>|</span>
-    <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>TODO</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_dialog'>dialog</span> <span class='op'>=</span> <span class='const'>TopinambourPreferences</span><span class='period'>.</span><span class='id identifier rubyid_generate_dialog'>generate_dialog</span><span class='lparen'>(</span><span class='id identifier rubyid_application'>application</span><span class='period'>.</span><span class='id identifier rubyid_windows'>windows</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='rparen'>)</span>
+    
+    <span class='id identifier rubyid_dialog'>dialog</span><span class='period'>.</span><span class='id identifier rubyid_run'>run</span>
+    <span class='id identifier rubyid_application'>application</span><span class='period'>.</span><span class='id identifier rubyid_windows'>windows</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='period'>.</span><span class='id identifier rubyid_notebook'>notebook</span><span class='period'>.</span><span class='id identifier rubyid_current'>current</span><span class='period'>.</span><span class='id identifier rubyid_grab_focus'>grab_focus</span>
   <span class='kw'>end</span>
   <span class='id identifier rubyid_action'>action</span>
 <span class='kw'>end</span></pre>
@@ -504,15 +568,15 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
       <pre class="lines">
 
 
-47
-48
-49
-50
-51
-52</pre>
+57
+58
+59
+60
+61
+62</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/actions.rb', line 47</span>
+      <pre class="code"><span class="info file"># File 'lib/actions.rb', line 57</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_generate_quit_action'>generate_quit_action</span><span class='lparen'>(</span><span class='id identifier rubyid_application'>application</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_action'>action</span> <span class='op'>=</span> <span class='id identifier rubyid_generate_action'>generate_action</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>quit</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid__act'>_act</span><span class='comma'>,</span> <span class='id identifier rubyid__param'>_param</span><span class='op'>|</span>
@@ -540,24 +604,24 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
       <pre class="lines">
 
 
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
 64
 65
 66
 67
-68</pre>
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/actions.rb', line 54</span>
+      <pre class="code"><span class="info file"># File 'lib/actions.rb', line 64</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_generate_term_copy_action'>generate_term_copy_action</span><span class='lparen'>(</span><span class='id identifier rubyid_application'>application</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_action'>action</span> <span class='op'>=</span> <span class='id identifier rubyid_generate_action'>generate_action</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>term_copy</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid__act'>_act</span><span class='comma'>,</span> <span class='id identifier rubyid__param'>_param</span><span class='op'>|</span>
@@ -594,15 +658,15 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
       <pre class="lines">
 
 
-70
-71
-72
-73
-74
-75</pre>
+80
+81
+82
+83
+84
+85</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/actions.rb', line 70</span>
+      <pre class="code"><span class="info file"># File 'lib/actions.rb', line 80</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_generate_term_paste_action'>generate_term_paste_action</span><span class='lparen'>(</span><span class='id identifier rubyid_application'>application</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_action'>action</span> <span class='op'>=</span> <span class='id identifier rubyid_generate_action'>generate_action</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>term_paste</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid__act'>_act</span><span class='comma'>,</span> <span class='id identifier rubyid__param'>_param</span><span class='op'>|</span>
@@ -620,9 +684,9 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
 </div>
 
     <div id="footer">
-  Generated on Sat Apr 23 14:55:35 2016 by
+  Generated on Mon May 16 19:40:39 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.3.0).
+  0.8.7.6 (ruby-2.3.1).
 </div>
 
   </body>

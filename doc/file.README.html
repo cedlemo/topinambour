@@ -70,25 +70,31 @@
 
 <p><a href="https://raw.github.com/cedlemo/topinambour/master/color_selection_screen.gif"><img src="https://raw.github.com/cedlemo/topinambour/master/color_selection_screen.gif" style="width:576px;height:324px;" alt="Color selection gif" /></a></p>
 
-<p>Topinambour is Terminal written with the Gtk3 and Vte3 ruby bindings from the project <a href="https://github.com/ruby-gnome2/ruby-gnome2">ruby-gnome2</a>. I have written it for testing purpose, but Topinambour works well and I use it as my primary terminal emulator.</p>
+<p><a href="https://raw.github.com/cedlemo/topinambour/master/terminal_regex_color.gif"><img src="https://raw.github.com/cedlemo/topinambour/master/terminal_regex_color.gif" style="width:576px;height:324px;" alt="Regex color gif" /></a></p>
+
+<p>Topinambour is Terminal written with the Gtk3 and Vte3 ruby bindings from the project <a href="https://github.com/ruby-gnome2/ruby-gnome2">Ruby-GNOME2</a>. I have written it for testing purpose, but Topinambour works well and I use it as my primary terminal emulator.</p>
 
 <h2 id="features">Features</h2>
 
 <ul>
   <li>Tabs supports</li>
-  <li>Tabs can be reordered or selected through the preview mode ( <code>Shift + Ctrl + o</code> )</li>
+  <li>Tabs can be reordered or selected through the preview mode ( <code>Shift + Ctrl + o</code> ).</li>
   <li>Each tab can be named.</li>
-  <li>The configuration can be done via a Css file</li>
-  <li>Terminal colors can be changed on the fly and saved in the CSS configuration file</li>
-  <li>Terminal font can be changed on the fly and saved in the CSS configuration file</li>
+  <li>The configuration can be done via a Css file.</li>
+  <li>Terminal colors can be changed on the fly and saved in the CSS configuration file.</li>
+  <li>Terminal font can be changed on the fly and saved in the CSS configuration file.</li>
   <li>The Css file can be edited in a tab of Topinambour and saved. Each modifications are applied while you are writting them. (Use <code>Shift + Ctrl + w</code> to close the editor)</li>
+  <li>In the terminals, some patterns can be clicked (urls, emails, color names …) in order to launch the appropriate application or a related dialog window.</li>
   <li>Topinambour allows users to modify existing modules. For example if a user copy the css_editor.rb in the directory <em>~/.config/topinambour/lib/css_editor.rb</em>, he should be able to modify it in order to fit its needs.</li>
 </ul>
 
 <h2 id="todo">TODO:</h2>
 <ul>
-  <li>Extand the regex support for colors pattern (hexadecimal or rgb/css form).</li>
-  <li>Create more Css properties in oder to configure the terminals (cursor shape or blink mode, audible bell or not …)</li>
+  <li>Create more Css properties in order to configure the terminals (cursor shape or blink mode, audible bell or not …)</li>
+  <li>Finish preferences window.</li>
+  <li>Name all the important widget so that they can be easily themed in Css.</li>
+  <li>Write a description of the widgets that have a Css name/Id.</li>
+  <li>Improve the Css editor with a part for the Css parsing error when the user writes. Add a color chooser widget in the related tab.</li>
   <li>Make Topinambour allows users to easily create their own modules. For example create a tab that will act as a MPD client. There will be widgets that control a MPD server and a GtkTree widget that displays the playlist of the MPD server for example.</li>
 </ul>
 
@@ -156,43 +162,26 @@
   -TopinambourWindow-width: 1000;*/
 }</p>
 
-<p>TopinambourWindow GtkHeaderBar GtkEntry{
+<p>TopinambourWindow headerbar entry{
   border-radius: 4px;
-}
-TopinambourWindow GtkOverlay GtkBox#resize_box{
-    background: rgba(49, 150, 188, 0.5);
-    border-top: 1px;
-    border-left: 1px;
-    border-bottom: 1px;
-    border-style: solid;
-    border-color: rgba(49, 150, 188, 1);
-    border-radius: 6px 0px 0px 0px;
-}
-TopinambourWindow GtkOverlay GtkScrolledWindow#terminal_chooser GtkBox{
-    background-color: rgba(49, 150, 188, 0.5);
-    border-top: 1px;
-    border-left: 1px;
-    border-bottom: 1px;
-    border-style: solid;
-    border-color: rgba(49, 150, 188, 1);
-    border-radius: 6px 0px 0px 6px;
 }</p>
 
-<p>TopinambourWindow GtkOverlay GtkScrolledWindow GtkGrid GtkButton {
+<h1 id="overviewbox-">OverviewBox {</h1>
+<p>background-color: rgba(0,0,0,0.2);
+  border: solid 1px rgba(49, 150, 188, 1);
+  border-radius: 6px 0px 0px 6px;
+}</p>
+
+<p>grid button {
   margin: 0px;
-  padding: 0px;
-}</p>
+  padding: 0px;</p>
 
-<p>TopinambourWindow GtkOverlay GtkScrolledWindow GtkGrid GtkButton GtkImage {
+<p>}</p>
+
+<p>grid button image {
   border: solid 3px rgba(0, 0, 0, 0.0);
-}</p>
-
-<p>.tooltip {
-  background:rgba(50, 50, 50,0.5);
-  border:none;
-  color: #ddd;
-  border-top-right-radius: 6px;
-  border-bottom-left-radius: 6px;
+  margin: 0px;<br />
+  padding: 0px;
 }
 ```</p>
 
@@ -261,9 +250,9 @@ any later version.</p>
 </div></div>
 
     <div id="footer">
-  Generated on Sat Apr 23 14:55:35 2016 by
+  Generated on Mon May 16 19:40:39 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.3.0).
+  0.8.7.6 (ruby-2.3.1).
 </div>
 
   </body>

@@ -1,5 +1,28 @@
 Urgent:
   generate a preferences window/ tab in order to set them easily
+  find the best way to : 
+    read the property from the css provider
+    apply them to the object
+
+    modify them from any interface : 
+                                      - color_selector
+                                      - font_selector
+                                      - css_editor
+                                      - preferences window
+  files involved: 
+    * object to configure
+                  - terminal.rb
+                  - window.rb
+    * interface of configuration
+                  - color_selector.rb
+                  - font_selector.rb
+                  - preferences.rb
+    * general
+      style_properties.rb :
+        - define the properties and install them
+        - ?? I should generate the methods that allow to modify them ??
+
+
   expand color regexes in order to match color names (red, blue ...)
   generate a plugin system and add the resize little window in it
 

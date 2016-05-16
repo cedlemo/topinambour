@@ -434,9 +434,6 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
       <pre class="lines">
 
 
-114
-115
-116
 117
 118
 119
@@ -445,10 +442,13 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
 122
 123
 124
-125</pre>
+125
+126
+127
+128</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/headerbar.rb', line 114</span>
+      <pre class="code"><span class="info file"># File 'lib/headerbar.rb', line 117</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_gen_icon_button'>gen_icon_button</span><span class='lparen'>(</span><span class='id identifier rubyid_icon_name'>icon_name</span><span class='comma'>,</span> <span class='id identifier rubyid_tooltip'>tooltip</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_button'>button</span> <span class='op'>=</span> <span class='const'>Gtk</span><span class='op'>::</span><span class='const'>Button</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
@@ -482,14 +482,14 @@ href="http://www.gnu.org/licenses">www.gnu.org/licenses</a>/&gt;.</p>
       <pre class="lines">
 
 
-103
-104
 105
 106
-107</pre>
+107
+108
+109</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/headerbar.rb', line 103</span>
+      <pre class="code"><span class="info file"># File 'lib/headerbar.rb', line 105</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_generate_color_sel_button'>generate_color_sel_button</span><span class='lparen'>(</span><span class='id identifier rubyid_window'>window</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_gen_icon_button'>gen_icon_button</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>color-select-symbolic</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Set colors</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>do</span>
@@ -682,14 +682,14 @@ default label for the current tab
       <pre class="lines">
 
 
-97
-98
 99
 100
-101</pre>
+101
+102
+103</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/headerbar.rb', line 97</span>
+      <pre class="code"><span class="info file"># File 'lib/headerbar.rb', line 99</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_generate_font_sel_button'>generate_font_sel_button</span><span class='lparen'>(</span><span class='id identifier rubyid_window'>window</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_gen_icon_button'>gen_icon_button</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>font-select-symbolic</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Set font</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>do</span>
@@ -835,7 +835,9 @@ default label for the current tab
 92
 93
 94
-95</pre>
+95
+96
+97</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/headerbar.rb', line 84</span>
@@ -843,13 +845,15 @@ default label for the current tab
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_generate_open_menu_button'>generate_open_menu_button</span><span class='lparen'>(</span><span class='id identifier rubyid_window'>window</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_gen_icon_button'>gen_icon_button</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>open-menu-symbolic</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Main Menu</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_button'>button</span><span class='op'>|</span>
     <span class='id identifier rubyid_builder'>builder</span> <span class='op'>=</span> <span class='const'>Gtk</span><span class='op'>::</span><span class='const'>Builder</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='symbol'>:resource</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/com/github/cedlemo/topinambour/window-menu.ui</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_menu'>menu</span> <span class='op'>=</span> <span class='const'>Gtk</span><span class='op'>::</span><span class='const'>Menu</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_builder'>builder</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>winmenu</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_menu'>menu</span><span class='period'>.</span><span class='id identifier rubyid_attach_to_widget'>attach_to_widget</span><span class='lparen'>(</span><span class='id identifier rubyid_button'>button</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_menu'>menu</span><span class='period'>.</span><span class='id identifier rubyid_children'>children</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_signal_connect'>signal_connect</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>activate</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_window'>window</span><span class='period'>.</span><span class='id identifier rubyid_show_css_editor'>show_css_editor</span> <span class='rbrace'>}</span>
-
-    <span class='id identifier rubyid_menu'>menu</span><span class='period'>.</span><span class='id identifier rubyid_show_all'>show_all</span>
     <span class='id identifier rubyid_event'>event</span> <span class='op'>=</span> <span class='const'>Gtk</span><span class='period'>.</span><span class='id identifier rubyid_current_event'>current_event</span>
-    <span class='id identifier rubyid_menu'>menu</span><span class='period'>.</span><span class='id identifier rubyid_popup'>popup</span><span class='lparen'>(</span><span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='id identifier rubyid_event'>event</span><span class='period'>.</span><span class='id identifier rubyid_button'>button</span><span class='comma'>,</span> <span class='id identifier rubyid_event'>event</span><span class='period'>.</span><span class='id identifier rubyid_time'>time</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_menu'>menu</span> <span class='op'>=</span> <span class='const'>Gtk</span><span class='op'>::</span><span class='const'>Popover</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_button'>button</span><span class='comma'>,</span> <span class='id identifier rubyid_builder'>builder</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>winmenu</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_x'>x</span><span class='comma'>,</span> <span class='id identifier rubyid_y'>y</span> <span class='op'>=</span> <span class='id identifier rubyid_event'>event</span><span class='period'>.</span><span class='id identifier rubyid_window'>window</span><span class='period'>.</span><span class='id identifier rubyid_coords_to_parent'>coords_to_parent</span><span class='lparen'>(</span><span class='id identifier rubyid_event'>event</span><span class='period'>.</span><span class='id identifier rubyid_x'>x</span><span class='comma'>,</span>
+                                       <span class='id identifier rubyid_event'>event</span><span class='period'>.</span><span class='id identifier rubyid_y'>y</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_rect'>rect</span> <span class='op'>=</span> <span class='const'>Gdk</span><span class='op'>::</span><span class='const'>Rectangle</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_x'>x</span> <span class='op'>-</span> <span class='id identifier rubyid_button'>button</span><span class='period'>.</span><span class='id identifier rubyid_allocation'>allocation</span><span class='period'>.</span><span class='id identifier rubyid_x'>x</span><span class='comma'>,</span>
+                              <span class='id identifier rubyid_y'>y</span> <span class='op'>-</span> <span class='id identifier rubyid_button'>button</span><span class='period'>.</span><span class='id identifier rubyid_allocation'>allocation</span><span class='period'>.</span><span class='id identifier rubyid_y'>y</span><span class='comma'>,</span>
+                              <span class='int'>1</span><span class='comma'>,</span> <span class='int'>1</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_menu'>menu</span><span class='period'>.</span><span class='id identifier rubyid_set_pointing_to'>set_pointing_to</span><span class='lparen'>(</span><span class='id identifier rubyid_rect'>rect</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_menu'>menu</span><span class='period'>.</span><span class='id identifier rubyid_show'>show</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -906,14 +910,14 @@ default label for the current tab
       <pre class="lines">
 
 
-109
-110
 111
 112
-113</pre>
+113
+114
+115</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/headerbar.rb', line 109</span>
+      <pre class="code"><span class="info file"># File 'lib/headerbar.rb', line 111</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_generate_term_overv_button'>generate_term_overv_button</span><span class='lparen'>(</span><span class='id identifier rubyid_window'>window</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_gen_icon_button'>gen_icon_button</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>emblem-photos-symbolic</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Terminals overview</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>do</span>
@@ -930,9 +934,9 @@ default label for the current tab
 </div>
 
     <div id="footer">
-  Generated on Sat Apr 23 14:55:35 2016 by
+  Generated on Mon May 16 19:40:39 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.3.0).
+  0.8.7.6 (ruby-2.3.1).
 </div>
 
   </body>

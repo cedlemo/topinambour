@@ -110,35 +110,7 @@
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
     
-<p>boolean :</p>
-
-<p>audible_bell allow_bold scroll_on_output scroll_on_keystroke
-rewrap_on_resize mouse_autohide</p>
-
-<p>VteCursorShape : cursor_shape</p>
-
-<pre class="code ruby"><code class="ruby">VTE_CURSOR_SHAPE_BLOCK      Draw a block cursor. This is the default.
-VTE_CURSOR_SHAPE_IBEAM      Draw a vertical bar on the left side of character. 
-                            This is similar to the default cursor for other GTK+ widgets.
-VTE_CURSOR_SHAPE_UNDERLINE  Draw a horizontal bar below the character.</code></pre>
-
-<p>VteCursorBlinkMode</p>
-
-<pre class="code ruby"><code class="ruby">cursor_blink_mode
- VTE_CURSOR_BLINK_SYSTEM Follow GTK+ settings for cursor blinking.
- VTE_CURSOR_BLINK_ON     Cursor blinks.
- VTE_CURSOR_BLINK_OFF    Cursor does not blink.</code></pre>
-
-<p>VteEraseBinding</p>
-
-<pre class="code ruby"><code class="ruby">backspace_binding
-delete_binding
-  VTE_ERASE_AUTO For backspace, attempt to determine the right value from the 
-                 terminal&#39;s IO settings. For delete, use the control sequence.
-  VTE_ERASE_ASCII_BACKSPACE Send an ASCII backspace character (0x08).
-  VTE_ERASE_ASCII_DELETE    Send an ASCII delete character (0x7F).
-  VTE_ERASE_DELETE_SEQUENCE Send the &quot;@7 &quot; control sequence.
-  VTE_ERASE_TTY             Send terminal&#39;s &quot;erase&quot; setting.</code></pre>
+<p>The default vte terminal customized</p>
 
 
   </div>
@@ -512,7 +484,7 @@ delete_binding
   
   
   <h3 class="inherited">Methods included from <span class='object_link'><a href="TopinambourStyleProperties.html" title="TopinambourStyleProperties (module)">TopinambourStyleProperties</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="TopinambourStyleProperties.html#generate_boxed_rw_property-instance_method" title="TopinambourStyleProperties#generate_boxed_rw_property (method)">generate_boxed_rw_property</a></span>, <span class='object_link'><a href="TopinambourStyleProperties.html#generate_int_rw_property-instance_method" title="TopinambourStyleProperties#generate_int_rw_property (method)">generate_int_rw_property</a></span>, <span class='object_link'><a href="TopinambourStyleProperties.html#generate_rw_property-instance_method" title="TopinambourStyleProperties#generate_rw_property (method)">generate_rw_property</a></span>, <span class='object_link'><a href="TopinambourStyleProperties.html#generate_string_rw_property-instance_method" title="TopinambourStyleProperties#generate_string_rw_property (method)">generate_string_rw_property</a></span>, <span class='object_link'><a href="TopinambourStyleProperties.html#install_style-instance_method" title="TopinambourStyleProperties#install_style (method)">install_style</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="TopinambourStyleProperties.html#generate_boolean_rw_property-instance_method" title="TopinambourStyleProperties#generate_boolean_rw_property (method)">generate_boolean_rw_property</a></span>, <span class='object_link'><a href="TopinambourStyleProperties.html#generate_boxed_rw_property-instance_method" title="TopinambourStyleProperties#generate_boxed_rw_property (method)">generate_boxed_rw_property</a></span>, <span class='object_link'><a href="TopinambourStyleProperties.html#generate_enum_rw_property-instance_method" title="TopinambourStyleProperties#generate_enum_rw_property (method)">generate_enum_rw_property</a></span>, <span class='object_link'><a href="TopinambourStyleProperties.html#generate_int_rw_property-instance_method" title="TopinambourStyleProperties#generate_int_rw_property (method)">generate_int_rw_property</a></span>, <span class='object_link'><a href="TopinambourStyleProperties.html#generate_rw_property-instance_method" title="TopinambourStyleProperties#generate_rw_property (method)">generate_rw_property</a></span>, <span class='object_link'><a href="TopinambourStyleProperties.html#generate_string_rw_property-instance_method" title="TopinambourStyleProperties#generate_string_rw_property (method)">generate_string_rw_property</a></span>, <span class='object_link'><a href="TopinambourStyleProperties.html#install_style-instance_method" title="TopinambourStyleProperties#install_style (method)">install_style</a></span></p>
 
   <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
@@ -1114,9 +1086,9 @@ delete_binding
 </div>
 
     <div id="footer">
-  Generated on Sat Apr 23 14:55:36 2016 by
+  Generated on Mon May 16 19:40:39 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.3.0).
+  0.8.7.6 (ruby-2.3.1).
 </div>
 
   </body>
