@@ -83,4 +83,11 @@ class TopinambourNotebook < Gtk::Notebook
     pix = surface.to_pixbuf(0, 0, w, h)
     current.preview = pix if pix
   end
+
+  def send_to_all_terminals(method_name, values)
+    each do |tab|
+      next unless tab.class == TopinambourTerminal
+      tab.send(method_name, *values)
+    end
+  end
 end
