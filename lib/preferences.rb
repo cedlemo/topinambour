@@ -42,7 +42,7 @@ module TopinambourPreferences
   end
 
   def self.on_ok_response(widget)
-    puts "accept"
+    on_apply_response(widget)
     widget.destroy
   end
 
@@ -75,15 +75,8 @@ module TopinambourPreferences
     switch = builder["#{property_name}_switch"]
     switch.active = parent.notebook.current.send("#{property_name}?")
     switch.signal_connect "state-set" do |_widget, state|
-      send_to_all_terminals(parent.notebook, "#{property_name}=", state)
+      parent.notebook.send_to_all_terminals("#{property_name}=", state)
       false
-    end
-  end
-
-  def self.send_to_all_terminals(notebook, method_name, values)
-    notebook.each do |tab|
-      next unless tab.class == TopinambourTerminal
-      tab.send(method_name, *values)
     end
   end
 
@@ -109,7 +102,7 @@ module TopinambourPreferences
     combobox.active_id = id
     combobox.signal_connect "changed" do |widget|
       value = widget.active_id.gsub(/_id/,"").to_sym
-      send_to_all_terminals(parent.notebook, "#{property_name}=", value)
+      parent.notebook.send_to_all_terminals("#{property_name}=", value)
     end
   end
   

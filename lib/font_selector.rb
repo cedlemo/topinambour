@@ -45,9 +45,7 @@ class TopinambourFontSelector < Gtk::Box
       font = @window.notebook.current.font
       new_props["-TopinambourTerminal-font"] = font.to_s
       toplevel.application.update_css(new_props)
-      toplevel.notebook.each do |tab|
-        tab.set_font(font) if tab.class == TopinambourTerminal
-      end
+      toplevel.notebook.send_to_all_terminals("set_font", font)
       toplevel.exit_overlay_mode
     end
     pack_start(save_button, :expand => false, :fill => false, :padding => 0)

@@ -55,11 +55,8 @@ class TopinambourColorSelector < Gtk::Box
 
   def apply_new_css_properties(toplevel, props)
     toplevel.application.update_css(props)
-    toplevel.notebook.each do |tab|
-      next unless tab.class == TopinambourTerminal
-      tab.colors = @colors
-      tab.apply_colors
-    end
+    toplevel.notebook.send_to_all_terminals("colors=", [@colors])
+    toplevel.notebook.send_to_all_terminals("apply_colors", nil)
   end
 
   def generate_save_button
