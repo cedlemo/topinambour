@@ -586,8 +586,8 @@
     </child>
     <action-widgets>
       <action-widget response="0">button_validate</action-widget>
-      <action-widget response="0">button_apply</action-widget>
-      <action-widget response="0">button_cancel</action-widget>
+      <action-widget response="1">button_apply</action-widget>
+      <action-widget response="2">button_cancel</action-widget>
     </action-widgets>
   </object>
 </interface>
