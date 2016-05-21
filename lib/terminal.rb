@@ -107,6 +107,7 @@ class TopinambourTerminal
     @colors = css_colors
     set_font(css_font)
     apply_colors
+    load_properties
     add_matches
   end
 
