@@ -22,18 +22,18 @@ module TopinambourPreferences
     dialog.transient_for = parent
     add_source_view_style_chooser(builder, parent)
     add_actions(builder, parent)
-    connect_response(dialog)
+    connect_response(dialog, builder)
     dialog
   end
 
-  def self.connect_response(dialog)
+  def self.connect_response(dialog, builder)
     dialog.signal_connect "response" do |widget, response|
       case response
-      when Gtk::ResponseType::OK
-        on_ok_response(widget)
-      when Gtk::ResponseType::APPLY
-        on_apply_response(widget)
-      when Gtk::ResponseType::CANCEL
+      when 0 
+        on_ok_response(widget, builder)
+      when 1
+        on_apply_response(widget, builder)
+      when 2
         on_cancel_response(widget)
       else
         on_other_response(widget)
@@ -41,14 +41,30 @@ module TopinambourPreferences
     end
   end
 
-  def self.on_ok_response(widget)
-    on_apply_response(widget)
+  def self.on_ok_response(widget, builder)
+    props = on_apply_response(widget, builder)  
+    toplevel = widget.transient_for
+    toplevel.application.update_css(props)
     widget.destroy
   end
 
-  def self.on_apply_response(widget)
-    puts "apply"
-    widget.destroy
+  def self.on_apply_response(widget, builder)
+    toplevel = widget.transient_for
+    props = {}
+    
+    source_v_s_prop = get_source_view_style(builder)
+    props.merge!(source_v_s_prop)
+    
+    entry_props = get_entry_value(builder)
+    props.merge!(entry_props)
+
+    switch_props = get_switch_values(builder)
+    props.merge!(switch_props)
+
+    combo_props = get_combo_values(builder)
+    props.merge!(combo_props)
+    
+    props
   end
 
   def self.on_cancel_response(widget)
@@ -66,7 +82,8 @@ module TopinambourPreferences
       gen_switch_actions(prop_name, builder, parent)
     end
     gen_entry_actions("shell", builder, parent)
-    %w(cursor_shape cursor_blink_mode backspace_binding delete_binding).each do |prop_name|
+    %w(cursor_shape cursor_blink_mode backspace_binding
+       delete_binding).each do |prop_name|
       gen_combobox_actions(prop_name, builder, parent)
     end
   end
@@ -84,7 +101,6 @@ module TopinambourPreferences
     entry = builder["#{property_name}_entry"]
     entry.text = parent.shell
     entry.set_icon_from_icon_name(:secondary, "edit-clear")
-
     entry.signal_connect "activate" do |widget|
       parent.shell = widget.text
     end
@@ -111,12 +127,46 @@ module TopinambourPreferences
     box = builder["gen_prefs_box"]
     button = GtkSource::StyleSchemeChooserButton.new
     sm = GtkSource::StyleSchemeManager.default
-    puts parent.css_editor_style
     button.style_scheme = sm.get_scheme(parent.css_editor_style)
     button.show
     button.signal_connect "style-updated" do |widget|
       parent.css_editor_style = widget.style_scheme.id
     end
     box.pack_start(button, :expand => true, :fill => false)
+  end
+
+  def self.get_source_view_style(builder)
+   box = builder["gen_prefs_box"]
+   penultimate = box.children.size - 2
+   style = box.children[penultimate].style_scheme.id
+   {"-TopinambourWindow-css-editor-style" =>  "#{style}"} 
+  end
+
+  def self.get_entry_value(builder)
+    text = builder["shell_entry"].text
+    {"-TopinambourWindow-shell" => "#{text}"}
+  end
+
+  def self.get_switch_values(builder)
+    props = {}
+    %w(audible_bell allow_bold scroll_on_output
+       scroll_on_keystroke rewrap_on_resize mouse_autohide).each do |prop_name|    
+      switch = builder["#{prop_name}_switch"]
+      name = prop_name.gsub(/_/,"-")
+      props["-TopinambourTerminal-#{name}"] = switch.active?
+    end
+    props
+  end
+
+  def self.get_combo_values(builder)
+    props = {}
+    %w(cursor_shape cursor_blink_mode backspace_binding
+       delete_binding).each do |prop_name|
+      combobox = builder["#{prop_name}_sel"]
+      value = combobox.active_id.gsub(/_id/,"")
+      name = prop_name.gsub(/_/,"-")
+      props["-TopinambourTerminal-#{name}"] = value.to_sym 
+    end
+    props
   end
 end
