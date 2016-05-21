@@ -94,20 +94,29 @@ class TopinambourTerminal < Vte::Terminal
   end
   install_style("boxed", "font",
                 GLib::Type["PangoFontDescription"])
-  install_style("boolean", "audible_bell", false)
-  install_style("boolean", "allow_bold", true)
-  install_style("boolean", "scroll_on_output", true)
-  install_style("boolean", "scroll_on_keystroke", true)
-  install_style("boolean", "rewrap_on_resize", true)
-  install_style("boolean", "mouse_autohide", true)
-  install_style("enum", "cursor_shape", [GLib::Type["VteCursorShape"],
+  install_style("boolean", "audible-bell", false)
+  install_style("boolean", "allow-bold", true)
+  install_style("boolean", "scroll-on-output", true)
+  install_style("boolean", "scroll-on-keystroke", true)
+  install_style("boolean", "rewrap-on-resize", true)
+  install_style("boolean", "mouse-autohide", true)
+  install_style("enum", "cursor-shape", [GLib::Type["VteCursorShape"],
                                          Vte::CursorShape::BLOCK])
-  install_style("enum", "cursor_blink", [GLib::Type["VteCursorBlinkMode"],
+  install_style("enum", "cursor-blink-mode", [GLib::Type["VteCursorBlinkMode"],
                                          Vte::CursorBlinkMode::SYSTEM])
-  install_style("enum", "backspace_binding", [GLib::Type["VteEraseBinding"],
+  install_style("enum", "backspace-binding", [GLib::Type["VteEraseBinding"],
                                               Vte::EraseBinding::AUTO])
-  install_style("enum", "delete_binding", [GLib::Type["VteEraseBinding"],
+  install_style("enum", "delete-binding", [GLib::Type["VteEraseBinding"],
                                            Vte::EraseBinding::AUTO])
+  def load_properties
+    %w(audible_bell allow_bold scroll_on_output scroll_on_keystroke
+       rewrap_on_resize mouse_autohide).each do |prop|
+      send("#{prop}=", style_get_property(prop.gsub(/_/,"-")))
+    end
+    %w(cursor_shape cursor_blink_mode backspace_binding delete_binding).each do |prop|
+      send("#{prop}=", style_get_property(prop.gsub(/_/,"-")))
+    end
+  end
 end
 
 class TopinambourWindow < Gtk::ApplicationWindow
@@ -117,4 +126,8 @@ class TopinambourWindow < Gtk::ApplicationWindow
   install_style("int", "width", [-1, 2000, 1000])
   install_style("int", "height", [-1, 2000, 500])
   install_style("string", "css-editor-style", "classic")
+
+  def load_properties
+
+  end
 end
