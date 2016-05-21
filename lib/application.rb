@@ -47,9 +47,9 @@ class TopinambourApplication < Gtk::Application
 
     begin
       load_custom_css_config
-    rescue
-      puts "Bad css file using default css"
-      load_default_css_config
+    rescue => e
+      puts "Bad css file using default css, #{e.message}"
+      load_default_css_config # Use last workin Css instead
     end
   end
 
@@ -90,8 +90,8 @@ class TopinambourApplication < Gtk::Application
     if File.exist?(USR_CSS)
       begin
         load_custom_css_config
-      rescue
-        puts "Bad css file using default css"
+      rescue => e
+        puts "Bad css file using default css #{e.message}"
         load_default_css_config
       end
     else
