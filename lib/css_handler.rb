@@ -72,14 +72,19 @@ module CssHandler
     parsed_color ? true : false
   end
 
-  def self.property_to_css_instructions(name, value)
-    if value.class == String && color_property?(value)
-      "#{name}: #{value}"
+  def self.value_to_css_value(value)
+     if value.class == String && color_property?(value)
+      "#{value}"
     elsif value.class == String
-      %(#{name}: "#{value}")
+      %("#{value}")
     else
-      "#{name}: #{value}"
+      "#{value}"
     end
+
+  end
+
+  def self.property_to_css_instructions(name, value)
+    "#{name}: #{value_to_css_value(value)}"
   end
 
   def self.props_with_name(tree, prop_name)
@@ -116,7 +121,7 @@ module CssHandler
     else
       tmp = ""
       if line_number == start_range.line
-        tmp += line[0..(start_range.offset - 2)] + value.to_s
+        tmp += line[0..(start_range.offset - 2)] + value_to_css_value(value)
       end
       tmp += line[(end_range.offset - 1)..-1] if line_number == end_range.line
       tmp
