@@ -181,7 +181,7 @@ module TopinambourPreferences
     %w(cursor_shape cursor_blink_mode backspace_binding
        delete_binding).each do |prop_name|
       combobox = builder["#{prop_name}_sel"]
-      value = combobox.active_id.tr("_id", "")
+      value = combobox.active_id.gsub(/_id\z/, "")
       name = prop_name.tr("_", "-")
       props["-TopinambourTerminal-#{name}"] = value.to_sym
     end
