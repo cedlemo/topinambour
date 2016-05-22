@@ -17,7 +17,8 @@ require "gtksourceview3"
 
 module TopinambourPreferences
   def self.generate_dialog(parent)
-    builder = Gtk::Builder.new(:resource => "/com/github/cedlemo/topinambour/prefs-dialog.ui")
+    resource_file = "/com/github/cedlemo/topinambour/prefs-dialog.ui"
+    builder = Gtk::Builder.new(:resource => resource_file)
     dialog = builder["Preferences_dialog"]
     dialog.transient_for = parent
     add_source_view_style_chooser(builder, parent)
@@ -29,7 +30,7 @@ module TopinambourPreferences
   def self.connect_response(dialog, builder)
     dialog.signal_connect "response" do |widget, response|
       case response
-      when 0 
+      when 0
         on_ok_response(widget, builder)
       when 1
         on_apply_response(widget, builder)
@@ -42,7 +43,7 @@ module TopinambourPreferences
   end
 
   def self.on_ok_response(widget, builder)
-    props = on_apply_response(widget, builder)  
+    props = on_apply_response(widget, builder)
     toplevel = widget.transient_for
     toplevel.application.update_css(props)
     widget.destroy
@@ -51,10 +52,10 @@ module TopinambourPreferences
   def self.on_apply_response(widget, builder)
     toplevel = widget.transient_for
     props = {}
-    
+
     source_v_s_prop = get_source_view_style(builder)
     props.merge!(source_v_s_prop)
-    
+
     entry_props = get_entry_value(builder)
     props.merge!(entry_props)
 
@@ -63,8 +64,6 @@ module TopinambourPreferences
 
     combo_props = get_combo_values(builder)
     props.merge!(combo_props)
-    
-    props
   end
 
   def self.on_cancel_response(widget)
@@ -86,6 +85,7 @@ module TopinambourPreferences
        delete_binding).each do |prop_name|
       gen_combobox_actions(prop_name, builder, parent)
     end
+    gen_spinbuttons_actions(builder, parent)
   end
 
   def self.gen_switch_actions(property_name, builder, parent)
@@ -117,11 +117,29 @@ module TopinambourPreferences
     id = parent.notebook.current.send("#{property_name}").nick + "_id"
     combobox.active_id = id
     combobox.signal_connect "changed" do |widget|
-      value = widget.active_id.gsub(/_id/,"").to_sym
+      value = widget.active_id.gsub(/_id/, "").to_sym
       parent.notebook.send_to_all_terminals("#{property_name}=", value)
     end
   end
-  
+
+  def self.gen_spinbuttons_actions(builder, parent)
+    width_spin = builder["width_spin"]
+    height_spin = builder["height_spin"]
+    width_spin.set_range(0, 2000)
+    height_spin.set_range(0, 1000)
+    width_spin.value, height_spin.value = parent.size
+
+    width_spin.signal_connect "value-changed" do |widget|
+      _, h = parent.size
+      parent.resize(widget.value, h)
+    end
+
+    height_spin.signal_connect "value-changed" do |widget|
+      w, _h = parent.size
+      parent.resize(w, widget.value)
+    end
+  end
+
   # Hack because when added via glade, the builder fail to load the ui.
   def self.add_source_view_style_chooser(builder, parent)
     box = builder["gen_prefs_box"]
@@ -136,23 +154,23 @@ module TopinambourPreferences
   end
 
   def self.get_source_view_style(builder)
-   box = builder["gen_prefs_box"]
-   penultimate = box.children.size - 2
-   style = box.children[penultimate].style_scheme.id
-   {"-TopinambourWindow-css-editor-style" =>  "#{style}"} 
+    box = builder["gen_prefs_box"]
+    penultimate = box.children.size - 2
+    style = box.children[penultimate].style_scheme.id
+    { "-TopinambourWindow-css-editor-style" =>  style }
   end
 
   def self.get_entry_value(builder)
     text = builder["shell_entry"].text
-    {"-TopinambourWindow-shell" => "#{text}"}
+    { "-TopinambourWindow-shell" => text }
   end
 
   def self.get_switch_values(builder)
     props = {}
     %w(audible_bell allow_bold scroll_on_output
-       scroll_on_keystroke rewrap_on_resize mouse_autohide).each do |prop_name|    
+       scroll_on_keystroke rewrap_on_resize mouse_autohide).each do |prop_name|
       switch = builder["#{prop_name}_switch"]
-      name = prop_name.gsub(/_/,"-")
+      name = prop_name.tr("_", "-")
       props["-TopinambourTerminal-#{name}"] = switch.active?
     end
     props
@@ -163,9 +181,9 @@ module TopinambourPreferences
     %w(cursor_shape cursor_blink_mode backspace_binding
        delete_binding).each do |prop_name|
       combobox = builder["#{prop_name}_sel"]
-      value = combobox.active_id.gsub(/_id/,"")
-      name = prop_name.gsub(/_/,"-")
-      props["-TopinambourTerminal-#{name}"] = value.to_sym 
+      value = combobox.active_id.tr("_id", "")
+      name = prop_name.tr("_", "-")
+      props["-TopinambourTerminal-#{name}"] = value.to_sym
     end
     props
   end
