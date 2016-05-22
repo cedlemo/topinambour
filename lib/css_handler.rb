@@ -116,7 +116,7 @@ module CssHandler
     else
       tmp = ""
       if line_number == start_range.line
-        tmp += line[0..(start_range.offset - 2)] + value
+        tmp += line[0..(start_range.offset - 2)] + value.to_s
       end
       tmp += line[(end_range.offset - 1)..-1] if line_number == end_range.line
       tmp
