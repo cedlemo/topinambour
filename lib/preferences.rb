@@ -30,41 +30,28 @@ module TopinambourPreferences
   def self.connect_response(dialog, builder)
     dialog.signal_connect "response" do |widget, response|
       case response
-      when 0
-        on_ok_response(widget, builder)
       when 1
         on_apply_response(widget, builder)
-      when 2
-        on_cancel_response(widget)
       else
-        on_other_response(widget)
+        widget.destroy
       end
     end
   end
 
-  def self.on_ok_response(widget, builder)
-    props = on_apply_response(widget, builder)
+  def self.on_apply_response(widget, builder)
+    props = get_all_properties(widget, builder)
     toplevel = widget.transient_for
     toplevel.application.update_css(props)
     widget.destroy
   end
 
-  def self.on_apply_response(widget, builder)
+  def self.get_all_properties(widget, builder)
     props = {}
     props.merge!(get_source_view_style(builder))
     props.merge!(get_entry_value(builder))
     props.merge!(get_switch_values(builder))
     props.merge!(get_spin_values(widget))
     props.merge!(get_combo_values(builder))
-  end
-
-  def self.on_cancel_response(widget)
-    puts "cancel"
-    widget.destroy
-  end
-
-  def self.on_other_response(widget)
-    widget.destroy
   end
 
   def self.add_actions(builder, parent)
