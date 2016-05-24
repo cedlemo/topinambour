@@ -10,4 +10,4 @@ exclude_paths:
   doc/*
   tests/*
   data/*
-
+  lib/rgb_names_regexes.rb
