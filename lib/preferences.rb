@@ -33,7 +33,7 @@ module TopinambourPreferences
       when 0
         on_ok_response(widget, builder)
       when 1
-        on_apply_response(builder)
+        on_apply_response(widget, builder)
       when 2
         on_cancel_response(widget)
       else
@@ -43,26 +43,19 @@ module TopinambourPreferences
   end
 
   def self.on_ok_response(widget, builder)
-    props = on_apply_response(builder)
+    props = on_apply_response(widget, builder)
     toplevel = widget.transient_for
     toplevel.application.update_css(props)
     widget.destroy
   end
 
-  def self.on_apply_response(builder)
+  def self.on_apply_response(widget, builder)
     props = {}
-
-    source_v_s_prop = get_source_view_style(builder)
-    props.merge!(source_v_s_prop)
-
-    entry_props = get_entry_value(builder)
-    props.merge!(entry_props)
-
-    switch_props = get_switch_values(builder)
-    props.merge!(switch_props)
-
-    combo_props = get_combo_values(builder)
-    props.merge!(combo_props)
+    props.merge!(get_source_view_style(builder))
+    props.merge!(get_entry_value(builder))
+    props.merge!(get_switch_values(builder))
+    props.merge!(get_spin_values(widget))
+    props.merge!(get_combo_values(builder))
   end
 
   def self.on_cancel_response(widget)
@@ -192,6 +185,14 @@ module TopinambourPreferences
       name = prop_name.tr("_", "-")
       props["-TopinambourTerminal-#{name}"] = value.to_sym
     end
+    props
+  end
+
+  def self.get_spin_values(widget)
+    props = {}
+    w, h = widget.transient_for.size
+    props["-TopinambourWindow-width"] = w
+    props["-TopinambourWindow-height"] = h
     props
   end
 end
