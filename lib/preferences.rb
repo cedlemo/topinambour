@@ -33,7 +33,7 @@ module TopinambourPreferences
       when 0
         on_ok_response(widget, builder)
       when 1
-        on_apply_response(widget, builder)
+        on_apply_response(builder)
       when 2
         on_cancel_response(widget)
       else
@@ -43,14 +43,13 @@ module TopinambourPreferences
   end
 
   def self.on_ok_response(widget, builder)
-    props = on_apply_response(widget, builder)
+    props = on_apply_response(builder)
     toplevel = widget.transient_for
     toplevel.application.update_css(props)
     widget.destroy
   end
 
-  def self.on_apply_response(widget, builder)
-    toplevel = widget.transient_for
+  def self.on_apply_response(builder)
     props = {}
 
     source_v_s_prop = get_source_view_style(builder)
@@ -101,9 +100,7 @@ module TopinambourPreferences
     entry = builder["#{property_name}_entry"]
     entry.text = parent.shell
     entry.set_icon_from_icon_name(:secondary, "edit-clear")
-    entry.signal_connect "activate" do |widget|
-      parent.shell = widget.text
-    end
+    entry.signal_connect("activate") { |widget| parent.shell = widget.text }
 
     entry.signal_connect "icon-release" do |widget, position|
       if position == :secondary
@@ -128,15 +125,21 @@ module TopinambourPreferences
     width_spin.set_range(0, 2000)
     height_spin.set_range(0, 1000)
     width_spin.value, height_spin.value = parent.size
+    gen_width_button_action(width_spin, parent)
+    gen_height_button_action(height_spin, parent)
+  end
 
-    width_spin.signal_connect "value-changed" do |widget|
+  def self.gen_width_button_action(spin_widget, parent)
+    spin_widget.signal_connect "value-changed" do |widget|
       _, h = parent.size
       parent.resize(widget.value, h)
       w, _h = parent.size
       widget.value = w if widget.value + 1 < w
     end
+  end
 
-    height_spin.signal_connect "value-changed" do |widget|
+  def self.gen_height_button_action(spin_widget, parent)
+    spin_widget.signal_connect "value-changed" do |widget|
       w, _h = parent.size
       parent.resize(w, widget.value)
       _, h = parent.size
