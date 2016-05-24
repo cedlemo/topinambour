@@ -1,4 +1,4 @@
-# Copyright 2015-2016 Cédric LE MOIGNE, cedlemo@gmx.com
+# Copyright 2015-2016 Cedric LE MOIGNE, cedlemo@gmx.com
 # This file is part of Topinambour.
 #
 # Topinambour is free software: you can redistribute it and/or modify
@@ -97,9 +97,9 @@ class TopinambourWindow
 
   def display_about
     Gtk::AboutDialog.show(self,
-                          "authors" => ["Cédric Le Moigne <cedlemo@gmx.com>"],
+                          "authors" => ["Cedric Le Moigne <cedlemo@gmx.com>"],
                           "comments" => "Terminal Emulator based on the ruby bindings of Gtk3 and Vte3",
-                          "copyright" => "Copyright (C) 2015-2016 Cédric Le Moigne",
+                          "copyright" => "Copyright (C) 2015-2016 Cedric Le Moigne",
                           "license" => "This program is licenced under the licence GPL-3.0 and later.",
                           "logo_icon_name" => "utilities-terminal-symbolic",
                           "program_name" => "Topinambour",

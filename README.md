@@ -155,7 +155,7 @@ You will need fish shell if you want to test it.
 
 ### Copying:
 
-Copyright 2015-2016 Cédric Le Moigne
+Copyright 2015-2016 Cedric Le Moigne
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

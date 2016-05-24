@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.version     = "1.0.8"
   s.summary     = "Ruby-gnome2 Terminal emulator"
   s.description = "Terminal Emulator based on the libs vte3 and gtk3 from the ruby-gnome2 project"
-  s.author      = "Cédric LE MOIGNE"
+  s.author      = "Cedric LE MOIGNE"
   s.email       = "cedlemo@gmx.com"
   s.homepage    = "https://github.com/cedlemo/topinambour"
   s.license     = "GPL-3.0"
