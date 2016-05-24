@@ -132,11 +132,15 @@ module TopinambourPreferences
     width_spin.signal_connect "value-changed" do |widget|
       _, h = parent.size
       parent.resize(widget.value, h)
+      w, _h = parent.size
+      widget.value = w if widget.value + 1 < w
     end
 
     height_spin.signal_connect "value-changed" do |widget|
       w, _h = parent.size
       parent.resize(w, widget.value)
+      _, h = parent.size
+      widget.value = h if widget.value + 1 < h
     end
   end
 
