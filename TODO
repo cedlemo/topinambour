@@ -1,12 +1,6 @@
 Urgent:
   generate a preferences window/ tab in order to set them easily
-    -> Remain the size property to be registered
     -> Finish the Ok, VALIDATE, CANCEL action of the dialog window
-    * general
-      style_properties.rb :
-        - define the properties and install them
-        - ?? I should generate the methods that allow to modify them ??
-
 
   expand color regexes in order to match color names (red, blue ...)
   generate a plugin system and add the resize little window in it
