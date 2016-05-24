@@ -108,7 +108,8 @@ RGB_COLOR = "rgb\\s*\\(\\s*#{UINT8_CLASS}\\s*\\,\\s*#{UINT8_CLASS}\\s*\\,\\s*#{U
 RGBPERC_COLOR = "rgb\\s*\\(\\s*#{PERCENT_CLASS}\\s*\\,\\s*#{PERCENT_CLASS}\\s*\\,\\s*#{PERCENT_CLASS}\\s*\\)"
 RGBA_COLOR = "rgba\\s*\\(\\s*#{UINT8_CLASS}\\s*\\,\\s*#{UINT8_CLASS}\\s*\\,\\s*#{UINT8_CLASS}\\s*\\,\\s*[0-1](\\.[0-9]*)?\\s*\\)"
 RGBAPERC_COLOR = "rgba\\s*\\(\\s*#{PERCENT_CLASS}\\s*\\,\\s*#{PERCENT_CLASS}\\s*\\,\\s*#{PERCENT_CLASS}\\s*\\,\\s*[0-1](\\.[0-9]*)?\\s*\\)"
-CSS_COLORS = "#{HEX_COLOR}|#{RGB_COLOR}|#{RGBPERC_COLOR}|#{RGBA_COLOR}|#{RGBAPERC_COLOR}"
+include RgbNames
+CSS_COLORS = "#{HEX_COLOR}|#{RGB_COLOR}|#{RGBPERC_COLOR}|#{RGBA_COLOR}|#{RGBAPERC_COLOR}|#{COLOR_NAMES}"
 end
 
 module TopinambourRegex
