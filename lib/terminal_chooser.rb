@@ -98,7 +98,7 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
   end
 
   def generate_preview_image(pixbuf)
-    scaled_pix = pixbuf.scale(150, 75, Gdk::Pixbuf::INTERP_BILINEAR)
+    scaled_pix = pixbuf.scale(150, 75, :bilinear)
     img = Gtk::Image.new(:pixbuf => scaled_pix)
     img.show
     img
