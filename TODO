@@ -1,4 +1,6 @@
 Urgent:
+  check pb when file empty (no universal selector)
+  is the pb exist when valid data in file but no universal selector
   add Css parser output in Css editor
   generate a plugin system and add the resize little window in it
 
