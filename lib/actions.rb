@@ -71,7 +71,7 @@ module TopinambourActions
         term.copy_clipboard
       else
         clipboard = Gtk::Clipboard.get_default(Gdk::Display.default)
-        clipboard.text = term.last_match
+        clipboard.text = term.last_match unless term.last_match.nil?
       end
     end
     action
