@@ -50,10 +50,8 @@ SECTOOLTIP
 
   def self.generate_current_label(window)
     label = Gtk::Entry.new
-    label.has_frame = false
-    label.width_chars = 35
     label.set_icon_from_icon_name(:secondary, "edit-clear")
-
+    label.width_chars = 35
     generate_current_label_tooltips(label)
     generate_current_label_signals(label, window)
     label
