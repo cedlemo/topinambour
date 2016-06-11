@@ -41,7 +41,9 @@ SECTOOLTIP
     end
 
     label.signal_connect "icon-release" do |entry, position|
-      if position == :secondary
+      if position == :primary
+        window.close_current_tab
+      elsif position == :secondary
         window.notebook.current.custom_title = nil
         entry.text = window.notebook.current.window_title
       end
@@ -50,6 +52,7 @@ SECTOOLTIP
 
   def self.generate_current_label(window)
     label = Gtk::Entry.new
+    label.set_icon_from_icon_name(:primary, "edit-delete")
     label.set_icon_from_icon_name(:secondary, "edit-clear")
     label.width_chars = 35
     generate_current_label_tooltips(label)
@@ -111,7 +114,7 @@ SECTOOLTIP
       window.show_terminal_chooser
     end
   end
-  
+
   def self.gen_icon_button(icon_name, tooltip)
     button = Gtk::Button.new
     image = Gtk::Image.new(:icon_name => icon_name, :size => :button)
