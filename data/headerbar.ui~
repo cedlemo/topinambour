@@ -5,6 +5,7 @@
   <object class="GtkHeaderBar" id="headerbar">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
+    <property name="title">Topinambour</property>
     <property name="has_subtitle">False</property>
     <property name="show_close_button">True</property>
     <child>
@@ -35,7 +36,7 @@
       </packing>
     </child>
     <child>
-      <object class="GtkButton">
+      <object class="GtkButton" id="next_button">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="receives_default">True</property>
@@ -59,6 +60,9 @@
         <property name="tooltip_text" translatable="yes">Change the name of the tab and hit
 enter in order to validate
 </property>
+        <property name="max_length">40</property>
+        <property name="max_width_chars">40</property>
+        <property name="shadow_type">etched-in</property>
         <property name="primary_icon_name">edit-delete</property>
         <property name="secondary_icon_name">edit-clear</property>
         <property name="primary_icon_tooltip_text" translatable="yes">Close this tab</property>
@@ -71,7 +75,7 @@ default label for the current tab
       </packing>
     </child>
     <child>
-      <object class="GtkButton">
+      <object class="GtkButton" id="new_term">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="receives_default">True</property>
@@ -108,7 +112,7 @@ default label for the current tab
       </packing>
     </child>
     <child>
-      <object class="GtkButton">
+      <object class="GtkButton" id="font_sel_button">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="receives_default">True</property>
@@ -127,7 +131,7 @@ default label for the current tab
       </packing>
     </child>
     <child>
-      <object class="GtkButton">
+      <object class="GtkButton" id="colors_sel_button">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="receives_default">True</property>

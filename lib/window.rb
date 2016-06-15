@@ -133,33 +133,80 @@ class TopinambourWindow
   end
 
   def create_header_bar
-    @bar = TopinambourHeaderBar.generate_header_bar(self)
-    @current_label = TopinambourHeaderBar.generate_current_label(self)
-    @current_tab = TopinambourHeaderBar.generate_current_tab
-    add_buttons_at_begining
-    add_buttons_at_end
+#    @bar = TopinambourHeaderBar.generate_header_bar(self)
+#    @current_label = TopinambourHeaderBar.generate_current_label(self)
+#    @current_tab = TopinambourHeaderBar.generate_current_tab
+#    add_buttons_at_begining
+#    add_buttons_at_end
+    resource_file = "/com/github/cedlemo/topinambour/headerbar.ui"
+    builder = Gtk::Builder.new(:resource => resource_file)
+    set_titlebar(builder["headerbar"])
+    @current_label = builder["current_label"]
+    current_label_signals
+    @current_tab = builder["current_tab"]
+    next_prev_new_signals(builder)
+    overview_font_color_signals(builder)
+    main_menu_signal(builder)
   end
 
-  def add_buttons_at_begining
-    button = TopinambourHeaderBar.generate_prev_button(self)
-    @bar.pack_start(button)
-    @bar.pack_start(@current_tab)
-    button = TopinambourHeaderBar.generate_next_button(self)
-    @bar.pack_start(button)
-    @bar.pack_start(@current_label)
-    button = TopinambourHeaderBar.generate_new_tab_button(self)
-    @bar.pack_start(button)
+  def current_label_signals
+    @current_label.signal_connect "activate" do |entry|
+      @notebook.current.custom_title = entry.text
+      @notebook.current.grab_focus
+    end
+
+    @current_label.signal_connect "icon-release" do |entry, position|
+      if position == :primary
+        close_current_tab
+      elsif position == :secondary
+        @notebook.current.custom_title = nil
+        entry.text = @notebook.current.window_title
+      end
+    end
   end
 
-  def add_buttons_at_end
-    button = TopinambourHeaderBar.generate_open_menu_button(self)
-    @bar.pack_end(button)
-    button = TopinambourHeaderBar.generate_font_sel_button(self)
-    @bar.pack_end(button)
-    button = TopinambourHeaderBar.generate_color_sel_button(self)
-    @bar.pack_end(button)
-    button = TopinambourHeaderBar.generate_term_overv_button(self)
-    @bar.pack_end(button)
+  def next_prev_new_signals(builder)
+    builder["prev_button"].signal_connect "clicked" do
+      show_prev_tab
+    end
+
+    builder["next_button"].signal_connect "clicked" do
+      show_next_tab
+    end
+  
+    builder["new_term"].signal_connect "clicked" do
+      add_terminal
+    end
+  end
+
+  def overview_font_color_signals(builder)
+    builder["term_overv_button"].signal_connect "clicked" do
+      show_terminal_chooser
+    end
+
+    builder["font_sel_button"].signal_connect "clicked" do
+      show_font_selector
+    end
+
+    builder["colors_sel_button"].signal_connect "clicked" do
+      show_color_selector
+    end
+  end
+  
+  def main_menu_signal(builder)
+    builder["menu_button"].signal_connect "clicked" do |button|
+      ui_file = "/com/github/cedlemo/topinambour/window-menu.ui"
+      winmenu = Gtk::Builder.new(:resource => ui_file)["winmenu"]
+      event = Gtk.current_event
+      menu = Gtk::Popover.new(button, winmenu)
+      x, y = event.window.coords_to_parent(event.x,
+                                         event.y)
+      rect = Gdk::Rectangle.new(x - button.allocation.x,
+                                y - button.allocation.y,
+                                1, 1)
+      menu.set_pointing_to(rect)
+      menu.show
+    end
   end
 
   def toggle_overlay(klass)
