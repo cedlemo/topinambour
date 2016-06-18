@@ -133,11 +133,6 @@ class TopinambourWindow
   end
 
   def create_header_bar
-#    @bar = TopinambourHeaderBar.generate_header_bar(self)
-#    @current_label = TopinambourHeaderBar.generate_current_label(self)
-#    @current_tab = TopinambourHeaderBar.generate_current_tab
-#    add_buttons_at_begining
-#    add_buttons_at_end
     resource_file = "/com/github/cedlemo/topinambour/headerbar.ui"
     builder = Gtk::Builder.new(:resource => resource_file)
     set_titlebar(builder["headerbar"])
