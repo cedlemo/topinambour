@@ -36,6 +36,9 @@ resource = Gio::Resource.load(gresource_bin)
 Gio::Resources.register(resource)
 # Load default libraries !!WARNING!! loading order matters
 
+#load_time = Time.now
+#old_time = 0
+
 %w(actions style_properties css_handler application rgb_names_regexes terminal_regex terminal notebook color_selector font_selector
 terminal_chooser shortcuts window css_editor preferences).each do |l|
   if File.exist?("#{USR_LIB_PATH}/#{l}.rb")
@@ -43,6 +46,9 @@ terminal_chooser shortcuts window css_editor preferences).each do |l|
   else
     require "#{LIB_PATH}/#{l}.rb"
   end
+#  old_time = load_time
+#  load_time = Time.now
+#  puts "#{load_time - old_time} s for loading #{l}.rb"
 end
 
 Gtk::IconTheme.default.add_resource_path("/com/github/cedlemo/topinambour/icons")
