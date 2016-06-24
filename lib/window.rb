@@ -90,7 +90,6 @@ class TopinambourWindow
     @default_width = style_get_property("width")
     @default_height = style_get_property("height")
     set_default_size(@default_width, @default_height)
-    set_size_request(@default_width, @default_height)
     @shell = style_get_property("shell")
     @css_editor_style = style_get_property("css-editor-style")
   end
