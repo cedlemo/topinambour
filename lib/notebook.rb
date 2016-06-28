@@ -40,6 +40,7 @@ class TopinambourNotebook < Gtk::Notebook
     end
 
     set_show_tabs(false)
+    set_show_border(false)
   end
 
   def remove_all_pages
