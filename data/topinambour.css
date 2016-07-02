@@ -35,6 +35,22 @@ TopinambourWindow headerbar entry{
   border-radius: 6px 0px 0px 6px;
 }
 
+treeview.view#terms-list {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 6px 0px 0px 6px;
+}
+treeview.view header { 
+  background-color: rgba(1,1,1,0.2);
+}treeview.view rubberband { 
+  background-color: rgba(1,1,1,0.2);
+}
+box#overview-main-box {  
+  background-color: rgba(0,0,0,0.2);
+  border: solid 1px rgba(49, 150, 188, 1);
+  border-radius: 6px 0px 0px 6px;
+}
+
+
 grid button {
   margin: 0px;
   padding: 0px;
