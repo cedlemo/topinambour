@@ -82,6 +82,10 @@ class TopinambourWindow
     toggle_overlay(TopinambourTermChooser)
   end
 
+  def show_terminal_chooser2
+    toggle_overlay(TopinambourTermChooserb)
+  end
+
   def exit_overlay_mode
     @overlay.children[1].destroy if in_overlay_mode?
   end
