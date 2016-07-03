@@ -23,23 +23,25 @@ class TopinambourTermChooserb < Gtk::ScrolledWindow
     set_name("terminal_chooser")
 
     window.notebook.generate_tab_preview
-    generate_tree_store
+    generate_list_store
     generate_tree_view
     @view.show_all
     @view.columns_autosize
     @view.name = "terms-list"
+    generate_dnd_actions
     @box = Gtk::Box.new(:vertical, 4)
     @box.name = "overview-main-box"
     @box.pack_start(@view, :expand => false, :fill => false, :padding => 4)
-    @box.pack_start(generate_quit_button, :expand => false, :fill => false, :padding => 4)
+    @box.pack_start(generate_quit_button,
+                    :expand => false, :fill => false, :padding => 4)
     add(@box)
   end
   
   private
-  def generate_tree_store
-    @model = Gtk::TreeStore.new(String, GdkPixbuf::Pixbuf, String)
+  def generate_list_store
+    @model = Gtk::ListStore.new(String, GdkPixbuf::Pixbuf, String)
     @window.notebook.children.each_with_index do |child, i|
-      iter = @model.append(nil)
+      iter = @model.append
       iter[0] = (i + 1).to_s
       iter[1] = generate_preview_image(child.preview)
       iter[2] = child.custom_title || child.terminal_title
@@ -65,11 +67,22 @@ class TopinambourTermChooserb < Gtk::ScrolledWindow
                                      :text => 2)
     @view.append_column(column)
   end
-
+  
+  def generate_dnd_actions
+    target_table = [["GTK_TREE_MODEL_ROW", 0, 0]]
+    @view.enable_model_drag_source(Gdk::ModifierType::BUTTON1_MASK,
+                                  target_table,
+                                  Gdk::DragAction::COPY | Gdk::DragAction::MOVE)
+    @view.enable_model_drag_dest(target_table,
+                                 Gdk::DragAction::COPY | Gdk::DragAction::MOVE)
+    #@view.reorderable = true
+  end
+  
   def generate_quit_button
     button = Gtk::EventBox.new
     button.tooltip_text = "Quit Topinambour"
-    image = Gtk::Image.new(:icon_name => "application-exit-symbolic", :size => :dialog)
+    image = Gtk::Image.new(:icon_name => "application-exit-symbolic",
+                           :size => :dialog)
     button.add(image)
     button.signal_connect "button_press_event" do
       @window.quit_gracefully
