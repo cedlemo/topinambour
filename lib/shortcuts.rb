@@ -21,8 +21,9 @@ module TopinambourShortcuts
       (Gdk::ModifierType::CONTROL_MASK | Gdk::ModifierType::SHIFT_MASK)
   end
 
-  def self.handle_simple(keyval, window)
-    case keyval
+  def self.handle_simple(event, window)
+    overlay_mode = window.in_overlay_mode?
+    case event.keyval
     when Gdk::Keyval::KEY_Escape # escape from overlay mode
       if window.in_overlay_mode?
         window.exit_overlay_mode
@@ -32,8 +33,8 @@ module TopinambourShortcuts
     end
   end
 
-  def self.handle_ctrl_shift(keyval, window)
-    case keyval
+  def self.handle_ctrl_shift(event, window)
+    case event.keyval
     when Gdk::Keyval::KEY_W # close the current tab
       window.close_current_tab
       true
@@ -64,16 +65,18 @@ module TopinambourShortcuts
     when Gdk::Keyval::KEY_E
       window.show_css_editor
       true
+    when Gdk::Keyval::KEY_S
+      window.show_searchbar
+      true
     end
   end
 
   def self.handle_key_press(window, event)
     keyval = event.keyval
-    #puts "#{Gdk::Keyval.to_name(keyval)} = #{keyval}"
     if ctrl_shift?(event)
-      handle_ctrl_shift(keyval, window)
+      handle_ctrl_shift(event, window)
     else
-      handle_simple(keyval, window)
+      handle_simple(event, window)
     end
   end
 end

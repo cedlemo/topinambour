@@ -15,7 +15,7 @@
 # along with Topinambour.  If not, see <http://www.gnu.org/licenses/>.
 
 class TopinambourWindow
-  attr_reader :notebook, :bar, :overlay, :current_label, :current_tab 
+  attr_reader :notebook, :bar, :overlay, :current_label, :current_tab
   attr_accessor :shell, :css_editor_style
   def initialize(application)
     super(:application => application)
@@ -121,11 +121,16 @@ class TopinambourWindow
     @overlay.children.size > 1 ? true : false
   end
 
+  def show_searchbar
+    toggle_overlay(TopinambourSearchBar)
+    overlayed_widget = @overlay.children[1]
+    overlayed_widget.search_mode = true if overlayed_widget
+  end
   private
 
   def add_overlay(widget)
     @overlay.add_overlay(widget)
-    @overlay.set_overlay_pass_through(widget, true)
+    @overlay.set_overlay_pass_through(widget, false)
   end
 
   def create_containers
@@ -171,7 +176,7 @@ class TopinambourWindow
     builder["next_button"].signal_connect "clicked" do
       show_next_tab
     end
-  
+
     builder["new_term"].signal_connect "clicked" do
       add_terminal
     end
@@ -190,7 +195,7 @@ class TopinambourWindow
       show_color_selector
     end
   end
-  
+
   def main_menu_signal(builder)
     builder["menu_button"].signal_connect "clicked" do |button|
       ui_file = "/com/github/cedlemo/topinambour/window-menu.ui"

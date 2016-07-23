@@ -39,8 +39,10 @@ Gio::Resources.register(resource)
 #load_time = Time.now
 #old_time = 0
 
-%w(actions style_properties css_handler application rgb_names_regexes terminal_regex terminal notebook color_selector font_selector
-terminal_chooser terminal_chooser_2 shortcuts window css_editor preferences).each do |l|
+%w(actions style_properties css_handler application rgb_names_regexes
+terminal_regex terminal notebook color_selector font_selector
+terminal_chooser terminal_chooser_2 shortcuts searchbar window css_editor
+preferences).each do |l|
   if File.exist?("#{USR_LIB_PATH}/#{l}.rb")
     require "#{USR_LIB_PATH}/#{l}.rb"
   else
