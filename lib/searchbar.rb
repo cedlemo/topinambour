@@ -15,7 +15,7 @@
 # along with Topinambour.  If not, see <http://www.gnu.org/licenses/>.
 
 class TopinambourSearchBar < Gtk::SearchBar
-  def initialize(window, event)
+  def initialize(window)
     super()
 
     generate_search_entry(window)
