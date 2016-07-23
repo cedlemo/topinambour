@@ -33,14 +33,22 @@ class TopinambourSearchBar < Gtk::SearchBar
     term = window.notebook.current
     @entry.signal_connect "next-match" do |entry|
       puts "next-match"
+      term.search_find_next if @regex
     end
 
     @entry.signal_connect "previous-match" do |entry|
       puts "prev match"
+      term.search_find_previous if @regex
     end
 
     @entry.signal_connect "search-changed" do |entry|
       puts "search changed"
+      pattern = entry.buffer.text
+      if pattern != ""
+        @regex = GLib::Regex.new(pattern)
+        term.search_set_gregex(@regex, @regex.match_flags)
+        term.search_find_next
+      end
     end
   end
 end
