@@ -174,8 +174,8 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
       index_of_dragged_object = index
       context.targets.each do |target|
         next unless target.name == "test" || selection_data.type == :type_integer
-        data_len = selection_data.data[1]
-        index_of_dragged_object = selection_data.data[0].pack("C#{data_len}").to_i
+        data_len = selection_data.data.size
+        index_of_dragged_object = selection_data.data.pack("C#{data_len}").to_i
       end
       if index_of_dragged_object != index
         dragged = @window.notebook.get_nth_page(index_of_dragged_object)
