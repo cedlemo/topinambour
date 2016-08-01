@@ -129,6 +129,18 @@ class TopinambourWindow
     overlayed_widget = @overlay.children[1]
     overlayed_widget.search_mode = true if overlayed_widget
   end
+
+  def toggle_shrink
+    w, h = size
+    if @shrink_saved_height
+      resize(w, @shrink_saved_height)
+      @shrink_saved_height = nil
+    else
+      resize(w, 1)
+      @shrink_saved_height = h
+    end
+  end
+
   private
 
   def add_overlay(widget)

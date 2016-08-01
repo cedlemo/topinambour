@@ -65,6 +65,9 @@ module TopinambourShortcuts
     when Gdk::Keyval::KEY_slash
       window.show_searchbar
       true
+    when Gdk::Keyval::KEY_Up
+      window.toggle_shrink
+      true
     end
   end
 
