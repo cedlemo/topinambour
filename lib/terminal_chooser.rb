@@ -93,7 +93,7 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
 
   def generate_preview_button(child, i)
     button = Gtk::Button.new
-    button.add(generate_preview_image(child.preview))
+    button.image = generate_preview_image(child.preview)
     button.set_tooltip_text((i + 1).to_s)
     button.signal_connect("clicked") { @window.notebook.current_page = i }
     button
@@ -132,18 +132,19 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
                            [["test", Gtk::TargetFlags::SAME_APP, 12_345]],
                            Gdk::DragAction::COPY |
                            Gdk::DragAction::MOVE)
-    button.drag_source_set_icon_name("grab")
+    #button.drag_source_set_icon_name("grab")
     # Drag source signals
     # drag-begin	User starts a drag	Set-up drag icon
     # drag-data-get	When drag data is requested by the destination	Transfer drag data from source to destination
     # drag-data-delete	When a drag with the action Gdk.DragAction.MOVE is completed	Delete data from the source to complete the "move"
     # drag-end	When the drag is complete	Undo anything done in drag-begin
 
-    # button.signal_connect "drag-begin" do
-    #   puts "drag begin for #{index}"
-    # end
-    button.signal_connect("drag-data-get") do |_widget, _context, selection_data, _info, _time|
-      index = @grid.child_get_property(button, "top-attach")
+    button.signal_connect "drag-begin" do |widget|
+       widget.drag_source_set_icon_pixbuf(widget.image.pixbuf)
+    end
+
+    button.signal_connect("drag-data-get") do |widget, _context, selection_data, _info, _time|
+      index = grid_line_of(widget)
       selection_data.set(Gdk::Selection::TYPE_INTEGER, index.to_s)
     end
     # button.signal_connect "drag-data-delete" do
@@ -171,8 +172,8 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     button.signal_connect("drag-drop") do |widget, context, _x, _y, time|
       widget.drag_get_data(context, context.targets[0], time)
     end
-    button.signal_connect("drag-data-received") do |_widget, context, _x, _y, selection_data, _info, _time|
-      index = @grid.child_get_property(button, "top-attach")
+    button.signal_connect("drag-data-received") do |widget, context, _x, _y, selection_data, _info, _time|
+      index = grid_line_of(widget)
       index_of_dragged_object = index
       context.targets.each do |target|
         next unless target.name == "test" || selection_data.type == :type_integer
@@ -187,5 +188,9 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
         end
       end
     end
+  end
+
+  def grid_line_of(widget)
+    @grid.child_get_property(widget, "top-attach")
   end
 end
