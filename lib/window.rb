@@ -28,6 +28,9 @@ class TopinambourWindow
     signal_connect "key-press-event" do |widget, event|
       TopinambourShortcuts.handle_key_press(widget, event)
     end
+    signal_connect "scroll-event" do |widget, event|
+      TopinambourShortcuts.handle_scroll(widget, event)
+    end
   end
 
   def add_terminal(cmd = @shell)

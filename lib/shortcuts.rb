@@ -59,13 +59,10 @@ module TopinambourShortcuts
     when Gdk::Keyval::KEY_O
       window.show_terminal_chooser
       true
-    when Gdk::Keyval::KEY_P
-      window.show_terminal_chooser2
-      true
     when Gdk::Keyval::KEY_E
       window.show_css_editor
       true
-    when Gdk::Keyval::KEY_S
+    when Gdk::Keyval::KEY_slash
       window.show_searchbar
       true
     end
@@ -77,6 +74,17 @@ module TopinambourShortcuts
       handle_ctrl_shift(event, window)
     else
       handle_simple(event, window)
+    end
+  end
+
+  def self.handle_scroll(window, event)
+    if ctrl_shift?(event)
+      case event.direction
+      when Gdk::ScrollDirection::UP
+        window.opacity = window.opacity + 0.05
+      when Gdk::ScrollDirection::DOWN
+        window.opacity = window.opacity - 0.05
+      end
     end
   end
 end
