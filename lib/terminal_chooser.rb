@@ -17,7 +17,7 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
   def initialize(window)
     super(nil, nil)
     @window = window
-    set_size_request(184, @window.notebook.current.allocation.to_a[3] - 8)
+    set_size_request(250, @window.notebook.current.allocation.to_a[3] - 8)
     set_halign(:end)
     set_valign(:center)
     set_name("terminal_chooser")
@@ -43,11 +43,14 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
 
   def fill_grid
     @window.notebook.children.each_with_index do |child, i|
-      button = generate_preview_button(child, i)
+      button = Gtk::Label.new("tab. #{(i + 1).to_s}")
+      button.angle = 45
       @grid.attach(button, 0, i, 1, 1)
+      button = generate_preview_button(child, i)
+      @grid.attach(button, 1, i, 1, 1)
       add_drag_and_drop_functionalities(button)
       button = generate_close_tab_button
-      @grid.attach(button, 1, i, 1, 1)
+      @grid.attach(button, 2, i, 1, 1)
     end
     @grid.attach(generate_separator, 0, @window.notebook.n_pages, 2, 1)
     button = generate_quit_button
@@ -84,7 +87,6 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
 
   def update_preview_button_tooltip(range)
     (range).each do |j|
-      puts j
       @grid.get_child_at(0, j).tooltip_text = j.to_s
     end
   end
@@ -92,7 +94,7 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
   def generate_preview_button(child, i)
     button = Gtk::Button.new
     button.add(generate_preview_image(child.preview))
-    button.set_tooltip_text(i.to_s)
+    button.set_tooltip_text((i + 1).to_s)
     button.signal_connect("clicked") { @window.notebook.current_page = i }
     button
   end
@@ -181,7 +183,7 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
         dragged = @window.notebook.get_nth_page(index_of_dragged_object)
         @window.notebook.reorder_child(dragged, index)
         @window.notebook.children.each_with_index do |child, i|
-          @grid.get_child_at(0, i).image = generate_preview_image(child.preview)
+          @grid.get_child_at(1, i).image = generate_preview_image(child.preview)
         end
       end
     end
