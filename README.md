@@ -23,11 +23,9 @@ Topinambour is Terminal written with the Gtk3 and Vte3 ruby bindings from the pr
 *    Terminal font can be changed on the fly and saved in the CSS configuration file.
 *    The Css file can be edited in a tab of Topinambour and saved. Each modifications are applied while you are writting them. (Use `Shift + Ctrl + w` to close the editor)
 *    In the terminals, some patterns can be clicked (urls, emails, color names ...) in order to launch the appropriate application or a related dialog window.
-*    Topinambour allows users to modify existing modules. For example if a user copy the css_editor.rb in the directory *~/.config/topinambour/lib/css_editor.rb*, he should be able to modify it in order to fit its needs. 
+*    Topinambour allows users to modify existing modules. For example if a user copy the css_editor.rb in the directory *~/.config/topinambour/lib/css_editor.rb*, he should be able to modify it in order to fit its needs.
 
 ##  TODO:
-*   Create more Css properties in order to configure the terminals (cursor shape or blink mode, audible bell or not ...)
-*   Finish preferences window.
 *   Name all the important widget so that they can be easily themed in Css.
 *   Write a description of the widgets that have a Css name/Id.
 *   Improve the Css editor with a part for the Css parsing error when the user writes. Add a color chooser widget in the related tab.
@@ -36,22 +34,28 @@ Topinambour is Terminal written with the Gtk3 and Vte3 ruby bindings from the pr
 ## Shortcuts
 
 *    `Shift + Ctrl + t`  new tab
-    
+
 *    `Shift + Ctrl + q` quit Topinambour
-    
+
 *    `Shift + Ctrl + w` close current tab
-    
+
 *    `Shift + Ctrl + left` previous tab
-    
+
 *    `Shift + Ctrl + right` next tab
-    
+
 *    `Shift + Ctrl + c` display color selectors for the vte in overlay mod (Esc to leave)
-     
+
 *    `Shift + Ctrl + f` display font selector for the vte in overlay mod (Esc to leave)
-    
+
 *    `Shift + Ctrl + o` display previews of all tabs (Esc to leave)
 
 *    `Shift + Ctrl + e` open the Css configuration editor in a new notebook tab.
+
+*    `Shift + Ctrl + /` open for the current terminal a search entry.
+
+*    `Shift + Ctrl + Up` diminue topinambour window size to its minimum or resize to its previous height.
+
+*    `Shift + Ctrl + Scroll` scroll down or up in order to decrease or increase the opacity.
 
 
 ## User configuration
@@ -104,7 +108,7 @@ grid button {
 
  grid button image {
   border: solid 3px rgba(0, 0, 0, 0.0);
-  margin: 0px;  
+  margin: 0px;
   padding: 0px;
 }
 ```
@@ -131,7 +135,7 @@ Which means that the old file can be something like that : *topinambour.css_2016
 
 ### Launch the terminal
 
-    ~> topinambour 
+    ~> topinambour
 
 ### Tips:
 
@@ -146,7 +150,7 @@ the ruby gem binaries (for example).
 
     git clone https://github.com/cedlemo/topinambour.git
     cd topinambour/bin
-    
+
 ##### Edit the files Topinambour and test
   The filenames correspond to their functionnalities.
   Simply run `./topinambour` when you have done your modifications.

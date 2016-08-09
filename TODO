@@ -1,14 +1,7 @@
-Urgent:
+Ideas:
+  terminal manager tab: preview tab order rename
+  	Try create a tab that displays extending tab informations (name, pixbuff, process, pid, dir) in treeview
+  Allow rename tab in tab chooser
   check pb when file empty (no universal selector)
-  is the pb exist when valid data in file but no universal selector
   add Css parser output in Css editor
   generate a plugin system and add the resize little window in it
-
-Ideas:
-  Allow rename tab in terminal chooser
-  can we create the headerbar in the xml/ui file
-  Add shortcut Ctr+Shit + mouse scroll -> increase/decrease opacity
-  Add shortcut that just show the title bar of the terminal
-  Use a treeview or listbox for terminal chooser
-  Try create a tab that displays extending tab informations (name, pixbuff, process, pid, dir) in treeview
-
