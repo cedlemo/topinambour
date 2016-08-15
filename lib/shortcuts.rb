@@ -59,9 +59,6 @@ module TopinambourShortcuts
     when Gdk::Keyval::KEY_O
       window.show_terminal_chooser
       true
-    when Gdk::Keyval::KEY_E
-      window.show_css_editor
-      true
     when Gdk::Keyval::KEY_slash
       window.show_searchbar
       true

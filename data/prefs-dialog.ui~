@@ -180,7 +180,18 @@
                           </packing>
                         </child>
                         <child>
-                          <placeholder/>
+                          <object class="GtkLabel" id="css_editor_label">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">start</property>
+                            <property name="valign">start</property>
+                            <property name="label" translatable="yes">Css Editor</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">6</property>
+                          </packing>
                         </child>
                         <child>
                           <placeholder/>
@@ -246,6 +257,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="halign">start</property>
+                                <property name="valign">start</property>
                                 <property name="label" translatable="yes">Audible Bell</property>
                               </object>
                               <packing>
@@ -258,6 +270,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="halign">end</property>
+                                <property name="valign">center</property>
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
@@ -269,6 +282,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="halign">start</property>
+                                <property name="valign">start</property>
                                 <property name="label" translatable="yes">Allow Bold</property>
                               </object>
                               <packing>
@@ -293,6 +307,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="halign">start</property>
+                                <property name="valign">start</property>
                                 <property name="label" translatable="yes">Scroll On Output</property>
                               </object>
                               <packing>
@@ -305,6 +320,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="halign">end</property>
+                                <property name="valign">start</property>
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
@@ -316,6 +332,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="halign">start</property>
+                                <property name="valign">start</property>
                                 <property name="label" translatable="yes">Scroll On Keystroke</property>
                               </object>
                               <packing>
@@ -328,6 +345,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="halign">end</property>
+                                <property name="valign">start</property>
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
@@ -339,6 +357,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="halign">start</property>
+                                <property name="valign">start</property>
                                 <property name="label" translatable="yes">Rewrap On Resize</property>
                               </object>
                               <packing>
@@ -351,6 +370,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="halign">end</property>
+                                <property name="valign">start</property>
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
@@ -362,6 +382,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="halign">end</property>
+                                <property name="valign">start</property>
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
@@ -373,6 +394,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="halign">start</property>
+                                <property name="valign">start</property>
                                 <property name="label" translatable="yes">Mouse Autohide</property>
                               </object>
                               <packing>
@@ -392,6 +414,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="halign">start</property>
+                            <property name="valign">start</property>
                             <property name="label" translatable="yes">Cursor Shape</property>
                           </object>
                           <packing>
@@ -423,6 +446,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="halign">start</property>
+                            <property name="valign">start</property>
                             <property name="label" translatable="yes">Cursor Blink</property>
                           </object>
                           <packing>
@@ -454,6 +478,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="halign">start</property>
+                            <property name="valign">start</property>
                             <property name="label" translatable="yes">Backspace Binding</property>
                           </object>
                           <packing>
@@ -487,6 +512,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="halign">start</property>
+                            <property name="valign">start</property>
                             <property name="label" translatable="yes">Delete Binding</property>
                           </object>
                           <packing>

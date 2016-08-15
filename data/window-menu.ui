@@ -3,10 +3,6 @@
   <!-- interface-requires gtk+ 3.0 -->
   <menu id="winmenu">
     <section>
-      <item >
-        <attribute name="label" translatable="yes" >_Css Configuration Editor</attribute>
-        <attribute name="action">app.css_editor</attribute>
-      </item>
       <item>
         <attribute name="label" translatable="yes">_Preferences</attribute>
         <attribute name="action">app.preferences</attribute>

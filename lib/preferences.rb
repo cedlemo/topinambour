@@ -21,7 +21,6 @@ module TopinambourPreferences
     builder = Gtk::Builder.new(:resource => resource_file)
     dialog = builder["Preferences_dialog"]
     dialog.transient_for = parent
-    add_source_view_style_chooser(builder, parent)
     add_actions(builder, parent)
     connect_response(dialog, builder)
     dialog
@@ -47,7 +46,6 @@ module TopinambourPreferences
 
   def self.get_all_properties(widget, builder)
     props = {}
-    props.merge!(get_source_view_style(builder))
     props.merge!(get_entry_value(builder))
     props.merge!(get_switch_values(builder))
     props.merge!(get_spin_values(widget))
@@ -125,26 +123,6 @@ module TopinambourPreferences
       _, h = parent.size
       widget.value = h if widget.value + 1 < h
     end
-  end
-
-  # Hack because when added via glade, the builder fail to load the ui.
-  def self.add_source_view_style_chooser(builder, parent)
-    box = builder["gen_prefs_box"]
-    button = GtkSource::StyleSchemeChooserButton.new
-    sm = GtkSource::StyleSchemeManager.default
-    button.style_scheme = sm.get_scheme(parent.css_editor_style)
-    button.show
-    button.signal_connect "style-updated" do |widget|
-      parent.css_editor_style = widget.style_scheme.id
-    end
-    box.pack_start(button, :expand => true, :fill => false)
-  end
-
-  def self.get_source_view_style(builder)
-    box = builder["gen_prefs_box"]
-    penultimate = box.children.size - 2
-    style = box.children[penultimate].style_scheme.id
-    { "-TopinambourWindow-css-editor-style" =>  style }
   end
 
   def self.get_entry_value(builder)

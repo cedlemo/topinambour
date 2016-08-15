@@ -16,7 +16,7 @@
 
 class TopinambourWindow
   attr_reader :notebook, :bar, :overlay, :current_label, :current_tab
-  attr_accessor :shell, :css_editor_style
+  attr_accessor :shell
   def initialize(application)
     super(:application => application)
     set_icon_name("utilities-terminal-symbolic")
@@ -75,12 +75,6 @@ class TopinambourWindow
     toggle_overlay(TopinambourFontSelector) if @notebook.current.class == TopinambourTerminal
   end
 
-  def show_css_editor
-    css_editor = TopinambourCssEditor.new(self)
-    @notebook.append_page(css_editor, Gtk::Label.new)
-    @notebook.set_page(@notebook.n_pages - 1)
-  end
-
   def show_terminal_chooser
     toggle_overlay(TopinambourTermChooser)
   end
@@ -98,7 +92,6 @@ class TopinambourWindow
     @default_height = style_get_property("height")
     set_default_size(@default_width, @default_height)
     @shell = style_get_property("shell")
-    @css_editor_style = style_get_property("css-editor-style")
   end
 
   def display_about
