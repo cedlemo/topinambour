@@ -26,7 +26,7 @@ class TopinambourNotebook < Gtk::Notebook
     end
 
     signal_connect "switch-page" do |_widget, next_page, next_page_num|
-      toplevel.current_label.text = next_page.terminal_title if next_page.class == TopinambourTerminal
+      toplevel.current_label.text = next_page.terminal_title
       toplevel.current_tab.text = "#{next_page_num + 1}/#{n_pages}"
       generate_tab_preview if page >= 0
     end
@@ -87,7 +87,6 @@ class TopinambourNotebook < Gtk::Notebook
 
   def send_to_all_terminals(method_name, values)
     each do |tab|
-      next unless tab.class == TopinambourTerminal
       tab.send(method_name, *values)
     end
   end

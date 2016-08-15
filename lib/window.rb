@@ -36,10 +36,7 @@ class TopinambourWindow
   def add_terminal(cmd = @shell)
     exit_overlay_mode
     working_dir = nil
-    # Check if current tab is a TopinambourTerminal (can be TopinambourCssEditor)
-    if @notebook.current.class == TopinambourTerminal && @notebook.n_pages > 0
-      working_dir = @notebook.current.pid_dir
-    end
+    working_dir = @notebook.current.pid_dir
 
     terminal = TopinambourTerminal.new(cmd, working_dir)
     terminal.show
@@ -56,7 +53,7 @@ class TopinambourWindow
   end
 
   def show_color_selector
-    toggle_overlay(TopinambourColorSelector) if @notebook.current.class == TopinambourTerminal
+    toggle_overlay(TopinambourColorSelector)
   end
 
   def show_prev_tab
@@ -72,7 +69,7 @@ class TopinambourWindow
   end
 
   def show_font_selector
-    toggle_overlay(TopinambourFontSelector) if @notebook.current.class == TopinambourTerminal
+    toggle_overlay(TopinambourFontSelector)
   end
 
   def show_terminal_chooser
