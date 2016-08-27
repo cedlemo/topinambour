@@ -1,7 +1,11 @@
 Ideas:
+  label in terminal_overview:
+  	when drag label must be changed as well
+	when terminal closed , label must be deleted (maybe it is already implemented via grid line deletion)
+	click on label should allow to rename tab
+
   terminal manager tab: preview tab order rename
   	Try create a tab that displays extending tab informations (name, pixbuff, process, pid, dir) in treeview
   Allow rename tab in tab chooser
   check pb when file empty (no universal selector)
-  add Css parser output in Css editor
   generate a plugin system and add the resize little window in it
