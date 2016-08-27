@@ -1,6 +1,6 @@
 Ideas:
   label in terminal_overview:
-	click on label should allow to rename tab
+	refactor
 
   terminal manager tab: preview tab order rename
   	Try create a tab that displays extending tab informations (name, pixbuff, process, pid, dir) in treeview
