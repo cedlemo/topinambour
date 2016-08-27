@@ -188,6 +188,7 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
         @window.notebook.reorder_child(dragged, index)
         @window.notebook.children.each_with_index do |child, i|
           @grid.get_child_at(1, i).image = generate_preview_image(child.preview)
+          @grid.get_child_at(2, i).label = child.terminal_title
         end
       end
     end

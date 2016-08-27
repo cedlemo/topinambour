@@ -1,7 +1,5 @@
 Ideas:
   label in terminal_overview:
-  	when drag label must be changed as well
-	when terminal closed , label must be deleted (maybe it is already implemented via grid line deletion)
 	click on label should allow to rename tab
 
   terminal manager tab: preview tab order rename
