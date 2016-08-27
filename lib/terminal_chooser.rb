@@ -49,8 +49,7 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
       button = generate_preview_button(child, i)
       @grid.attach(button, 1, i, 1, 1)
       add_drag_and_drop_functionalities(button)
-      label = Gtk::Label.new(child.terminal_title)
-      label.halign = :start
+      label = generate_label(child)
       @grid.attach(label, 2, i, 1, 1)
       button = generate_close_tab_button
       @grid.attach(button, 3, i, 1, 1)
@@ -58,6 +57,50 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     @grid.attach(generate_separator, 0, @window.notebook.n_pages, 2, 1)
     button = generate_quit_button
     @grid.attach(button, 0, @window.notebook.n_pages + 1, 2, 1)
+  end
+
+  def generate_label_popup(label, event, term)
+    entry = Gtk::Entry.new
+    entry.max_width_chars = 50
+    entry.buffer.text = label.text
+    entry.set_icon_from_icon_name(:secondary, "edit-clear")
+    pp = Gtk::Popover.new
+    entry.signal_connect "activate" do |widget|
+      label.text = widget.buffer.text
+      term.custom_title = widget.buffer.text
+      term.toplevel.current_label.text = widget.buffer.text
+      pp.destroy
+    end
+
+    entry.signal_connect "icon-release" do |widget, position|
+      if position == :secondary
+        term.custom_title = nil
+        label.text = term.window_title
+        term.toplevel.current_label.text = label.text
+        widget.buffer.text = label.text
+      end
+    end
+
+    pp.add(entry)
+    x, y = event.window.coords_to_parent(event.x,
+                                     event.y)
+    rect = Gdk::Rectangle.new(x - label.allocation.x,
+                          y - label.allocation.y,
+                          1,
+                          1)
+    pp.pointing_to = rect
+    pp.relative_to = label
+    pp.show_all
+  end
+
+  def generate_label(term)
+    label = Gtk::Label.new(term.terminal_title)
+      label.halign = :start
+      label.selectable = true
+      label.signal_connect "button-release-event" do |w, e|
+        generate_label_popup(w, e, term)
+      end
+    label
   end
 
   def generate_close_tab_button
