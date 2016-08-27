@@ -17,9 +17,9 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
   def initialize(window)
     super(nil, nil)
     @window = window
-    set_size_request(250, @window.notebook.current.allocation.to_a[3] - 8)
     set_halign(:end)
     set_valign(:center)
+    set_policy(:never, :automatic)
     set_name("terminal_chooser")
 
     window.notebook.generate_tab_preview
@@ -30,15 +30,15 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     @box.name = "OverviewBox"
     @box.pack_start(@grid, :expand => true, :fill => true, :padding => 4)
     add(@box)
-  end
+    set_size_request(-1 , @window.notebook.current.allocation.to_a[3] - 8)
+ end
 
   private
 
   def generate_grid
     @grid = Gtk::Grid.new
-    @grid.valign = :start
-    @grid.halign = :center
-    @grid.row_spacing = 2
+    @grid.row_spacing = 4
+    @grid.column_spacing = 6
   end
 
   def fill_grid
@@ -49,8 +49,11 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
       button = generate_preview_button(child, i)
       @grid.attach(button, 1, i, 1, 1)
       add_drag_and_drop_functionalities(button)
+      label = Gtk::Label.new(child.terminal_title)
+      label.halign = :start
+      @grid.attach(label, 2, i, 1, 1)
       button = generate_close_tab_button
-      @grid.attach(button, 2, i, 1, 1)
+      @grid.attach(button, 3, i, 1, 1)
     end
     @grid.attach(generate_separator, 0, @window.notebook.n_pages, 2, 1)
     button = generate_quit_button
