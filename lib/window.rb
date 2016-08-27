@@ -36,7 +36,7 @@ class TopinambourWindow
   def add_terminal(cmd = @shell)
     exit_overlay_mode
     working_dir = nil
-    working_dir = @notebook.current.pid_dir
+    working_dir = @notebook.current.pid_dir if @notebook.current
 
     terminal = TopinambourTerminal.new(cmd, working_dir)
     terminal.show
