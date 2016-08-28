@@ -59,19 +59,16 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     @grid.attach(button, 0, @window.notebook.n_pages + 1, 2, 1)
   end
 
-  def generate_label_popup(label, event, term)
-    entry = Gtk::Entry.new
-    entry.max_width_chars = 50
-    entry.buffer.text = label.text
-    entry.set_icon_from_icon_name(:secondary, "edit-clear")
-    pp = Gtk::Popover.new
+  def add_label_popup_entry_activate_signal(entry, popup, label, term)
     entry.signal_connect "activate" do |widget|
       label.text = widget.buffer.text
       term.custom_title = widget.buffer.text
       term.toplevel.current_label.text = widget.buffer.text
-      pp.destroy
+      popup.destroy
     end
+  end
 
+  def add_label_popup_entry_icon_release(entry, label, term)
     entry.signal_connect "icon-release" do |widget, position|
       if position == :secondary
         term.custom_title = nil
@@ -80,14 +77,21 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
         widget.buffer.text = label.text
       end
     end
+  end
+
+  def generate_label_popup(label, event, term)
+    entry = Gtk::Entry.new
+    entry.max_width_chars = 50
+    entry.buffer.text = label.text
+    entry.set_icon_from_icon_name(:secondary, "edit-clear")
+    pp = Gtk::Popover.new
+    add_label_popup_entry_activate_signal(entry, pp, label, term)
+    add_label_popup_entry_icon_release(entry, label, term)
 
     pp.add(entry)
-    x, y = event.window.coords_to_parent(event.x,
-                                     event.y)
-    rect = Gdk::Rectangle.new(x - label.allocation.x,
-                          y - label.allocation.y,
-                          1,
-                          1)
+    x, y = event.window.coords_to_parent(event.x, event.y)
+    rect = Gdk::Rectangle.new(x - label.allocation.x, y - label.allocation.y,
+                              1, 1)
     pp.pointing_to = rect
     pp.relative_to = label
     pp.show_all
@@ -95,11 +99,11 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
 
   def generate_label(term)
     label = Gtk::Label.new(term.terminal_title)
-      label.halign = :start
-      label.selectable = true
-      label.signal_connect "button-release-event" do |w, e|
-        generate_label_popup(w, e, term)
-      end
+    label.halign = :start
+    label.selectable = true
+    label.signal_connect "button-release-event" do |w, e|
+      generate_label_popup(w, e, term)
+    end
     label
   end
 
