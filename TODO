@@ -1,9 +1,5 @@
 Ideas:
-  label in terminal_overview:
-	refactor
-
   terminal manager tab: preview tab order rename
   	Try create a tab that displays extending tab informations (name, pixbuff, process, pid, dir) in treeview
-  Allow rename tab in tab chooser
   check pb when file empty (no universal selector)
   generate a plugin system and add the resize little window in it
