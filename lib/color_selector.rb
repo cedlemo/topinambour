@@ -77,7 +77,8 @@ class TopinambourColorSelector < Gtk::Box
   def add_color_selectors
     TERMINAL_COLOR_NAMES.each_with_index do |name, i|
       color_sel = Gtk::ColorButton.new(@default_colors[i])
-      color_sel.set_title(name.to_s)
+      color_sel.title = name.to_s
+      color_sel.tooltip_text = name.to_s
       color_sel.signal_connect "color-set" do
         @colors[i] = color_sel.rgba
         apply_new_colors
