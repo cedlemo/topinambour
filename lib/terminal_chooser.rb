@@ -149,7 +149,7 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
   def generate_preview_button(child, i)
     button = Gtk::Button.new
     button.image = generate_preview_image(child.preview)
-    button.set_tooltip_text((i + 1).to_s)
+    button.tooltip_text = (i + 1).to_s
     button.signal_connect("clicked") { @window.notebook.current_page = i }
     button
   end
