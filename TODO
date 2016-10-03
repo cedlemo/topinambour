@@ -1,5 +1,19 @@
 Ideas:
-  terminal manager tab: preview tab order rename
-  	Try create a tab that displays extending tab informations (name, pixbuff, process, pid, dir) in treeview
-  check pb when file empty (no universal selector)
-  generate a plugin system and add the resize little window in it
+  *  add scrollbar:
+  	Note that altough VteTerminal implements the GtkScrollable interface,
+	you should not place a VteTerminal inside a GtkScrolledWindow
+	container, since they are incompatible. Instead, pack the terminal in a
+	horizontal GtkBox together with a GtkScrollbar which uses the
+	GtkAdjustment returned from gtk_scrollable_get_vadjustment().
+
+  *  when removing elements in terminal_chooser, update the tab labels (ie tab 1, tab7)
+  *  try to catch event when new command launched in order to be able to go to
+     last cursor position
+  *  add button for creating terminal next to current one
+
+  *  terminal manager tab: preview tab order rename
+  	Try create a tab that displays extending tab informations (name,
+	pixbuff, process, pid, dir) in treeview
+
+  *   check pb when file empty (no universal selector)
+  *   generate a plugin system and add the resize little window in it
