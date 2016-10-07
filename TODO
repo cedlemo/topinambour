@@ -6,7 +6,6 @@ Ideas:
 	horizontal GtkBox together with a GtkScrollbar which uses the
 	GtkAdjustment returned from gtk_scrollable_get_vadjustment().
 
-  *  when removing elements in terminal_chooser, update the tab labels (ie tab 1, tab7)
   *  try to catch event when new command launched in order to be able to go to
      last cursor position
   *  add button for creating terminal next to current one
