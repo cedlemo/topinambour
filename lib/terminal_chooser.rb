@@ -137,14 +137,7 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     @window.notebook.remove(tab)
     @grid.remove_row(n)
     last_tab = @window.notebook.n_pages - 1
-    update_preview_button_tooltip(n..last_tab)
     update_tab_num_label(n..last_tab)
-  end
-
-  def update_preview_button_tooltip(range)
-    range.each do |j|
-      @grid.get_child_at(0, j).tooltip_text = j.to_s
-    end
   end
 
   def update_tab_num_label(range)
@@ -156,7 +149,6 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
   def generate_preview_button(child, i)
     button = Gtk::Button.new
     button.image = generate_preview_image(child.preview)
-    button.tooltip_text = (i + 1).to_s
     button.signal_connect("clicked") { @window.notebook.current_page = i }
     button
   end
