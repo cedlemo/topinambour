@@ -29,6 +29,9 @@ Topinambour is Terminal written with the Gtk3 and Vte3 ruby bindings from the pr
 *   Name all the important widgets so that they can be easily themed in Css.
     *    `#topinambour-overview-box`
     *    `#topinambour-headerbar`
+    *    `#topinambour-window`
+    *    `#topinambour-scrollbar`
+    *    `#topinambour-notebook`
 
 *   Write a description of the widgets that have a Css name/Id.
 *   Improve the Css editor with a part for the Css parsing error when the user writes. Add a color chooser widget in the related tab.
