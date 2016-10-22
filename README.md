@@ -26,7 +26,10 @@ Topinambour is Terminal written with the Gtk3 and Vte3 ruby bindings from the pr
 *    Topinambour allows users to modify existing modules. For example if a user copy the css_editor.rb in the directory *~/.config/topinambour/lib/css_editor.rb*, he should be able to modify it in order to fit its needs.
 
 ##  TODO:
-*   Name all the important widget so that they can be easily themed in Css.
+*   Name all the important widgets so that they can be easily themed in Css.
+    *    `#topinambour-overview-box`
+    *    `#topinambour-headerbar`
+
 *   Write a description of the widgets that have a Css name/Id.
 *   Improve the Css editor with a part for the Css parsing error when the user writes. Add a color chooser widget in the related tab.
 *   Make Topinambour allows users to easily create their own modules. For example create a tab that will act as a MPD client. There will be widgets that control a MPD server and a GtkTree widget that displays the playlist of the MPD server for example.
@@ -91,22 +94,32 @@ It can be found in the file `$HOME/.config/topinambour/topinambour.css` (Be care
 }
 
 TopinambourWindow headerbar entry{
-  border-radius: 4px;
+  /*border-radius: 4px;*/
 }
 
-#OverviewBox {
+#topinambour-overview-box {
   background-color: rgba(0,0,0,0.2);
   border: solid 1px rgba(49, 150, 188, 1);
   border-radius: 6px 0px 0px 6px;
 }
 
+#topinambour-headerbar {
+  background-color: #323232;
+  border: none;
+  box-shadow: none;
+}
+#topinambour_headerbar:backdrop {
+  background-color: rgba(50,50,50,0.7);
+  border: none;
+  box-shadow: none;
+}
 grid button {
   margin: 0px;
   padding: 0px;
 
 }
 
- grid button image {
+grid button image {
   border: solid 3px rgba(0, 0, 0, 0.0);
   margin: 0px;
   padding: 0px;
