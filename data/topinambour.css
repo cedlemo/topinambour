@@ -29,13 +29,13 @@ TopinambourWindow headerbar entry{
   /*border-radius: 4px;*/
 }
 
-#overview-main-box {
+#topinambour-overview-box {
   background-color: rgba(0,0,0,0.2);
   border: solid 1px rgba(49, 150, 188, 1);
   border-radius: 6px 0px 0px 6px;
 }
 
-#topinambour_headerbar {
+#topinambour-headerbar {
   background-color: #323232;
   border: none;
   box-shadow: none;

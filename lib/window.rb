@@ -149,7 +149,7 @@ class TopinambourWindow
     resource_file = "/com/github/cedlemo/topinambour/headerbar.ui"
     builder = Gtk::Builder.new(:resource => resource_file)
     headerbar = builder["headerbar"]
-    headerbar.name = "topinambour_headerbar"
+    headerbar.name = "topinambour-headerbar"
     set_titlebar(headerbar)
     @current_label = builder["current_label"]
     current_label_signals
