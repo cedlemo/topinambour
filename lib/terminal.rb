@@ -14,6 +14,21 @@
 # You should have received a copy of the GNU General Public License
 # along with Topinambour.  If not, see <http://www.gnu.org/licenses/>.
 
+## The main full tab Gtk::Box + Vte::Terminal + Gtk::Scrollbar
+#
+
+class TopinambourTabTerm < Gtk::Box
+  attr_reader :term
+  def initialize(command_string, working_dir=nil)
+    super(:horizontal, 0)
+    @term = TopinambourTerminal.new(command_string, working_dir)
+    @term.show
+    @scrollbar = Gtk::Scrollbar.new(:vertical, @term.vadjustment)
+    @scrollbar.show
+    pack_start(@term, :expand => true, :fill => true, :padding => 0)
+    pack_start(@scrollbar)
+  end
+end
 ##
 # The default vte terminal customized
 class TopinambourTerminal
@@ -31,14 +46,14 @@ class TopinambourTerminal
                  :spawn_flags => GLib::Spawn::SEARCH_PATH)
 
     signal_connect "child-exited" do |widget|
-      notebook = widget.parent
+      notebook = widget.parent.parent
       current_page = notebook.page_num(widget)
       notebook.remove_page(current_page)
       notebook.toplevel.application.quit unless notebook.n_pages >= 1
     end
 
     signal_connect "window-title-changed" do
-      when_terminal_title_change if parent && parent.current == self
+      when_terminal_title_change if parent.parent && parent.parent.current.term == self
     end
 
     builder = Gtk::Builder.new(:resource =>
