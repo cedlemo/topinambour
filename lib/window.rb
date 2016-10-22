@@ -20,6 +20,7 @@ class TopinambourWindow
   def initialize(application)
     super(:application => application)
     set_icon_name("utilities-terminal-symbolic")
+    set_name("topinambour-window")
     load_css_properties
     set_position(:center)
     create_header_bar
@@ -39,7 +40,7 @@ class TopinambourWindow
     working_dir = @notebook.current.term.pid_dir if @notebook.current
 
     terminal = TopinambourTabTerm.new(cmd, working_dir)
-    terminal.show
+    terminal.show_all
 
     @notebook.append_page(terminal)
     @notebook.set_tab_reorderable(terminal, true)

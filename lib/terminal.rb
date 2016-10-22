@@ -21,10 +21,10 @@ class TopinambourTabTerm < Gtk::Box
   attr_reader :term
   def initialize(command_string, working_dir=nil)
     super(:horizontal, 0)
+    set_name("topinambour-tab-term")
     @term = TopinambourTerminal.new(command_string, working_dir)
-    @term.show
     @scrollbar = Gtk::Scrollbar.new(:vertical, @term.vadjustment)
-    @scrollbar.show
+    @scrollbar.name = "topinambour-scrollbar"
     pack_start(@term, :expand => true, :fill => true, :padding => 0)
     pack_start(@scrollbar)
   end

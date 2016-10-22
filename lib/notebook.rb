@@ -38,7 +38,7 @@ class TopinambourNotebook < Gtk::Notebook
     signal_connect "page-removed" do
       toplevel.current_tab.text = "#{page + 1}/#{n_pages}" if toplevel.class == TopinambourWindow
     end
-
+    set_name("topinambour-notebook")
     set_show_tabs(false)
     set_show_border(false)
   end
