@@ -25,10 +25,6 @@
   -TopinambourWindow-width: 1000;*/
 }
 
-TopinambourWindow headerbar entry{
-  /*border-radius: 4px;*/
-}
-
 #topinambour-overview-box {
   background-color: rgba(43,45,54,0.95);
   border-radius: 6px 0px 0px 6px;
@@ -39,18 +35,34 @@ TopinambourWindow headerbar entry{
   border: none;
   box-shadow: none;
 }
-#topinambour_headerbar:backdrop {
+
+#topinambour-headerbar:backdrop {
   background-color: rgba(50,50,50,0.7);
   border: none;
   box-shadow: none;
 }
-grid button {
-  margin: 0px;
-  padding: 0px;
+
+#topinambour-scrollbar trough{
+	background-color: rgba(0,0,0,0);
+	border: none;
+}
+
+#topinambour-scrollbar slider{
+	margin-left: 8px;
+	background-color: rgba(49,150,188,0.5);
+}
+
+#topinambour-tab-term {
+	background-color: rgba(0,0,0,0);
 }
 
 grid button image {
   border: solid 3px rgba(0, 0, 0, 0.0);
+  margin: 0px;
+  padding: 0px;
+}
+
+grid button {
   margin: 0px;
   padding: 0px;
 }
