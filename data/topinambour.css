@@ -30,8 +30,7 @@ TopinambourWindow headerbar entry{
 }
 
 #topinambour-overview-box {
-  background-color: rgba(0,0,0,0.2);
-  border: solid 1px rgba(49, 150, 188, 1);
+  background-color: rgba(43,45,54,0.95);
   border-radius: 6px 0px 0px 6px;
 }
 
@@ -48,7 +47,6 @@ TopinambourWindow headerbar entry{
 grid button {
   margin: 0px;
   padding: 0px;
-
 }
 
 grid button image {
