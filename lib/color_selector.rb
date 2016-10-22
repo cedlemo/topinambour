@@ -37,7 +37,7 @@ class TopinambourColorSelector < Gtk::Box
   private
 
   def initialize_default_colors
-    @default_colors = @window.notebook.current.css_colors
+    @default_colors = @window.notebook.current.term.css_colors
     @colors = @default_colors.dup
   end
 
@@ -88,7 +88,7 @@ class TopinambourColorSelector < Gtk::Box
   end
 
   def apply_new_colors
-    @window.notebook.current.colors = @colors
-    @window.notebook.current.apply_colors
+    @window.notebook.current.term.colors = @colors
+    @window.notebook.current.term.apply_colors
   end
 end

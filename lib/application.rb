@@ -33,7 +33,7 @@ class TopinambourApplication < Gtk::Application
       window = TopinambourWindow.new(application)
       window.present
       window.add_terminal
-      window.notebook.current.grab_focus
+      window.notebook.current.term.grab_focus
     end
   end
 

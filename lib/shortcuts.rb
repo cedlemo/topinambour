@@ -27,7 +27,7 @@ module TopinambourShortcuts
     when Gdk::Keyval::KEY_Escape # escape from overlay mode
       if window.in_overlay_mode?
         window.exit_overlay_mode
-        window.notebook.current.grab_focus
+        window.notebook.current.term.grab_focus
         true
       end
     end

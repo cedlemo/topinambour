@@ -67,7 +67,7 @@ module TopinambourPreferences
 
   def self.gen_switch_actions(property_name, builder, parent)
     switch = builder["#{property_name}_switch"]
-    switch.active = parent.notebook.current.send("#{property_name}?")
+    switch.active = parent.notebook.current.term.send("#{property_name}?")
     switch.signal_connect "state-set" do |_widget, state|
       parent.notebook.send_to_all_terminals("#{property_name}=", state)
       false
@@ -89,7 +89,7 @@ module TopinambourPreferences
 
   def self.gen_combobox_actions(property_name, builder, parent)
     combobox = builder["#{property_name}_sel"]
-    id = parent.notebook.current.send("#{property_name}").nick + "_id"
+    id = parent.notebook.current.term.send("#{property_name}").nick + "_id"
     combobox.active_id = id
     combobox.signal_connect "changed" do |widget|
       value = widget.active_id.gsub(/_id/, "").to_sym

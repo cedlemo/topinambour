@@ -36,14 +36,15 @@ class TopinambourWindow
   def add_terminal(cmd = @shell)
     exit_overlay_mode
     working_dir = nil
-    working_dir = @notebook.current.pid_dir if @notebook.current
+    working_dir = @notebook.current.term.pid_dir if @notebook.current
 
-    terminal = TopinambourTerminal.new(cmd, working_dir)
+    terminal = TopinambourTabTerm.new(cmd, working_dir)
     terminal.show
+
     @notebook.append_page(terminal)
     @notebook.set_tab_reorderable(terminal, true)
     @notebook.set_page(@notebook.n_pages - 1)
-    @notebook.current.grab_focus
+    @notebook.current.term.grab_focus
   end
 
   def quit_gracefully
@@ -59,13 +60,13 @@ class TopinambourWindow
   def show_prev_tab
     exit_overlay_mode
     @notebook.cycle_prev_page
-    @notebook.current.grab_focus
+    @notebook.current.term.grab_focus
   end
 
   def show_next_tab
     exit_overlay_mode
     @notebook.cycle_next_page
-    @notebook.current.grab_focus
+    @notebook.current.term.grab_focus
   end
 
   def show_font_selector
@@ -161,16 +162,16 @@ class TopinambourWindow
 
   def current_label_signals
     @current_label.signal_connect "activate" do |entry|
-      @notebook.current.custom_title = entry.text
-      @notebook.current.grab_focus
+      @notebook.current.term.custom_title = entry.text
+      @notebook.current.term.grab_focus
     end
 
     @current_label.signal_connect "icon-release" do |entry, position|
       if position == :primary
         close_current_tab
       elsif position == :secondary
-        @notebook.current.custom_title = nil
-        entry.text = @notebook.current.window_title
+        @notebook.current.term.custom_title = nil
+        entry.text = @notebook.current.term.window_title
       end
     end
   end
@@ -222,7 +223,7 @@ class TopinambourWindow
   def toggle_overlay(klass)
     if in_overlay_mode? && @overlay.children[1].class == klass
       exit_overlay_mode
-      @notebook.current.grab_focus
+      @notebook.current.term.grab_focus
     else
       exit_overlay_mode
       add_overlay(klass.new(self))

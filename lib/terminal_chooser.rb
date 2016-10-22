@@ -30,7 +30,7 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     @box.name = "topinambour-overview-box"
     @box.pack_start(@grid, :expand => true, :fill => true, :padding => 4)
     add(@box)
-    set_size_request(-1, @window.notebook.current.allocation.to_a[3] - 8)
+    set_size_request(-1, @window.notebook.current.term.allocation.to_a[3] - 8)
   end
 
   private
@@ -43,7 +43,7 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
 
   def fill_grid
     @window.notebook.children.each_with_index do |child, i|
-      generate_row_grid(child, i)
+      generate_row_grid(child.term, i)
     end
     @grid.attach(generate_separator, 0, @window.notebook.n_pages, 2, 1)
     button = generate_quit_button
@@ -246,8 +246,8 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     dragged = @window.notebook.get_nth_page(src_index)
     @window.notebook.reorder_child(dragged, dest_index)
     @window.notebook.children.each_with_index do |child, i|
-      @grid.get_child_at(1, i).image = generate_preview_image(child.preview)
-      @grid.get_child_at(2, i).label = child.terminal_title
+      @grid.get_child_at(1, i).image = generate_preview_image(child.term.preview)
+      @grid.get_child_at(2, i).label = child.term.terminal_title
     end
   end
 

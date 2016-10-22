@@ -47,9 +47,9 @@ module TopinambourActions
   def self.generate_preferences_action(application)
     action = generate_action("preferences") do |_act, _param|
       dialog = TopinambourPreferences.generate_dialog(application.windows.first)
-      
+
       dialog.run
-      application.windows.first.notebook.current.grab_focus
+      application.windows.first.notebook.current.term.grab_focus
     end
     action
   end
@@ -65,7 +65,7 @@ module TopinambourActions
     action = generate_action("term_copy") do |_act, _param|
       term = application.windows[0].notebook.current
       event = Gtk.current_event
-      
+
       _match, regex_type = term.match_check_event(event)
       if term.has_selection? || regex_type == -1
         term.copy_clipboard
@@ -79,7 +79,7 @@ module TopinambourActions
 
   def self.generate_term_paste_action(application)
     action = generate_action("term_paste") do |_act, _param|
-      application.windows[0].notebook.current.paste_clipboard
+      application.windows[0].notebook.current.term.paste_clipboard
     end
     action
   end
