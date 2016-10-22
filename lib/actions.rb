@@ -63,7 +63,7 @@ module TopinambourActions
 
   def self.generate_term_copy_action(application)
     action = generate_action("term_copy") do |_act, _param|
-      term = application.windows[0].notebook.current
+      term = application.windows[0].notebook.current.term
       event = Gtk.current_event
 
       _match, regex_type = term.match_check_event(event)
