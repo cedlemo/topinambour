@@ -65,6 +65,24 @@ class TopinambourApplication < Gtk::Application
     @css_content = new_conf
   end
 
+
+  def reload_css_config
+    if File.exist?(USR_CSS)
+      @provider.signal_connect "parsing-error" do |_css_provider, section, error|
+      puts "error"
+      # @start_i = @view.buffer.get_iter_at(:line => section.start_line,
+      #                                    :index => section.start_position)
+      # @end_i =  @view.buffer.get_iter_at(:line => section.end_line,
+      #                                   :index => section.end_position)
+      # if error == Gtk::CssProviderError::DEPRECATED
+      # else
+      end
+      load_custom_css_config
+    else
+      write_down_default_css
+    end
+  end
+
   private
 
   def load_menu_ui_in(application)
@@ -98,6 +116,10 @@ class TopinambourApplication < Gtk::Application
       puts "No custom CSS, using default css"
       load_default_css_config
     end
+  end
+
+  def write_down_default_css
+    File.open(USR_CSS, "w") { |file| file.write(@css_content) }
   end
 
   def check_and_create_if_no_config_dir

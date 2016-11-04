@@ -159,6 +159,7 @@ class TopinambourWindow
     next_prev_new_signals(builder)
     overview_font_color_signals(builder)
     main_menu_signal(builder)
+    reload_css_conf_signal(builder)
   end
 
   def current_label_signals
@@ -218,6 +219,15 @@ class TopinambourWindow
                                 1, 1)
       menu.set_pointing_to(rect)
       menu.show
+    end
+  end
+
+  def reload_css_conf_signal(builder)
+    button = builder["css_reload_button"]
+    button.signal_connect "clicked" do
+      application.reload_css_config
+      # TODO
+      # reload the topinambour properties
     end
   end
 
