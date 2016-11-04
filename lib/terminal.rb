@@ -46,14 +46,17 @@ class TopinambourTerminal
                  :spawn_flags => GLib::Spawn::SEARCH_PATH)
 
     signal_connect "child-exited" do |widget|
-      notebook = widget.parent.parent
-      current_page = notebook.page_num(widget)
+      tabterm = widget.parent
+      notebook = tabterm.parent
+      current_page = notebook.page_num(tabterm)
       notebook.remove_page(current_page)
       notebook.toplevel.application.quit unless notebook.n_pages >= 1
     end
 
-    signal_connect "window-title-changed" do
-      when_terminal_title_change if parent.parent && parent.parent.current.term == self
+    signal_connect "window-title-changed" do |widget|
+      tabterm = widget.parent
+      notebook = tabterm.parent
+      when_terminal_title_change if notebook && notebook.current.term == self
     end
 
     builder = Gtk::Builder.new(:resource =>
