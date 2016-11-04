@@ -1,5 +1,9 @@
 Ideas:
+  *  add reload config button in the headerbar (almost done)
+  	*  reload the custom topinambour properties
+	*  catch errors when the css file is not good
 
+  *  add file selector for different css config (default one symbolic link ?)
   *  try to catch event when new command launched in order to be able to go to
      last cursor position
   *  add button for creating terminal next to current one
