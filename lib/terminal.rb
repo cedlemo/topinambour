@@ -84,40 +84,11 @@ class TopinambourTerminal
     File.readlink("/proc/#{@pid}/cwd")
   end
 
-  def css_colors
-    colors = []
-    background = parse_css_color(TERMINAL_COLOR_NAMES[0].to_s)
-    foreground = parse_css_color(TERMINAL_COLOR_NAMES[1].to_s)
-    TERMINAL_COLOR_NAMES[2..-1].each do |c|
-      colors << parse_css_color(c.to_s)
-    end
-    [background, foreground] + colors
-  end
-
-  def css_font
-    font = style_get_property("font")
-    font = Pango::FontDescription.new(DEFAULT_TERMINAL_FONT) unless font
-    font
-  end
-
-  def apply_colors
-    set_colors(@colors[0], @colors[1], @colors[2..-1])
-  end
-
   def terminal_title
     @custom_title.class == String ? @custom_title : window_title.to_s
   end
 
   private
-
-  def parse_css_color(color_name)
-    color_index = TERMINAL_COLOR_NAMES.index(color_name.to_sym)
-    color_value = DEFAULT_TERMINAL_COLORS[color_index]
-    default_color = Gdk::RGBA.parse(color_value)
-    color_from_css = style_get_property(color_name)
-    color = color_from_css ? color_from_css : default_color
-    color
-  end
 
   def configure
     set_rewrap_on_resize(true)
