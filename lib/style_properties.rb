@@ -116,7 +116,11 @@ class TopinambourTerminal < Vte::Terminal
     %w(cursor_shape cursor_blink_mode backspace_binding delete_binding).each do |prop|
       send("#{prop}=", style_get_property(prop.gsub(/_/,"-")))
     end
+    @colors = css_colors
+    apply_colors
+    set_font(css_font)
   end
+
   def parse_css_color(color_name)
     color_index = TERMINAL_COLOR_NAMES.index(color_name.to_sym)
     color_value = DEFAULT_TERMINAL_COLORS[color_index]

@@ -226,8 +226,10 @@ class TopinambourWindow
     button = builder["css_reload_button"]
     button.signal_connect "clicked" do
       application.reload_css_config
-      # TODO
-      # reload the topinambour properties
+      notebook.each do |tab|
+        tab.term.load_properties
+        # reload the topinambour notebook properties
+      end
     end
   end
 
