@@ -157,7 +157,6 @@ class TopinambourWindow < Gtk::ApplicationWindow
   install_style("string", "shell", "/usr/bin/fish")
   install_style("int", "width", [-1, 2000, 1000])
   install_style("int", "height", [-1, 2000, 500])
-  install_style("string", "css-editor-style", "classic")
 
   def load_properties
 
