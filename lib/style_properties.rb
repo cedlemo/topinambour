@@ -159,6 +159,13 @@ class TopinambourWindow < Gtk::ApplicationWindow
   install_style("int", "height", [-1, 2000, 500])
 
   def load_properties
-
+    _w, _h = self.size
+    w = style_get_property("width")
+    h = style_get_property("height")
+    w = _w if w == -1
+    h = _h if h == -1
+    self.resize(w, h)
+    self.set_default_size(w, h)
+    @shell = style_get_property("shell")
   end
 end
