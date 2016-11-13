@@ -21,7 +21,7 @@ class TopinambourWindow
     super(:application => application)
     set_icon_name("utilities-terminal-symbolic")
     set_name("topinambour-window")
-    load_css_properties
+    load_properties
     set_position(:center)
     create_header_bar
     create_containers
@@ -84,13 +84,6 @@ class TopinambourWindow
 
   def exit_overlay_mode
     @overlay.children[1].destroy if in_overlay_mode?
-  end
-
-  def load_css_properties
-    @default_width = style_get_property("width")
-    @default_height = style_get_property("height")
-    set_default_size(@default_width, @default_height)
-    @shell = style_get_property("shell")
   end
 
   def display_about
