@@ -12,7 +12,6 @@ Gem::Specification.new do |s|
   s.files       = FileList["bin/*", "data/*", "lib/*", "COPYING", "README.md"]
   s.executables << "topinambour"
   s.post_install_message = "Have fun with topinambour"
-  s.add_runtime_dependency "vte3", "~> 3.0", ">= 3.0.9"
-  s.add_runtime_dependency "gtksourceview3", "~> 3.0", ">= 3.0.9"
+  s.add_runtime_dependency "vte3", "~> 3.0", ">= 3.1.0"
   s.add_runtime_dependency "sass", "~> 3.4", ">= 3.4.18"
 end
