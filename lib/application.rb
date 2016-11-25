@@ -65,17 +65,11 @@ class TopinambourApplication < Gtk::Application
     @css_content = new_conf
   end
 
-
   def reload_css_config
     error_popup = nil
     bad_css = nil
     if File.exist?(USR_CSS)
       @provider.signal_connect "parsing-error" do |css_provider, section, error|
-        error_popup = Gtk::MessageDialog.new(:parent => self.windows.first, :flags => 0,
-                                             :type => Gtk::MessageType::ERROR,
-                                             :buttons_type => Gtk::ButtonsType::CLOSE,
-                                             :message => "Css Error")
-        error_popup.signal_connect("response") { |widget| widget.destroy }
         buf = Gtk::TextBuffer.new
         buf.text = @css_content
         start_i = buf.get_iter_at(:line => section.start_line,
@@ -92,11 +86,10 @@ class TopinambourApplication < Gtk::Application
       begin
         load_custom_css_config
       rescue => e
-        if error_popup
-          text = Gtk::Label.new(e.message + "\n\n" + bad_css)
-          error_popup.content_area.add(text)
-          error_popup.show_all
-        end
+        error_popup = TopinambourCssErrorPopup.new(self.windows.first)
+        error_popup.message = e.message + "\n\n" + bad_css
+        error_popup.show_all
+
         @css_content = css_backup
         @provider.load(:data => @css_content)
       end
@@ -144,5 +137,27 @@ class TopinambourApplication < Gtk::Application
 
   def check_and_create_if_no_config_dir
     Dir.mkdir(CONFIG_DIR) unless Dir.exist?(CONFIG_DIR)
+  end
+end
+
+class TopinambourCssErrorPopup < Gtk::MessageDialog
+
+  def initialize(parent)
+    super(:parent => parent, :flags => 0,
+          :type => Gtk::MessageType::ERROR,
+          :buttons_type => Gtk::ButtonsType::CLOSE,
+          :message => "Css Error")
+
+    @message = Gtk::Label.new("")
+    content_area.add(@message)
+    signal_connect("response") { |widget| widget.destroy }
+  end
+
+  def message=(message)
+    @message.text = message
+  end
+
+  def message
+    @message.text
   end
 end
