@@ -94,7 +94,7 @@ class TopinambourWindow
                           "license" => "This program is licenced under the licence GPL-3.0 and later.",
                           "logo_icon_name" => "utilities-terminal-symbolic",
                           "program_name" => "Topinambour",
-                          "version" => "1.0.9",
+                          "version" => "1.0.11",
                           "website" => "https://github.com/cedlemo/topinambour",
                           "website_label" => "Topinambour github repository"
                          )
