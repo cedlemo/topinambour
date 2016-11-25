@@ -123,6 +123,9 @@ class TopinambourApplication < Gtk::Application
         load_custom_css_config
       rescue => e
         puts "Bad css file using default css #{e.message}"
+        error_popup = TopinambourCssErrorPopup.new(self.windows.first)
+        error_popup.message = e.message + "\n\nBad css file using default css"
+        error_popup.show_all
         load_default_css_config
       end
     else
