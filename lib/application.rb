@@ -15,7 +15,7 @@
 # along with Topinambour.  If not, see <http://www.gnu.org/licenses/>.
 
 class TopinambourApplication < Gtk::Application
-  attr_reader :provider, :css_file, :css_content # :css_content really needed ?
+  attr_reader :provider, :css_file, :css_content
   def initialize
     super("com.github.cedlemo.topinambour", :non_unique)
 
@@ -68,28 +68,24 @@ class TopinambourApplication < Gtk::Application
 
   def reload_css_config
     error_popup = nil
-    bad_css = ""
+    bad_css = nil
     if File.exist?(USR_CSS)
       @provider.signal_connect "parsing-error" do |css_provider, section, error|
         error_popup = Gtk::MessageDialog.new(:parent => self.windows.first, :flags => 0,
                                              :type => Gtk::MessageType::ERROR,
                                              :buttons_type => Gtk::ButtonsType::CLOSE,
                                              :message => "Css Error")
-        error_popup.signal_connect "response" do |widget|
-          widget.destroy
-        end
+        error_popup.signal_connect("response") { |widget| widget.destroy }
         buf = Gtk::TextBuffer.new
         buf.text = @css_content
         start_i = buf.get_iter_at(:line => section.start_line,
-                                          :index => section.start_position)
-        end_i =  buf.get_iter_at(:line => section.start_line + 5,
+                                  :index => section.start_position)
+        end_i =  buf.get_iter_at(:line => section.start_line + 10,
                                  :index => section.end_position)
-        bad_css = buf.get_text(start_i, end_i, true)
-        err_css = ""
-        bad_css.lines.each_with_index do |line, i|
-          err_css += "#{section.start_line  + 1 + i} #{line}"
+        bad_css = ""
+        buf.get_text(start_i, end_i, true).lines.each_with_index do |line, i|
+          bad_css += "#{section.start_line  + 1 + i}  #{line}"
         end
-        bad_css = err_css
       end
       css_backup = @css_content
 
@@ -97,10 +93,10 @@ class TopinambourApplication < Gtk::Application
         load_custom_css_config
       rescue => e
         if error_popup
-          error_popup.content_area.add(Gtk::Label.new(e.message + "\n\n" + bad_css))
+          text = Gtk::Label.new(e.message + "\n\n" + bad_css)
+          error_popup.content_area.add(text)
           error_popup.show_all
         end
-        puts "Bad css file using default css #{e.message}"
         @css_content = css_backup
         @provider.load(:data => @css_content)
       end
