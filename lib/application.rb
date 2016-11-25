@@ -67,19 +67,43 @@ class TopinambourApplication < Gtk::Application
 
 
   def reload_css_config
+    error_popup = nil
+    bad_css = ""
     if File.exist?(USR_CSS)
-      @provider.signal_connect "parsing-error" do |_css_provider, section, error|
-      puts "error"
-      # @start_i = @view.buffer.get_iter_at(:line => section.start_line,
-      #                                    :index => section.start_position)
-      # @end_i =  @view.buffer.get_iter_at(:line => section.end_line,
-      #                                   :index => section.end_position)
-      # if error == Gtk::CssProviderError::DEPRECATED
-      # else
+      @provider.signal_connect "parsing-error" do |css_provider, section, error|
+        error_popup = Gtk::MessageDialog.new(:parent => self.windows.first, :flags => 0,
+                                             :type => Gtk::MessageType::ERROR,
+                                             :buttons_type => Gtk::ButtonsType::CLOSE,
+                                             :message => "Css Error")
+        error_popup.signal_connect "response" do |widget|
+          widget.destroy
+        end
+        buf = Gtk::TextBuffer.new
+        buf.text = @css_content
+        start_i = buf.get_iter_at(:line => section.start_line,
+                                          :index => section.start_position)
+        end_i =  buf.get_iter_at(:line => section.start_line + 5,
+                                 :index => section.end_position)
+        bad_css = buf.get_text(start_i, end_i, true)
+        err_css = ""
+        bad_css.lines.each_with_index do |line, i|
+          err_css += "#{section.start_line  + 1 + i} #{line}"
+        end
+        bad_css = err_css
       end
-      load_custom_css_config
-    else
-      write_down_default_css
+      css_backup = @css_content
+
+      begin
+        load_custom_css_config
+      rescue => e
+        if error_popup
+          error_popup.content_area.add(Gtk::Label.new(e.message + "\n\n" + bad_css))
+          error_popup.show_all
+        end
+        puts "Bad css file using default css #{e.message}"
+        @css_content = css_backup
+        @provider.load(:data => @css_content)
+      end
     end
   end
 
