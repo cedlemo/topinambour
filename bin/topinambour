@@ -24,6 +24,16 @@ require "vte3"
 require "fileutils"
 require "sass"
 
+Signal.trap("INT") {
+  STDERR.puts "\tTopinambour processus pid = #{Process.pid} has been interrupted with Ctrl-C"
+  exit
+}
+
+Signal.trap("TERM") {
+  STDERR.puts "\tTopinambour processus pid = #{Process.pid} has been killed"
+  exit
+}
+
 CURRENT_PATH = File.expand_path(File.dirname(__FILE__))
 LIB_PATH = "#{CURRENT_PATH}/../lib"
 DATA_PATH = "#{CURRENT_PATH}/../data"
