@@ -1,5 +1,9 @@
 Ideas:
-
+  *  Follow principles of GNOME/Gtk :
+     - use gsettings for configuration (remove all the topinambour css props)
+     - remove dependency to sass
+     - simplify the ui
+     - rework the properties window ui
   *  add file selector for different css config (default one symbolic link ?)
   *  try to catch event when new command launched in order to be able to go to
      last cursor position
