@@ -21,7 +21,7 @@
 
 require "vte3"
 require "fileutils"
-require "sass"
+#require "sass"
 
 Signal.trap("INT") {
   STDERR.puts "\tTopinambour processus pid = #{Process.pid} has been interrupted with Ctrl-C"
@@ -45,9 +45,12 @@ resource = Gio::Resource.load(gresource_bin)
 Gio::Resources.register(resource)
 # Load default libraries !!WARNING!! loading order matters
 
-%w(actions style_properties css_handler application rgb_names_regexes
+#%w(actions style_properties css_handler application rgb_names_regexes
+#terminal_regex terminal notebook color_selector font_selector
+#terminal_chooser shortcuts searchbar window preferences).each do |l|
+%w(actions application rgb_names_regexes
 terminal_regex terminal notebook color_selector font_selector
-terminal_chooser shortcuts searchbar window preferences).each do |l|
+terminal_chooser shortcuts searchbar window).each do |l|
   if File.exist?("#{USR_LIB_PATH}/#{l}.rb")
     require "#{USR_LIB_PATH}/#{l}.rb"
   else

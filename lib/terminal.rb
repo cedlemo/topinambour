@@ -31,9 +31,10 @@ class TopinambourTabTerm < Gtk::Box
 end
 ##
 # The default vte terminal customized
-class TopinambourTerminal
+class TopinambourTerminal < Vte::Terminal
   attr_reader :pid, :menu, :regexes, :last_match
-  attr_accessor :preview, :colors, :custom_title
+  # attr_accessor :preview, :colors, :custom_title
+  attr_accessor :preview, :custom_title
 
   ##
   # Create a new TopinambourTerminal instance that runs command_string
@@ -94,10 +95,10 @@ class TopinambourTerminal
     set_rewrap_on_resize(true)
     set_scrollback_lines(-1)
     search_set_wrap_around(true)
-    @colors = css_colors
-    set_font(css_font)
-    apply_colors
-    load_properties
+#    @colors = css_colors
+#    set_font(css_font)
+#    apply_colors
+#    load_properties
     add_matches
   end
 

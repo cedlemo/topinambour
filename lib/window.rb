@@ -14,14 +14,16 @@
 # You should have received a copy of the GNU General Public License
 # along with Topinambour.  If not, see <http://www.gnu.org/licenses/>.
 
-class TopinambourWindow
+class TopinambourWindow < Gtk::ApplicationWindow
   attr_reader :notebook, :bar, :overlay, :current_label, :current_tab
   attr_accessor :shell
   def initialize(application)
-    super(:application => application)
+    #super(:application => application)
+    super(application)
     set_icon_name("utilities-terminal-symbolic")
     set_name("topinambour-window")
-    load_properties
+    # load_properties
+    @shell = "/usr/bin/fish"
     set_position(:center)
     create_header_bar
     create_containers
@@ -54,9 +56,9 @@ class TopinambourWindow
     application.quit
   end
 
-  def show_color_selector
-    toggle_overlay(TopinambourColorSelector)
-  end
+#  def show_color_selector
+#    toggle_overlay(TopinambourColorSelector)
+#  end
 
   def show_prev_tab
     exit_overlay_mode
@@ -70,16 +72,12 @@ class TopinambourWindow
     @notebook.current.term.grab_focus
   end
 
-  def show_font_selector
-    toggle_overlay(TopinambourFontSelector)
-  end
+#  def show_font_selector
+#    toggle_overlay(TopinambourFontSelector)
+#  end
 
   def show_terminal_chooser
     toggle_overlay(TopinambourTermChooser)
-  end
-
-  def show_terminal_chooser2
-    toggle_overlay(TopinambourTermChooserb)
   end
 
   def exit_overlay_mode
@@ -152,7 +150,7 @@ class TopinambourWindow
     next_prev_new_signals(builder)
     overview_font_color_signals(builder)
     main_menu_signal(builder)
-    reload_css_conf_signal(builder)
+#    reload_css_conf_signal(builder)
   end
 
   def current_label_signals
@@ -187,15 +185,15 @@ class TopinambourWindow
 
   def overview_font_color_signals(builder)
     builder["term_overv_button"].signal_connect "clicked" do
-      show_terminal_chooser
+      #show_terminal_chooser
     end
 
     builder["font_sel_button"].signal_connect "clicked" do
-      show_font_selector
+      #show_font_selector
     end
 
     builder["colors_sel_button"].signal_connect "clicked" do
-      show_color_selector
+      #show_color_selector
     end
   end
 
@@ -215,15 +213,15 @@ class TopinambourWindow
     end
   end
 
-  def reload_css_conf_signal(builder)
-    button = builder["css_reload_button"]
-    button.signal_connect "clicked" do
-      application.reload_css_config
-      notebook.each { |tab| tab.term.load_properties }
-      load_properties
-      queue_draw
-    end
-  end
+#  def reload_css_conf_signal(builder)
+#    button = builder["css_reload_button"]
+#    button.signal_connect "clicked" do
+##      application.reload_css_config
+##      notebook.each { |tab| tab.term.load_properties }
+##      load_properties
+##      queue_draw
+#    end
+#  end
 
   def toggle_overlay(klass)
     if in_overlay_mode? && @overlay.children[1].class == klass
