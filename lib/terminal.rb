@@ -33,7 +33,6 @@ end
 # The default vte terminal customized
 class TopinambourTerminal < Vte::Terminal
   attr_reader :pid, :menu, :regexes, :last_match
-  # attr_accessor :preview, :colors, :custom_title
   attr_accessor :preview, :custom_title
 
   ##

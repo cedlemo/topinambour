@@ -16,7 +16,6 @@
 
 class TopinambourApplication < Gtk::Application
   attr_accessor :settings
-#  attr_reader :provider, :css_file, :css_content
   def initialize
     super("com.github.cedlemo.topinambour", :non_unique)
 
@@ -40,34 +39,6 @@ class TopinambourApplication < Gtk::Application
       window.notebook.current.term.grab_focus
     end
   end
-
-#  def update_css(new_props)
-#    props = []
-#    new_props.each do |prop|
-#      props << {:name => prop[0], :value => prop[1]}
-#    end
-#    new_css = CssHandler.update_css(@css_file, props)
-#    replace_old_conf_with(new_css)
-#
-#    begin
-#      load_custom_css_config
-#    rescue => e
-#      puts "Bad css file using default css, #{e.message}"
-#      load_default_css_config # Use last workin Css instead
-#    end
-#  end
-
-#  def replace_old_conf_with(new_conf)
-#    if File.exist?(USR_CSS)
-#      new_name = "#{USR_CSS}_#{Time.new.strftime('%Y-%m-%d-%H-%M-%S')}.backup"
-#      FileUtils.mv(USR_CSS, new_name)
-#    end
-#    check_and_create_if_no_config_dir
-#    File.open(USR_CSS, "w") do |file|
-#      file.puts new_conf
-#    end
-#    @css_content = new_conf
-#  end
 
   def reload_css_config
     error_popup = nil
@@ -109,15 +80,8 @@ class TopinambourApplication < Gtk::Application
     application.app_menu = app_menu
   end
 
-#  def load_default_css_config
-#    @css_content = Gio::Resources.lookup_data("/com/github/cedlemo/topinambour/topinambour.css", 0)
-#    @css_file = "#{DATA_PATH}/topinambour.css"
-#    @provider.load(:data => @css_content)
-#  end
-
   def load_custom_css(file)
     @css_content = File.open(file, "r").read
-    #@css_file =
     @provider.load(:data => @css_content)
   end
 
@@ -132,16 +96,11 @@ class TopinambourApplication < Gtk::Application
         error_popup = TopinambourCssErrorPopup.new(self.windows.first)
         error_popup.message = e.message + "\n\nBad css file using default css"
         error_popup.show_all
-        #load_default_css_config
       end
     else
       puts "No custom CSS, using default theme"
     end
   end
-
-#  def write_down_default_css
-#    File.open(USR_CSS, "w") { |file| file.write(@css_content) }
-#  end
 
   def check_and_create_if_no_config_dir
     Dir.mkdir(CONFIG_DIR) unless Dir.exist?(CONFIG_DIR)
