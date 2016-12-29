@@ -11,3 +11,9 @@ system("glib-compile-resources",
        "--sourcedir", File.dirname(gresource_xml),
        gresource_xml)
 end
+
+task :gen_gschemas_bin do
+system("glib-compile-schemas",
+       "--targetdir=#{DATA_PATH}",
+       DATA_PATH)
+end

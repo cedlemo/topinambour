@@ -87,7 +87,7 @@ class TopinambourNotebook < Gtk::Notebook
 
   def send_to_all_terminals(method_name, values)
     each do |tab|
-      tab.send(method_name, *values)
+      tab.term.send(method_name, *values)
     end
   end
 end

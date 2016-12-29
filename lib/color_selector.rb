@@ -13,6 +13,13 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Topinambour.  If not, see <http://www.gnu.org/licenses/>.
+
+TERMINAL_COLOR_NAMES = [:foreground, :background, :black, :red, :green, :yellow,
+                        :blue, :magenta, :cyan, :white, :brightblack,
+                        :brightred, :brightgreen, :brightyellow, :brightblue,
+                        :brightmagenta, :brightcyan, :brightwhite
+                       ]
+
 class TopinambourColorSelector < Gtk::Box
   attr_reader :colors
   def initialize(window)
@@ -37,7 +44,8 @@ class TopinambourColorSelector < Gtk::Box
   private
 
   def initialize_default_colors
-    @default_colors = @window.notebook.current.term.css_colors
+    colors_strings = @window.application.settings["colorscheme"]
+    @default_colors = colors_strings.map {|c| Gdk::RGBA.parse(c) }
     @colors = @default_colors.dup
   end
 
@@ -53,22 +61,17 @@ class TopinambourColorSelector < Gtk::Box
     button
   end
 
-  def apply_new_css_properties(toplevel, props)
-    toplevel.application.update_css(props)
-    toplevel.notebook.send_to_all_terminals("colors=", [@colors])
-    toplevel.notebook.send_to_all_terminals("apply_colors", nil)
+  def apply_new_properties
+    colors_strings = @colors.map { |c| c.to_s }
+    @window.application.settings["colorscheme"] = colors_strings
+    @window.notebook.send_to_all_terminals(:colors, nil)
+    @window.notebook.send_to_all_terminals(:load_properties, nil)
   end
 
   def generate_save_button
     button = Gtk::Button.new(:label => "Save")
     button.signal_connect "clicked" do |widget|
-      new_props = {}
-      TERMINAL_COLOR_NAMES.each_with_index do |c, i|
-        if @colors[i] != @default_colors[i]
-          new_props["-TopinambourTerminal-#{c}"] = @colors[i].to_s
-        end
-      end
-      apply_new_css_properties(widget.toplevel, new_props)
+      apply_new_properties
       button.toplevel.exit_overlay_mode
     end
     button
@@ -89,6 +92,5 @@ class TopinambourColorSelector < Gtk::Box
 
   def apply_new_colors
     @window.notebook.current.term.colors = @colors
-    @window.notebook.current.term.apply_colors
   end
 end

@@ -18,11 +18,10 @@ class TopinambourWindow < Gtk::ApplicationWindow
   attr_reader :notebook, :bar, :overlay, :current_label, :current_tab
   attr_accessor :shell
   def initialize(application)
-    #super(:application => application)
     super(application)
     set_icon_name("utilities-terminal-symbolic")
     set_name("topinambour-window")
-    # load_properties
+    load_properties
     @shell = "/usr/bin/fish"
     set_position(:center)
     create_header_bar
@@ -45,9 +44,11 @@ class TopinambourWindow < Gtk::ApplicationWindow
     terminal.show_all
 
     @notebook.append_page(terminal)
+    terminal.term.load_properties
     @notebook.set_tab_reorderable(terminal, true)
     @notebook.set_page(@notebook.n_pages - 1)
     @notebook.current.term.grab_focus
+
   end
 
   def quit_gracefully
@@ -56,9 +57,9 @@ class TopinambourWindow < Gtk::ApplicationWindow
     application.quit
   end
 
-#  def show_color_selector
-#    toggle_overlay(TopinambourColorSelector)
-#  end
+  def show_color_selector
+    toggle_overlay(TopinambourColorSelector)
+  end
 
   def show_prev_tab
     exit_overlay_mode
@@ -72,9 +73,9 @@ class TopinambourWindow < Gtk::ApplicationWindow
     @notebook.current.term.grab_focus
   end
 
-#  def show_font_selector
-#    toggle_overlay(TopinambourFontSelector)
-#  end
+  def show_font_selector
+    toggle_overlay(TopinambourFontSelector)
+  end
 
   def show_terminal_chooser
     toggle_overlay(TopinambourTermChooser)
@@ -126,6 +127,12 @@ class TopinambourWindow < Gtk::ApplicationWindow
 
   private
 
+  def load_properties
+    height = application.settings["height"]
+    width = application.settings["width"]
+    set_size_request(width, height)
+  end
+
   def add_overlay(widget)
     @overlay.add_overlay(widget)
     @overlay.set_overlay_pass_through(widget, false)
@@ -150,7 +157,7 @@ class TopinambourWindow < Gtk::ApplicationWindow
     next_prev_new_signals(builder)
     overview_font_color_signals(builder)
     main_menu_signal(builder)
-#    reload_css_conf_signal(builder)
+    reload_css_conf_signal(builder)
   end
 
   def current_label_signals
@@ -185,15 +192,15 @@ class TopinambourWindow < Gtk::ApplicationWindow
 
   def overview_font_color_signals(builder)
     builder["term_overv_button"].signal_connect "clicked" do
-      #show_terminal_chooser
+      show_terminal_chooser
     end
 
     builder["font_sel_button"].signal_connect "clicked" do
-      #show_font_selector
+      show_font_selector
     end
 
     builder["colors_sel_button"].signal_connect "clicked" do
-      #show_color_selector
+      show_color_selector
     end
   end
 
@@ -213,15 +220,13 @@ class TopinambourWindow < Gtk::ApplicationWindow
     end
   end
 
-#  def reload_css_conf_signal(builder)
-#    button = builder["css_reload_button"]
-#    button.signal_connect "clicked" do
-##      application.reload_css_config
-##      notebook.each { |tab| tab.term.load_properties }
-##      load_properties
-##      queue_draw
-#    end
-#  end
+  def reload_css_conf_signal(builder)
+    button = builder["css_reload_button"]
+    button.signal_connect "clicked" do
+      application.reload_css_config
+      queue_draw
+   end
+ end
 
   def toggle_overlay(klass)
     if in_overlay_mode? && @overlay.children[1].class == klass

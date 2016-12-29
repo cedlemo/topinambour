@@ -89,13 +89,40 @@ class TopinambourTerminal < Vte::Terminal
     @custom_title.class == String ? @custom_title : window_title.to_s
   end
 
+  def load_properties
+    colors
+    set_colors(@colors[0], @colors[1], @colors[2..-1])
+    set_font(font)
+  end
+
+  def colors
+    colors_strings = self.parent.toplevel.application.settings["colorscheme"]
+    @colors = colors_strings.map {|c| Gdk::RGBA.parse(c) }
+    @colors
+  end
+
+  def font
+    font_str = self.parent.toplevel.application.settings["font"]
+    @font = Pango::FontDescription.new(font_str)
+  end
+
+  def colors=(colors)
+    set_colors(colors[0], colors[1], colors[2..-1])
+  end
+
+  def font=(font_str)
+    self.parent.toplevel.application.settings["font"] = Pango::FontDescription.new(font_str)
+    set_font(font)
+    @font = font
+  end
+
   private
 
   def configure
     set_rewrap_on_resize(true)
     set_scrollback_lines(-1)
     search_set_wrap_around(true)
-#    @colors = css_colors
+
 #    set_font(css_font)
 #    apply_colors
 #    load_properties

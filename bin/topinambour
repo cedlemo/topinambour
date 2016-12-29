@@ -19,9 +19,9 @@
 # vte 3 bindings.
 # Author:: Cedlemo (mailto:cedlemo@gmx.com)
 
+require "gtk3"
 require "vte3"
 require "fileutils"
-#require "sass"
 
 Signal.trap("INT") {
   STDERR.puts "\tTopinambour processus pid = #{Process.pid} has been interrupted with Ctrl-C"

@@ -22,30 +22,24 @@ class TopinambourFontSelector < Gtk::Box
 
     reset_button = Gtk::Button.new(:label => "Reset")
     reset_button.signal_connect "clicked" do
-      font_desc = Pango::FontDescription.new(@font)
-      @window.notebook.current.term.set_font(font_desc)
+      @window.notebook.current.term.font = @font
     end
     pack_start(reset_button, :expand => false, :fill => false, :padding => 0)
 
     font_button = Gtk::FontButton.new
-    font_button.set_font(@font)
-    font_button.set_show_style(true)
-    font_button.set_show_size(true)
-    font_button.set_use_font(true)
-    font_button.set_use_size(false)
+    font_button.font = @font.to_s
+    font_button.show_style = true
+    font_button.show_size = true
+    font_button.use_font = true
+    font_button.use_size = false
     font_button.signal_connect "font-set" do
       font_desc = Pango::FontDescription.new(font_button.font_name)
-      @window.notebook.current.term.set_font(font_desc)
+      @window.notebook.current.term.font = font_desc
     end
     pack_start(font_button, :expand => false, :fill => false, :padding => 0)
 
-    save_button = Gtk::Button.new(:label => "Save")
+    save_button = Gtk::Button.new(:label => "Quit")
     save_button.signal_connect "clicked" do
-      new_props = {}
-      font = @window.notebook.current.term.font
-      new_props["-TopinambourTerminal-font"] = font.to_s
-      toplevel.application.update_css(new_props)
-      toplevel.notebook.send_to_all_terminals("set_font", font)
       toplevel.exit_overlay_mode
     end
     pack_start(save_button, :expand => false, :fill => false, :padding => 0)
