@@ -155,9 +155,9 @@ class TopinambourWindow < Gtk::ApplicationWindow
     current_label_signals
     @current_tab = builder["current_tab"]
     next_prev_new_signals(builder)
-    overview_font_color_signals(builder)
+    overview_signal(builder)
     main_menu_signal(builder)
-    reload_css_conf_signal(builder)
+    theme_menu_signal(builder)
   end
 
   def current_label_signals
@@ -190,17 +190,9 @@ class TopinambourWindow < Gtk::ApplicationWindow
     end
   end
 
-  def overview_font_color_signals(builder)
+  def overview_signal(builder)
     builder["term_overv_button"].signal_connect "clicked" do
       show_terminal_chooser
-    end
-
-    builder["font_sel_button"].signal_connect "clicked" do
-      show_font_selector
-    end
-
-    builder["colors_sel_button"].signal_connect "clicked" do
-      show_color_selector
     end
   end
 
@@ -220,13 +212,48 @@ class TopinambourWindow < Gtk::ApplicationWindow
     end
   end
 
-  def reload_css_conf_signal(builder)
-    button = builder["css_reload_button"]
-    button.signal_connect "clicked" do
+  def theme_menu_signal(builder)
+    builder["theme_button"].signal_connect "clicked" do |button|
+      unless @theme_menu
+        ui_file = "/com/github/cedlemo/topinambour/theme-popover.ui"
+        b = Gtk::Builder.new(:resource => ui_file)
+        @theme_menu = b["theme_popover"]
+        add_theme_menu_buttons_signals(b)
+      end
+
+      if @theme_menu.mapped?
+        @theme_menu.popdown
+      else
+        @theme_menu.relative_to = button
+        event = Gtk.current_event
+        x, y = event.window.coords_to_parent(event.x,
+                                           event.y)
+        rect = Gdk::Rectangle.new(x - button.allocation.x,
+                                  y - button.allocation.y,
+                                  1, 1)
+        @theme_menu.set_pointing_to(rect)
+        @theme_menu.popup
+      end
+    end
+  end
+
+  def add_theme_menu_buttons_signals(builder)
+    builder["css_reload_button"].signal_connect "clicked" do
+      @theme_menu.popdown
       application.reload_css_config
       queue_draw
-   end
- end
+    end
+
+    builder["font_sel_button"].signal_connect "clicked" do
+      @theme_menu.popdown
+      show_font_selector
+    end
+
+    builder["colors_sel_button"].signal_connect "clicked" do
+      @theme_menu.popdown
+      show_color_selector
+    end
+  end
 
   def toggle_overlay(klass)
     if in_overlay_mode? && @overlay.children[1].class == klass

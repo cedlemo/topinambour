@@ -17,13 +17,9 @@ class TopinambourNotebook < Gtk::Notebook
   attr_reader :visible
   def initialize
     super()
-    signal_connect "hide" do
-      @visible = false
-    end
+    signal_connect("hide") { @visible = false }
 
-    signal_connect "show" do
-      @visible = true
-    end
+    signal_connect("show") { @visible = true }
 
     signal_connect "switch-page" do |_widget, next_page, next_page_num|
       toplevel.current_label.text = next_page.term.terminal_title

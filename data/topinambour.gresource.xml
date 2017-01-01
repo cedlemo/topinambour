@@ -6,6 +6,7 @@
     <file preprocess="xml-stripblanks">window-menu.ui</file>
     <file preprocess="xml-stripblanks">terminal-menu.ui</file>
     <file preprocess="xml-stripblanks">prefs-dialog.ui</file>
+    <file preprocess="xml-stripblanks">theme-popover.ui</file>
     <file preprocess="xml-stripblanks">headerbar.ui</file>
     <file>topinambour.css</file>
     <file>application-exit-symbolic.svg</file>
