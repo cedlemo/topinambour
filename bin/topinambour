@@ -58,8 +58,6 @@ terminal_chooser shortcuts searchbar window).each do |l|
   end
 end
 
-Gtk::IconTheme.default.add_resource_path("/com/github/cedlemo/topinambour/icons")
-
 topinambour = TopinambourApplication.new
 
 exit(topinambour.run([$PROGRAM_NAME] + ARGV))

@@ -8,24 +8,5 @@
     <file preprocess="xml-stripblanks">prefs-dialog.ui</file>
     <file preprocess="xml-stripblanks">theme-popover.ui</file>
     <file preprocess="xml-stripblanks">headerbar.ui</file>
-    <file>topinambour.css</file>
-    <file>application-exit-symbolic.svg</file>
-    <file>color-select-symbolic.svg</file>
-    <file>emblem-photos-symbolic.svg</file>
-    <file>font-select-symbolic.svg</file>
-    <file>pan-end-symbolic.svg</file>
-    <file>pan-start-symbolic.svg</file>
-    <file>tab-new-symbolic.svg</file>
-    <file>window-close-symbolic.svg</file>
-  </gresource>
-  <gresource prefix="/com/github/cedlemo/topinambour/icons">
-    <file>application-exit-symbolic.svg</file>
-    <file>color-select-symbolic.svg</file>
-    <file>emblem-photos-symbolic.svg</file>
-    <file>font-select-symbolic.svg</file>
-    <file>pan-end-symbolic.svg</file>
-    <file>pan-start-symbolic.svg</file>
-    <file>tab-new-symbolic.svg</file>
-    <file>window-close-symbolic.svg</file>
   </gresource>
 </gresources>
