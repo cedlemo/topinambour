@@ -65,7 +65,7 @@ class TopinambourColorSelector < Gtk::Box
     colors_strings = @colors.map { |c| c.to_s }
     @window.application.settings["colorscheme"] = colors_strings
     @window.notebook.send_to_all_terminals(:colors, nil)
-    @window.notebook.send_to_all_terminals(:load_properties, nil)
+    @window.notebook.send_to_all_terminals(:load_settings, nil)
   end
 
   def generate_save_button

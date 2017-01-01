@@ -88,7 +88,7 @@ class TopinambourTerminal < Vte::Terminal
     @custom_title.class == String ? @custom_title : window_title.to_s
   end
 
-  def load_properties
+  def load_settings
     colors
     set_colors(@colors[0], @colors[1], @colors[2..-1])
     set_font(font)
@@ -129,7 +129,6 @@ class TopinambourTerminal < Vte::Terminal
 
 #    set_font(css_font)
 #    apply_colors
-#    load_properties
     add_matches
   end
 

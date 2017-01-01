@@ -21,7 +21,7 @@ class TopinambourWindow < Gtk::ApplicationWindow
     super(application)
     set_icon_name("utilities-terminal-symbolic")
     set_name("topinambour-window")
-    load_properties
+    load_settings
     @shell = "/usr/bin/fish"
     set_position(:center)
     create_header_bar
@@ -44,7 +44,7 @@ class TopinambourWindow < Gtk::ApplicationWindow
     terminal.show_all
 
     @notebook.append_page(terminal)
-    terminal.term.load_properties
+    terminal.term.load_settings
     @notebook.set_tab_reorderable(terminal, true)
     @notebook.set_page(@notebook.n_pages - 1)
     @notebook.current.term.grab_focus
@@ -127,7 +127,7 @@ class TopinambourWindow < Gtk::ApplicationWindow
 
   private
 
-  def load_properties
+  def load_settings
     height = application.settings["height"]
     width = application.settings["width"]
     set_size_request(width, height)

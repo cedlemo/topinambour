@@ -5,7 +5,6 @@ Ideas:
      - simplify the ui
      - rework the properties window ui
   * load all the terminal settings via #load_properties in window.rb
-  * rename all methods #load_properties with load_settings
   *  add file selector for different css config (default one symbolic link ?)
   *  try to catch event when new command launched in order to be able to go to
      last cursor position
