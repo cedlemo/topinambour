@@ -50,7 +50,7 @@ class TopinambourTerminal < Vte::Terminal
       notebook = tabterm.parent
       current_page = notebook.page_num(tabterm)
       notebook.remove_page(current_page)
-      notebook.toplevel.application.quit unless notebook.n_pages >= 1
+      @application.quit unless notebook.n_pages >= 1
     end
 
     signal_connect "window-title-changed" do |widget|
@@ -95,13 +95,13 @@ class TopinambourTerminal < Vte::Terminal
   end
 
   def colors
-    colors_strings = self.parent.toplevel.application.settings["colorscheme"]
+    colors_strings = application.settings["colorscheme"]
     @colors = colors_strings.map {|c| Gdk::RGBA.parse(c) }
     @colors
   end
 
   def font
-    font_str = self.parent.toplevel.application.settings["font"]
+    font_str = application.settings["font"]
     @font = Pango::FontDescription.new(font_str)
   end
 
@@ -110,9 +110,14 @@ class TopinambourTerminal < Vte::Terminal
   end
 
   def font=(font_str)
-    self.parent.toplevel.application.settings["font"] = Pango::FontDescription.new(font_str)
+    application.settings["font"] = Pango::FontDescription.new(font_str)
     set_font(font)
     @font = font
+  end
+
+  def application
+    @application = self.parent.toplevel.application unless @application
+    @application
   end
 
   private
