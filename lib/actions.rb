@@ -1,4 +1,4 @@
-# Copyright 2016 Cedric LE MOIGNE, cedlemo@gmx.com
+# Copyright 2016-2017 Cedric LE MOIGNE, cedlemo@gmx.com
 # This file is part of Topinambour.
 #
 # Topinambour is free software: you can redistribute it and/or modify
@@ -37,19 +37,10 @@ module TopinambourActions
     action
   end
 
-#  def self.generate_css_editor_action(application)
-#    action = generate_action("css_editor") do |_act, _param|
-#      application.windows[0].show_css_editor
-#    end
-#    action
-#  end
-
   def self.generate_preferences_action(application)
     action = generate_action("preferences") do |_act, _param|
-      dialog = TopinambourPreferences.generate_dialog(application.windows.first)
-
-      dialog.run
-      application.windows.first.notebook.current.term.grab_focus
+      dialog = TopinambourPreferences.new(application.windows.first)
+      dialog.show_all
     end
     action
   end
@@ -86,7 +77,7 @@ module TopinambourActions
 
   def self.add_actions_to(application)
     # preferences
-    %w(about quit term_copy term_paste).each do |name|
+    %w(about quit term_copy term_paste preferences).each do |name|
       add_action_to(name, application)
     end
   end
