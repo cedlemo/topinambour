@@ -38,6 +38,8 @@
     <key name="css-file" type="s">
 	    <default>"topinambour.css"</default>
     </key>
+    <key name="allow-bold" type="b">
+      <default>true</default>
+    </key>
   </schema>
-
 </schemalist>
