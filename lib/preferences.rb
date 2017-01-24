@@ -62,5 +62,15 @@ class TopinambourPreferences < Gtk::Window
       widget.destroy
       parent.notebook.current.term.grab_focus
     end
+
+    settings = parent.application.settings
+    settings.bind("allow-bold",
+                  allow_bold_switch,
+                  "active",
+                  Gio::SettingsBindFlags::DEFAULT)
+    allow_bold_switch.signal_connect "state-set" do |switch, state|
+      parent.notebook.current.term.allow_bold = state
+      false
+    end
   end
 end
