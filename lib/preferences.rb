@@ -57,19 +57,33 @@ class TopinambourPreferences < Gtk::Window
     headerbar.title = "Topinambour Preferences"
     headerbar.show_close_button = true
     set_titlebar(headerbar)
-
+    @parent = parent
     signal_connect "delete-event" do |widget|
       widget.destroy
-      parent.notebook.current.term.grab_focus
+      @parent.notebook.current.term.grab_focus
     end
 
-    settings = parent.application.settings
-    settings.bind("allow-bold",
-                  allow_bold_switch,
+    @settings = @parent.application.settings
+
+    bind_switch_state_with_setting(allow_bold_switch, "allow-bold")
+    bind_switch_state_with_setting(audible_bell_switch, "audible-bell")
+    bind_switch_state_with_setting(scroll_on_output_switch, "scroll-on-output")
+    bind_switch_state_with_setting(scroll_on_keystroke_switch, "scroll-on-keystroke")
+    bind_switch_state_with_setting(rewrap_on_resize_switch, "rewrap-on-resize")
+    bind_switch_state_with_setting(mouse_autohide_switch, "mouse-autohide")
+
+  end
+
+  private
+
+  def bind_switch_state_with_setting(switch, setting)
+    @settings.bind(setting,
+                  switch,
                   "active",
                   Gio::SettingsBindFlags::DEFAULT)
-    allow_bold_switch.signal_connect "state-set" do |switch, state|
-      parent.notebook.current.term.allow_bold = state
+    switch.signal_connect "state-set" do |switch, state|
+      m = "#{setting.gsub(/-/,"_")}="
+      @parent.notebook.current.term.send(m, state)
       false
     end
   end
