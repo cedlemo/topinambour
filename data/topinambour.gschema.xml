@@ -41,5 +41,20 @@
     <key name="allow-bold" type="b">
       <default>true</default>
     </key>
+    <key name="audible-bell" type="b">
+      <default>false</default>
+    </key>
+    <key name="scroll-on-output" type="b">
+      <default>true</default>
+    </key>
+    <key name="scroll-on-keystroke" type="b">
+      <default>true</default>
+    </key>
+    <key name="rewrap-on-resize" type="b">
+      <default>true</default>
+    </key>
+    <key name="mouse-autohide" type="b">
+      <default>true</default>
+    </key>
   </schema>
 </schemalist>
