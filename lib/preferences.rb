@@ -83,7 +83,9 @@ class TopinambourPreferences < Gtk::Window
                   Gio::SettingsBindFlags::DEFAULT)
     switch.signal_connect "state-set" do |switch, state|
       m = "#{setting.gsub(/-/,"_")}="
-      @parent.notebook.current.term.send(m, state)
+      @parent.notebook.each do |tab|
+        tab.term.send(m, state)
+      end
       false
     end
   end
