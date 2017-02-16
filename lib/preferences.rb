@@ -77,7 +77,16 @@ class TopinambourPreferences < Gtk::Window
 
   private
 
+  def set_switch_to_initial_state(switch, setting)
+    state = @settings[setting]
+    m = "#{setting.gsub(/-/,"_")}="
+    @parent.notebook.each do |tab|
+      tab.term.send(m, state)
+    end
+  end
+
   def bind_switch_state_with_setting(switch, setting)
+    set_switch_to_initial_state(switch, setting)
     @settings.bind(setting,
                   switch,
                   "active",
@@ -91,7 +100,16 @@ class TopinambourPreferences < Gtk::Window
     end
   end
 
+  def set_combo_to_initial_state(combo_box, setting)
+    active = @settings[setting]
+    m = "#{setting.gsub(/-/,"_")}="
+    @parent.notebook.each do |tab|
+      tab.term.send(m, active)
+    end
+  end
+
   def bind_combo_box_with_setting(combo_box, setting)
+    set_combo_to_initial_state(combo_box, setting)
     @settings.bind(setting,
                    combo_box,
                    "active",
