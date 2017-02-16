@@ -56,5 +56,8 @@
     <key name="mouse-autohide" type="b">
       <default>true</default>
     </key>
+    <key name="cursor-shape" type="i">
+      <default>0</default>
+    </key>
   </schema>
 </schemalist>

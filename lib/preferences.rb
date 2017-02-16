@@ -72,6 +72,7 @@ class TopinambourPreferences < Gtk::Window
     bind_switch_state_with_setting(rewrap_on_resize_switch, "rewrap-on-resize")
     bind_switch_state_with_setting(mouse_autohide_switch, "mouse-autohide")
 
+    bind_combo_box_with_setting(cursor_shape_sel, "cursor-shape")
   end
 
   private
@@ -85,6 +86,21 @@ class TopinambourPreferences < Gtk::Window
       m = "#{setting.gsub(/-/,"_")}="
       @parent.notebook.each do |tab|
         tab.term.send(m, state)
+      end
+      false
+    end
+  end
+
+  def bind_combo_box_with_setting(combo_box, setting)
+    @settings.bind(setting,
+                   combo_box,
+                   "active",
+                   Gio::SettingsBindFlags::DEFAULT)
+    combo_box.signal_connect "changed" do
+      index = combo_box.active
+      m = "#{setting.gsub(/-/,"_")}="
+      @parent.notebook.each do |tab|
+        tab.term.send(m, index)
       end
       false
     end
