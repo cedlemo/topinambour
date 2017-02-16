@@ -73,6 +73,9 @@ class TopinambourPreferences < Gtk::Window
     bind_switch_state_with_setting(mouse_autohide_switch, "mouse-autohide")
 
     bind_combo_box_with_setting(cursor_shape_sel, "cursor-shape")
+    bind_combo_box_with_setting(cursor_blink_mode_sel, "cursor-blink-mode")
+    bind_combo_box_with_setting(backspace_binding_sel, "backspace-binding")
+    bind_combo_box_with_setting(delete_binding_sel, "delete-binding")
   end
 
   private
