@@ -4,10 +4,16 @@ Ideas:
      - done //remove dependency to sass
      - simplify the ui
      - rework the properties window ui
-  * load all the terminal settings via #load_properties in window.rb
+  *  load all the terminal settings via #load_properties in window.rb
+     should keep the preferences widgets initialization ?
   *  add file selector for different css config (default one symbolic link ?)
   *  try to catch event when new command launched in order to be able to go to
      last cursor position
+  *  find solution for warning :
+     Gtk-WARNING **: Allocating size to topinambour-scrollbar 0x3d78710 without\\
+     calling gtk_widget_get_preferred_width/height(). How does the code know the\
+     size to allocate?
+
   *  add button for creating terminal next to current one
 
   *  terminal manager tab: preview tab order rename
