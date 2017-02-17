@@ -40,12 +40,16 @@ class TopinambourPreferences < Gtk::Window
 
       private
 
-      def on_width_spin_value_changed
-        puts "width changed"
+      def on_width_spin_value_changed(spin)
+        parent = spin.toplevel.transient_for
+        height = parent.application.settings["height"]
+        parent.resize(spin.value, height)
       end
 
-      def on_height_spin_value_changed
-        puts "height changed"
+      def on_height_spin_value_changed(spin)
+        parent = spin.toplevel.transient_for
+        width = parent.application.settings["width"]
+        parent.resize(width, spin.value)
       end
     end
   end
@@ -64,6 +68,9 @@ class TopinambourPreferences < Gtk::Window
     end
 
     @settings = @parent.application.settings
+
+    bind_spin_button_with_setting(width_spin, "width")
+    bind_spin_button_with_setting(height_spin, "height")
 
     bind_switch_state_with_setting(allow_bold_switch, "allow-bold")
     bind_switch_state_with_setting(audible_bell_switch, "audible-bell")
@@ -125,5 +132,12 @@ class TopinambourPreferences < Gtk::Window
       end
       false
     end
+  end
+
+  def bind_spin_button_with_setting(spin_button, setting)
+    @settings.bind(setting,
+                   spin_button,
+                   "value",
+                   Gio::SettingsBindFlags::DEFAULT)
   end
 end
