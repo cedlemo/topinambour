@@ -2,6 +2,16 @@
 <!-- Generated with glade 3.20.0 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
+  <object class="GtkAdjustment" id="width_adjustment">
+    <property name="upper">2000</property>
+    <property name="step_increment">5</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="height_adjustment">
+    <property name="upper">2000</property>
+    <property name="step_increment">5</property>
+    <property name="page_increment">10</property>
+  </object>
   <template class="TopinambourPreferences" parent="GtkWindow">
     <property name="can_focus">False</property>
     <property name="destroy_with_parent">True</property>
@@ -78,6 +88,8 @@
                 <property name="numeric">True</property>
                 <property name="wrap">True</property>
                 <property name="value">100</property>
+		<property name="adjustment">width_adjustment</property>
+		<signal name="value-changed" handler="on_width_spin_value_changed"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -108,6 +120,8 @@
                 <property name="numeric">True</property>
                 <property name="wrap">True</property>
                 <property name="value">100</property>
+		<signal name="value-changed" handler="on_height_spin_value_changed"/>
+		<property name="adjustment">height_adjustment</property>
               </object>
               <packing>
                 <property name="left_attach">1</property>
