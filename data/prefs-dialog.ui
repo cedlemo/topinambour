@@ -58,6 +58,8 @@
                 <property name="can_focus">True</property>
                 <property name="valign">start</property>
                 <property name="text" translatable="yes">/usr/bin/fish</property>
+		<signal name="activate" handler="on_shell_entry_activate"/>
+		<signal name="focus-out-event" handler="on_shell_entry_focus_out_event"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>

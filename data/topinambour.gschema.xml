@@ -24,8 +24,11 @@
                         :brightmagenta, :brightcyan, :brightwhite
 	</description>
     </key>
+    <key name="default-shell" type="s">
+        <default>"/usr/bin/bash"</default>
+    </key>
     <key name="font" type="s">
-	    <default>"Monospace 11"</default>
+	<default>"Monospace 11"</default>
     </key>
      <key name="width" type="i">
       <range min="1" max="2000"/>

@@ -22,7 +22,6 @@ class TopinambourWindow < Gtk::ApplicationWindow
     set_icon_name("utilities-terminal-symbolic")
     set_name("topinambour-window")
     load_settings
-    @shell = "/usr/bin/fish"
     set_position(:center)
     create_header_bar
     create_containers
@@ -35,12 +34,14 @@ class TopinambourWindow < Gtk::ApplicationWindow
     end
   end
 
+  # TODO : why no load the default shell to use in TopinambourTabTerm#new
   def add_terminal(cmd = @shell)
+    shell = application.settings["default-shell"]
     exit_overlay_mode
     working_dir = nil
     working_dir = @notebook.current.term.pid_dir if @notebook.current
 
-    terminal = TopinambourTabTerm.new(cmd, working_dir)
+    terminal = TopinambourTabTerm.new(shell, working_dir)
     terminal.show_all
 
     @notebook.append_page(terminal)

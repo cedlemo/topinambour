@@ -51,6 +51,33 @@ class TopinambourPreferences < Gtk::Window
         width = parent.application.settings["width"]
         parent.resize(width, spin.value)
       end
+
+      def on_shell_entry_activate(entry)
+        style_context = entry.style_context
+
+        if File.exists?(entry.text)
+          entry.set_icon_from_icon_name(:secondary, nil)
+          style_context.remove_class("error")
+          puts entry.text
+          @settings["default-shell"] = entry.text if @settings
+        else
+          style_context.add_class("error")
+          entry.set_icon_from_icon_name(:secondary, "dialog-warning-symbolic")
+        end
+      end
+
+      def on_shell_entry_focus_out_event(entry, nope)
+        style_context = entry.style_context
+
+        if File.exists?(entry.text)
+          entry.set_icon_from_icon_name(:secondary, nil)
+          style_context.remove_class("error")
+          @settings["default-shell"] = entry.text if @settings
+        else
+          style_context.add_class("error")
+          entry.set_icon_from_icon_name(:secondary, "dialog-warning-symbolic")
+        end
+      end
     end
   end
 
@@ -83,6 +110,8 @@ class TopinambourPreferences < Gtk::Window
     bind_combo_box_with_setting(cursor_blink_mode_sel, "cursor-blink-mode")
     bind_combo_box_with_setting(backspace_binding_sel, "backspace-binding")
     bind_combo_box_with_setting(delete_binding_sel, "delete-binding")
+
+    shell_entry.text = @settings["default-shell"]
   end
 
   private
