@@ -33,6 +33,12 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     set_size_request(-1, @window.notebook.current.term.allocation.to_a[3] - 8)
   end
 
+  def on_tab_removed(n)
+    @grid.remove_row(n)
+    last_tab = @window.notebook.n_pages - 1
+    update_tab_num_label(n..last_tab)
+  end
+
   private
 
   def generate_grid
@@ -54,7 +60,7 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     button = Gtk::Label.new("tab. #{index + 1}")
     button.angle = 45
     @grid.attach(button, 0, index, 1, 1)
-    button = generate_preview_button(term, index)
+    button = generate_preview_button(term)
     @grid.attach(button, 1, index, 1, 1)
     add_drag_and_drop_functionalities(button)
     label = generate_label(term)
@@ -127,17 +133,10 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
       if  @window.notebook.n_pages == 1
         @window.quit_gracefully
       else
-        remove_tab(tab, n)
+        @window.notebook.remove(tab)
       end
     end
     button
-  end
-
-  def remove_tab(tab, n)
-    @window.notebook.remove(tab)
-    @grid.remove_row(n)
-    last_tab = @window.notebook.n_pages - 1
-    update_tab_num_label(n..last_tab)
   end
 
   def update_tab_num_label(range)
@@ -146,10 +145,12 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     end
   end
 
-  def generate_preview_button(child, i)
+  def generate_preview_button(child)
     button = Gtk::Button.new
     button.image = generate_preview_image(child.preview)
-    button.signal_connect("clicked") { @window.notebook.current_page = i }
+    button.signal_connect "clicked" do |widget|
+      @window.notebook.current_page = grid_line_of(widget)
+    end
     button
   end
 

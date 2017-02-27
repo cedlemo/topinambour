@@ -33,7 +33,6 @@ class TopinambourWindow < Gtk::ApplicationWindow
     end
   end
 
-  # TODO : why no load the default shell to use in TopinambourTabTerm#new
   def add_terminal
     shell = application.settings["default-shell"]
     exit_overlay_mode
