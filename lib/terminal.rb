@@ -126,9 +126,6 @@ class TopinambourTerminal < Vte::Terminal
     set_rewrap_on_resize(true)
     set_scrollback_lines(-1)
     search_set_wrap_around(true)
-
-#    set_font(css_font)
-#    apply_colors
     add_matches
   end
 
