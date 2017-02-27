@@ -56,10 +56,10 @@ class TopinambourPreferences < Gtk::Window
         style_context = entry.style_context
 
         if File.exists?(entry.text)
+          settings = entry.toplevel.settings
           entry.set_icon_from_icon_name(:secondary, nil)
           style_context.remove_class("error")
-          puts entry.text
-          @settings["default-shell"] = entry.text if @settings
+          settings["default-shell"] = entry.text if settings
         else
           style_context.add_class("error")
           entry.set_icon_from_icon_name(:secondary, "dialog-warning-symbolic")
@@ -70,9 +70,10 @@ class TopinambourPreferences < Gtk::Window
         style_context = entry.style_context
 
         if File.exists?(entry.text)
+          settings = entry.toplevel.settings
           entry.set_icon_from_icon_name(:secondary, nil)
           style_context.remove_class("error")
-          @settings["default-shell"] = entry.text if @settings
+          settings["default-shell"] = entry.text if settings
         else
           style_context.add_class("error")
           entry.set_icon_from_icon_name(:secondary, "dialog-warning-symbolic")
@@ -81,6 +82,7 @@ class TopinambourPreferences < Gtk::Window
     end
   end
 
+  attr_reader :settings
   def initialize(parent)
     super(:type => :toplevel)
     set_transient_for(parent)

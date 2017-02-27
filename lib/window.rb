@@ -16,7 +16,6 @@
 
 class TopinambourWindow < Gtk::ApplicationWindow
   attr_reader :notebook, :bar, :overlay, :current_label, :current_tab
-  attr_accessor :shell
   def initialize(application)
     super(application)
     set_icon_name("utilities-terminal-symbolic")
@@ -35,7 +34,7 @@ class TopinambourWindow < Gtk::ApplicationWindow
   end
 
   # TODO : why no load the default shell to use in TopinambourTabTerm#new
-  def add_terminal(cmd = @shell)
+  def add_terminal
     shell = application.settings["default-shell"]
     exit_overlay_mode
     working_dir = nil
