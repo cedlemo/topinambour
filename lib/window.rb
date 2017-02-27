@@ -129,7 +129,7 @@ class TopinambourWindow < Gtk::ApplicationWindow
   def load_settings
     height = application.settings["height"]
     width = application.settings["width"]
-    set_size_request(width, height)
+    resize(width, height)
   end
 
   def add_overlay(widget)
