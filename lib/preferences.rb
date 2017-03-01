@@ -33,6 +33,7 @@ class TopinambourPreferences < Gtk::Window
       bind_template_child("cursor_blink_mode_sel")
       bind_template_child("backspace_binding_sel")
       bind_template_child("delete_binding_sel")
+      bind_template_child("css_chooser_button")
 
       set_connect_func do |name|
         method(name)
@@ -79,6 +80,10 @@ class TopinambourPreferences < Gtk::Window
           entry.set_icon_from_icon_name(:secondary, "dialog-warning-symbolic")
         end
       end
+
+      def on_css_file_selected_cb(filechooser)
+        puts filechooser.filename
+      end
     end
   end
 
@@ -114,6 +119,8 @@ class TopinambourPreferences < Gtk::Window
     bind_combo_box_with_setting(delete_binding_sel, "delete-binding")
 
     shell_entry.text = @settings["default-shell"]
+
+    css_chooser_button.current_folder = "#{ENV["HOME"]}/.config/topinambour/"
   end
 
   private
