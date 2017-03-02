@@ -43,8 +43,8 @@ class TopinambourApplication < Gtk::Application
   def reload_css_config
     error_popup = nil
     bad_css = nil
-    css_file = "#{CONFIG_DIR}/#{@settings["css-file"]}"
-    if File.exist?(css_file)
+    css_file = check_css_file_path
+    if css_file
       @provider.signal_connect "parsing-error" do |css_provider, section, error|
         buf = Gtk::TextBuffer.new
         buf.text = @css_content
@@ -87,8 +87,8 @@ class TopinambourApplication < Gtk::Application
 
   def load_css_config
     @provider = Gtk::CssProvider.new
-    css_file = "#{CONFIG_DIR}/#{@settings["css-file"]}"
-    if File.exist?(css_file)
+    css_file = check_css_file_path
+    if css_file
       begin
         load_custom_css(css_file)
       rescue => e
@@ -100,6 +100,15 @@ class TopinambourApplication < Gtk::Application
     else
       puts "No custom CSS, using default theme"
     end
+  end
+
+  def check_css_file_path
+    css_file = if File.exist?(@settings["css-file"])
+                 @settings["css-file"]
+               else
+                 "#{CONFIG_DIR}/#{@settings["css-file"]}"
+               end
+    File.exist?(css_file) ? css_file : nil
   end
 
   def check_and_create_if_no_config_dir
