@@ -57,19 +57,28 @@ class TopinambourApplication < Gtk::Application
           bad_css += "#{section.start_line  + 1 + i}  #{line}"
         end
       end
-      css_backup = @css_content
 
       begin
         load_custom_css(css_file)
       rescue => e
+        self.windows.first.exit_overlay_mode
+        # TODO : deal with the preferences window which is a transient one
+        # that keeps the focus even when the popup shows up.
         error_popup = TopinambourCssErrorPopup.new(self.windows.first)
+        error_popup.transient_for = self.windows.first
         error_popup.message = e.message + "\n\n" + bad_css
         error_popup.show_all
-
-        @css_content = css_backup
-        @provider.load(:data => @css_content)
       end
     end
+  end
+
+  def check_css_file_path
+    css_file = if File.exist?(@settings["css-file"])
+                 @settings["css-file"]
+               else
+                 "#{CONFIG_DIR}/#{@settings["css-file"]}"
+               end
+    File.exist?(css_file) ? css_file : nil
   end
 
   private
@@ -100,15 +109,6 @@ class TopinambourApplication < Gtk::Application
     else
       puts "No custom CSS, using default theme"
     end
-  end
-
-  def check_css_file_path
-    css_file = if File.exist?(@settings["css-file"])
-                 @settings["css-file"]
-               else
-                 "#{CONFIG_DIR}/#{@settings["css-file"]}"
-               end
-    File.exist?(css_file) ? css_file : nil
   end
 
   def check_and_create_if_no_config_dir

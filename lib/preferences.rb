@@ -82,7 +82,9 @@ class TopinambourPreferences < Gtk::Window
       end
 
       def on_css_file_selected_cb(filechooser)
-        puts filechooser.filename
+        parent = filechooser.toplevel.transient_for
+        parent.application.settings["css-file"] = filechooser.filename
+        parent.application.reload_css_config
       end
     end
   end
@@ -121,6 +123,7 @@ class TopinambourPreferences < Gtk::Window
     shell_entry.text = @settings["default-shell"]
 
     css_chooser_button.current_folder = "#{ENV["HOME"]}/.config/topinambour/"
+    css_chooser_button.filename = @parent.application.check_css_file_path || ""
   end
 
   private
