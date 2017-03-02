@@ -41,19 +41,19 @@ class TopinambourPreferences < Gtk::Window
 
       private
 
-      def on_width_spin_value_changed(spin)
+      def on_width_spin_value_changed_cb(spin)
         parent = spin.toplevel.transient_for
         height = parent.application.settings["height"]
         parent.resize(spin.value, height)
       end
 
-      def on_height_spin_value_changed(spin)
+      def on_height_spin_value_changed_cb(spin)
         parent = spin.toplevel.transient_for
         width = parent.application.settings["width"]
         parent.resize(width, spin.value)
       end
 
-      def on_shell_entry_activate(entry)
+      def on_shell_entry_activate_cb(entry)
         style_context = entry.style_context
 
         if File.exists?(entry.text)
@@ -67,7 +67,7 @@ class TopinambourPreferences < Gtk::Window
         end
       end
 
-      def on_shell_entry_focus_out_event(entry, nope)
+      def on_shell_entry_focus_out_event_cb(entry, nope)
         style_context = entry.style_context
 
         if File.exists?(entry.text)

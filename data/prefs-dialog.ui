@@ -58,8 +58,8 @@
                 <property name="can_focus">True</property>
                 <property name="valign">start</property>
                 <property name="text" translatable="yes">/usr/bin/fish</property>
-		<signal name="activate" handler="on_shell_entry_activate"/>
-		<signal name="focus-out-event" handler="on_shell_entry_focus_out_event"/>
+		<signal name="activate" handler="on_shell_entry_activate_cb"/>
+		<signal name="focus-out-event" handler="on_shell_entry_focus_out_event_cb"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -91,7 +91,7 @@
                 <property name="wrap">True</property>
                 <property name="value">100</property>
 		<property name="adjustment">width_adjustment</property>
-		<signal name="value-changed" handler="on_width_spin_value_changed"/>
+		<signal name="value-changed" handler="on_width_spin_value_changed_cb"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -122,7 +122,7 @@
                 <property name="numeric">True</property>
                 <property name="wrap">True</property>
                 <property name="value">100</property>
-		<signal name="value-changed" handler="on_height_spin_value_changed"/>
+		<signal name="value-changed" handler="on_height_spin_value_changed_cb"/>
 		<property name="adjustment">height_adjustment</property>
               </object>
               <packing>
