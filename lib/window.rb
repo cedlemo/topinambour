@@ -150,8 +150,11 @@ class TopinambourWindow < Gtk::ApplicationWindow
     headerbar = builder["headerbar"]
     headerbar.name = "topinambour-headerbar"
     set_titlebar(headerbar)
+    # Text is modified when notebook switch tabs or
+    # Vte::Terminal command change and if it is the current Vte.
     @current_label = builder["current_label"]
     current_label_signals
+    # Value is changed when notebook switch tabs or notebook add tab.
     @current_tab = builder["current_tab"]
     next_prev_new_signals(builder)
     overview_signal(builder)
