@@ -63,8 +63,7 @@ enter in order to validate
         <property name="max_length">40</property>
         <property name="max_width_chars">40</property>
         <property name="shadow_type">etched-in</property>
-        <property name="primary_icon_name">edit-delete</property>
-        <property name="secondary_icon_name">edit-clear</property>
+        <property name="secondary_icon_name">edit-clear-symbolic</property>
         <property name="primary_icon_tooltip_text" translatable="yes">Close this tab</property>
         <property name="secondary_icon_tooltip_text" translatable="yes">Reset your changes and use the
 default label for the current tab

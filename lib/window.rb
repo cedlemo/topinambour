@@ -166,9 +166,7 @@ class TopinambourWindow < Gtk::ApplicationWindow
     end
 
     @current_label.signal_connect "icon-release" do |entry, position|
-      if position == :primary
-        close_current_tab
-      elsif position == :secondary
+      if position == :secondary
         @notebook.current.term.custom_title = nil
         entry.text = @notebook.current.term.window_title
       end
