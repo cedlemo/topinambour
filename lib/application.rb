@@ -22,11 +22,8 @@ class TopinambourApplication < Gtk::Application
     signal_connect "startup" do |application|
       ENV["GSETTINGS_SCHEMA_DIR"] = DATA_PATH
       @settings  = Gio::Settings.new("com.github.cedlemo.topinambour")
+      initialize_css_provider
       load_css_config
-      screen = Gdk::Display.default.default_screen
-      Gtk::StyleContext.add_provider_for_screen(screen,
-                                                @provider,
-                                                Gtk::StyleProvider::PRIORITY_USER)
 
       TopinambourActions.add_actions_to(application)
       load_menu_ui_in(application)
@@ -83,6 +80,14 @@ class TopinambourApplication < Gtk::Application
 
   private
 
+  def initialize_css_provider
+    screen = Gdk::Display.default.default_screen
+    @provider = Gtk::CssProvider.new
+    Gtk::StyleContext.add_provider_for_screen(screen,
+                                              @provider,
+                                              Gtk::StyleProvider::PRIORITY_USER)
+  end
+
   def load_menu_ui_in(application)
     builder = Gtk::Builder.new(:resource => "/com/github/cedlemo/topinambour/app-menu.ui")
     app_menu = builder["appmenu"]
@@ -90,12 +95,16 @@ class TopinambourApplication < Gtk::Application
   end
 
   def load_custom_css(file)
-    @css_content = File.open(file, "r").read
-    @provider.load(:data => @css_content)
+    if @settings["custom-css"]
+      @css_content = File.open(file, "r").read
+      @provider.load(:data => @css_content)
+    else
+      @provider.load(:data => "")
+    end
   end
 
   def load_css_config
-    @provider = Gtk::CssProvider.new
+    return unless @settings["custom-css"]
     css_file = check_css_file_path
     if css_file
       begin

@@ -34,6 +34,7 @@ class TopinambourPreferences < Gtk::Window
       bind_template_child("backspace_binding_sel")
       bind_template_child("delete_binding_sel")
       bind_template_child("css_chooser_button")
+      bind_template_child("use_custom_css_switch")
 
       set_connect_func do |name|
         method(name)
@@ -124,9 +125,27 @@ class TopinambourPreferences < Gtk::Window
 
     css_chooser_button.current_folder = "#{ENV["HOME"]}/.config/topinambour/"
     css_chooser_button.filename = @parent.application.check_css_file_path || ""
+    bind_use_custom_css_with_settings
   end
 
   private
+
+  def bind_use_custom_css_with_settings
+    setting = "custom-css"
+    switch = use_custom_css_switch
+    css_chooser_button.sensitive = @settings[setting]
+    @settings.bind(setting,
+                   switch,
+                   "active",
+                   Gio::SettingsBindFlags::DEFAULT)
+    switch.signal_connect "state-set" do |switch, state|
+      @settings[setting] = !@settings[setting]
+      @parent.application.reload_css_config
+      css_chooser_button.sensitive = @settings[setting]
+      false
+    end
+
+  end
 
   def set_switch_to_initial_state(switch, setting)
     state = @settings[setting]
