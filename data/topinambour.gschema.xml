@@ -38,6 +38,9 @@
       <range min="1" max="2000"/>
       <default>500</default>
     </key>
+    <key name="custom-css" type="b">
+      <default>false</default>
+    </key>
     <key name="css-file" type="s">
       <default>"topinambour.css"</default>
     </key>
