@@ -1,18 +1,16 @@
-Ideas:
+Main Ideas:
   *  Follow principles of GNOME/Gtk :
-     - done // use gsettings for configuration (remove all the topinambour css props)
-     - done //remove dependency to sass
      - simplify the ui
-     - rework the properties window ui
-  *  load all the terminal settings via #load_properties in window.rb
-     should keep the preferences widgets initialization ?
-  *  add file selector for different css config (default one symbolic link ?)
-  *  try to catch event when new command launched in order to be able to go to
-     last cursor position
+       - remove the tab close signal in the title entry
+       - merge the theme menu and the main menu in the headerbar
+       - use a ListBox for the terminal chooser
+  *  add main terminal emulator commands line support
   *  find solution for warning :
      Gtk-WARNING **: Allocating size to topinambour-scrollbar 0x3d78710 without\\
      calling gtk_widget_get_preferred_width/height(). How does the code know the\
      size to allocate?
+
+Why not ?:
 
   *  add button for creating terminal next to current one
 
@@ -22,3 +20,7 @@ Ideas:
 
   *   check pb when file empty (no universal selector)
   *   generate a plugin system and add the resize little window in it
+  *  try to catch event when new command launched in order to be able to go to
+     last cursor position
+  * topinambour backend could be a server ? this could allow to move tab to different
+    window.
