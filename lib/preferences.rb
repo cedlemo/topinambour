@@ -87,6 +87,16 @@ class TopinambourPreferences < Gtk::Window
         parent.application.settings["css-file"] = filechooser.filename
         parent.application.reload_css_config
       end
+
+      def on_custom_css_switch_state_set(switch, state)
+        parent = switch.toplevel.transient_for
+        setting = "custom-css"
+        settings = parent.application.settings
+        settings[setting] = switch.active?
+        switch.toplevel.css_chooser_button.sensitive = settings[setting]
+        parent.application.reload_css_config
+        false
+      end
     end
   end
 
@@ -109,6 +119,8 @@ class TopinambourPreferences < Gtk::Window
     bind_spin_button_with_setting(width_spin, "width")
     bind_spin_button_with_setting(height_spin, "height")
 
+    initialize_use_custom_css_settings
+
     bind_switch_state_with_setting(allow_bold_switch, "allow-bold")
     bind_switch_state_with_setting(audible_bell_switch, "audible-bell")
     bind_switch_state_with_setting(scroll_on_output_switch, "scroll-on-output")
@@ -125,26 +137,15 @@ class TopinambourPreferences < Gtk::Window
 
     css_chooser_button.current_folder = "#{ENV["HOME"]}/.config/topinambour/"
     css_chooser_button.filename = @parent.application.check_css_file_path || ""
-    bind_use_custom_css_with_settings
   end
 
   private
 
-  def bind_use_custom_css_with_settings
+  def initialize_use_custom_css_settings
     setting = "custom-css"
     switch = use_custom_css_switch
+    switch.active = @settings[setting]
     css_chooser_button.sensitive = @settings[setting]
-    @settings.bind(setting,
-                   switch,
-                   "active",
-                   Gio::SettingsBindFlags::DEFAULT)
-    switch.signal_connect "state-set" do |switch, state|
-      @settings[setting] = !@settings[setting]
-      @parent.application.reload_css_config
-      css_chooser_button.sensitive = @settings[setting]
-      false
-    end
-
   end
 
   def set_switch_to_initial_state(switch, setting)
@@ -164,7 +165,7 @@ class TopinambourPreferences < Gtk::Window
     switch.signal_connect "state-set" do |switch, state|
       m = "#{setting.gsub(/-/,"_")}="
       @parent.notebook.each do |tab|
-        tab.term.send(m, state)
+        tab.term.send(m, !state)
       end
       false
     end

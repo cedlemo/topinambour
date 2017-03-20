@@ -147,6 +147,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="halign">end</property>
+		<signal name="state-set" handler="on_custom_css_switch_state_set"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
