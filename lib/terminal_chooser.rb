@@ -1,4 +1,4 @@
-# Copyright 2015-2017 Cedric LE MOIGNE, cedlemo@gmx.com
+# Copyright 2017 Cedric LE MOIGNE, cedlemo@gmx.com
 # This file is part of Topinambour.
 #
 # Topinambour is free software: you can redistribute it and/or modify
@@ -23,59 +23,71 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     set_name("terminal_chooser")
 
     window.notebook.generate_tab_preview
-    generate_grid
-    fill_grid
+    @listbox = Gtk::ListBox.new
+    fill_list_box
 
     @box = Gtk::Box.new(:vertical, 4)
     @box.name = "topinambour-overview-box"
-    @box.pack_start(@grid, :expand => true, :fill => true, :padding => 4)
+    @box.pack_start(@listbox, :expand => true, :fill => true, :padding => 12)
     add(@box)
     set_size_request(-1, @window.notebook.current.term.allocation.to_a[3] - 8)
   end
 
-  def on_tab_removed(n)
-    @grid.remove_row(n)
-    last_tab = @window.notebook.n_pages - 1
-    update_tab_num_label(n..last_tab)
-  end
-
   private
 
-  def generate_grid
-    @grid = Gtk::Grid.new
-    @grid.row_spacing = 4
-    @grid.column_spacing = 6
-  end
-
-  def fill_grid
+  def fill_list_box
     @window.notebook.children.each_with_index do |child, i|
-      generate_row_grid(child.term, i)
+      row = generate_list_box_row(child.term, i)
+      @listbox.insert(row, i)
     end
-    @grid.attach(generate_separator, 0, @window.notebook.n_pages, 2, 1)
-    button = generate_quit_button
-    @grid.attach(button, 0, @window.notebook.n_pages + 1, 2, 1)
   end
 
-  def generate_row_grid(term, index)
+  def generate_list_box_row(term, index)
+    list_box_row = Gtk::ListBoxRow.new
+    hbox = Gtk::Box.new(:horizontal, 6)
     button = Gtk::Label.new("tab. #{index + 1}")
     button.angle = 45
-    @grid.attach(button, 0, index, 1, 1)
-    button = generate_preview_button(term)
-    @grid.attach(button, 1, index, 1, 1)
-    add_drag_and_drop_functionalities(button)
+    hbox.pack_start(button, :expand => false, :fill => false, :padding => 6)
+    button = generate_preview_button(term, list_box_row)
+    hbox.pack_start(button, :expand => false, :fill => false, :padding => 6)
     label = generate_label(term)
-    @grid.attach(label, 2, index, 1, 1)
-    button = generate_close_tab_button
-    @grid.attach(button, 3, index, 1, 1)
+    hbox.pack_start(label, :expand => true, :fill => false, :padding => 6)
+    button = generate_close_tab_button(list_box_row)
+    hbox.pack_start(button, :expand => false, :fill => false, :padding => 6)
+    list_box_row.add(hbox)
   end
 
-  def add_label_popup_entry_activate_signal(entry, popup, label, term)
-    entry.signal_connect "activate" do |widget|
-      label.text = widget.buffer.text
-      term.custom_title = widget.buffer.text
-      term.toplevel.current_label.text = widget.buffer.text
-      popup.destroy
+  def generate_preview_button(child, list_box_row)
+    button = Gtk::Button.new
+    button.image = generate_preview_image(child.preview)
+    button.signal_connect "clicked" do |widget|
+      @window.notebook.current_page = list_box_row.index
     end
+    button
+  end
+
+  def generate_preview_image(pixbuf)
+    scaled_pix = pixbuf.scale(150, 75, :bilinear)
+    img = Gtk::Image.new(:pixbuf => scaled_pix)
+    img.show
+    img
+  end
+
+  def generate_close_tab_button(list_box_row)
+    button = Gtk::Button.new(:icon_name => "window-close-symbolic",
+                           :size => :button)
+    button.relief = :none
+    button.signal_connect "clicked" do |widget|
+      tab = @window.notebook.get_nth_page(list_box_row.index)
+      if  @window.notebook.n_pages == 1
+        @window.quit_gracefully
+      else
+        @window.notebook.remove(tab)
+      end
+      list_box_row.destroy
+      update_tabs_num_labels
+    end
+    button
   end
 
   def add_label_popup_entry_icon_release(entry, label, term)
@@ -89,11 +101,20 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     end
   end
 
+  def add_label_popup_entry_activate_signal(entry, popup, label, term)
+    entry.signal_connect "activate" do |widget|
+      label.text = widget.buffer.text
+      term.custom_title = widget.buffer.text
+      term.toplevel.current_label.text = widget.buffer.text
+      popup.destroy
+    end
+  end
+
   def generate_label_popup(label, event, term)
     entry = Gtk::Entry.new
     entry.max_width_chars = 50
     entry.buffer.text = label.text
-    entry.set_icon_from_icon_name(:secondary, "edit-clear")
+    entry.set_icon_from_icon_name(:secondary, "edit-clear-symbolic")
     pp = Gtk::Popover.new
     add_label_popup_entry_activate_signal(entry, pp, label, term)
     add_label_popup_entry_icon_release(entry, label, term)
@@ -117,142 +138,12 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     label
   end
 
-  def generate_close_tab_button
-    button = Gtk::EventBox.new
-    button.tooltip_text = "Close Tab"
-    image = Gtk::Image.new(:icon_name => "window-close-symbolic",
-                           :size => :button)
-    button.add(image)
-    button.hexpand = false
-    button.vexpand = false
-    button.valign = :start
-    button.halign = :center
-    button.signal_connect "button_press_event" do
-      n = @grid.child_get_property(button, "top-attach")
-      tab = @window.notebook.get_nth_page(n)
-      if  @window.notebook.n_pages == 1
-        @window.quit_gracefully
-      else
-        @window.notebook.remove(tab)
-      end
+  def update_tabs_num_labels
+    @listbox.children.each_with_index do |row, i|
+      hbox = row.children[0]
+      label = hbox.children[0]
+      label.text = "tab. #{i + 1}"
     end
-    button
-  end
-
-  def update_tab_num_label(range)
-    range.each do |j|
-      @grid.get_child_at(0, j).text = "tab. #{(j + 1)}"
-    end
-  end
-
-  def generate_preview_button(child)
-    button = Gtk::Button.new
-    button.image = generate_preview_image(child.preview)
-    button.signal_connect "clicked" do |widget|
-      @window.notebook.current_page = grid_line_of(widget)
-    end
-    button
-  end
-
-  def generate_preview_image(pixbuf)
-    scaled_pix = pixbuf.scale(150, 75, :bilinear)
-    img = Gtk::Image.new(:pixbuf => scaled_pix)
-    img.show
-    img
-  end
-
-  def generate_separator
-    Gtk::Separator.new(:horizontal)
-  end
-
-  def generate_quit_button
-    button = Gtk::EventBox.new
-    button.tooltip_text = "Quit Topinambour"
-    image = Gtk::Image.new(:icon_name => "application-exit-symbolic",
-                           :size => :dialog)
-    button.add(image)
-    button.signal_connect("button_press_event") { @window.quit_gracefully }
-    button
-  end
-
-  def add_drag_and_drop_functionalities(button)
-    add_dnd_source(button)
-    add_dnd_destination(button)
-  end
-
-  def add_dnd_source(button)
-    button.drag_source_set(Gdk::ModifierType::BUTTON1_MASK |
-                           Gdk::ModifierType::BUTTON2_MASK,
-                           [["test", Gtk::TargetFlags::SAME_APP, 12_345]],
-                           Gdk::DragAction::COPY |
-                           Gdk::DragAction::MOVE)
-    # Drag source signals
-    # drag-begin	User starts a drag	Set-up drag icon
-    # drag-data-get	When drag data is requested by the destination	Transfer
-    # drag data from source to destination
-    # drag-data-delete	When a drag with the action Gdk.DragAction.MOVE is
-    # completed	Delete data from the source to complete the "move"
-    # drag-end	When the drag is complete	Undo anything done in drag-begin
-
-    button.signal_connect "drag-begin" do |widget|
-      widget.drag_source_set_icon_pixbuf(widget.image.pixbuf)
-    end
-
-    button.signal_connect("drag-data-get") do |widget, _, selection_data, _, _|
-      index = grid_line_of(widget)
-      selection_data.set(Gdk::Selection::TYPE_INTEGER, index.to_s)
-    end
-    # button.signal_connect "drag-data-delete" do
-    #   puts "drag data delete for #{inex}"
-    # end
-    # button.signal_connect "drag-end" do
-    #   puts "drag end for #{index}"
-    # end
-  end
-
-  def add_dnd_destination(button)
-    button.drag_dest_set(Gtk::DestDefaults::MOTION |
-                         Gtk::DestDefaults::HIGHLIGHT,
-                         [["test", :same_app, 12_345]],
-                         Gdk::DragAction::COPY |
-                         Gdk::DragAction::MOVE)
-
-    # Drag destination signals
-    # drag-motion	Drag icon moves over a drop area	Allow only certain areas to
-    # be dropped onto drag-drop	Icon is dropped onto a drag area	Allow only
-    # certain areas to be dropped onto drag-data-received	When drag data is
-    # received by the destination	Transfer drag data from source to destination
-    # button.signal_connect "drag-motion" do
-    #   puts "drag motion for #{index}"
-    # end
-    button.signal_connect("drag-drop") do |widget, context, _x, _y, time|
-      widget.drag_get_data(context, context.targets[0], time)
-    end
-
-    button.signal_connect("drag-data-received") do |widget, context, _x, _y, selection_data|
-      index = grid_line_of(widget)
-      index_of_dragged_object = index
-      context.targets.each do |target|
-        next unless target.name == "test" || selection_data.type == :type_integer
-        data_len = selection_data.data.size
-        index_of_dragged_object = selection_data.data.pack("C#{data_len}").to_i
-      end
-      if index_of_dragged_object != index
-        drag_image_and_reorder_terms(index_of_dragged_object, index)
-      end
-    end
-  end
-
-  def drag_image_and_reorder_terms(src_index, dest_index)
-    dragged = @window.notebook.get_nth_page(src_index)
-    @window.notebook.reorder_child(dragged, dest_index)
-    @window.notebook.children.each_with_index do |child, i|
-      @grid.get_child_at(1, i).image = generate_preview_image(child.term.preview)
-      @grid.get_child_at(2, i).label = child.term.terminal_title
-    end
-  end
-
-  def grid_line_of(widget)
-    @grid.child_get_property(widget, "top-attach")
   end
 end
+

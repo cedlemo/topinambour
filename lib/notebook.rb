@@ -34,11 +34,6 @@ class TopinambourNotebook < Gtk::Notebook
     signal_connect "page-removed" do |_widget, _child, page_num|
       if toplevel.class == TopinambourWindow
         toplevel.current_tab.text = "#{page + 1}/#{n_pages}"
-
-        if toplevel.in_overlay_mode?
-          term_chooser =  toplevel.overlay.children[1]
-          term_chooser.on_tab_removed(page_num) if term_chooser.class == TopinambourTermChooser
-        end
       end
     end
     set_name("topinambour-notebook")
