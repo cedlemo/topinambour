@@ -28,6 +28,19 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
 
     @box = Gtk::Box.new(:vertical, 4)
     @box.name = "topinambour-overview-box"
+    hbox = Gtk::Box.new(:horizontal, 6)
+    title = Gtk::Label.new("> Terminals :")
+    title.halign = :start
+    hbox.pack_start(title, :expand => true, :fill => true, :padding => 6)
+    close_button = Gtk::Button.new(:icon_name => "window-close-symbolic",
+                                   :size => :button)
+    close_button.relief = :none
+    close_button.signal_connect "clicked" do
+      @window.exit_overlay_mode
+    end
+    hbox.pack_start(close_button, :expand => false, :fill => false, :padding => 6)
+    @box.pack_start(hbox, :expand => false, :fill => true, :padding => 6)
+    @listbox.margin = 12
     @box.pack_start(@listbox, :expand => true, :fill => true, :padding => 12)
     add(@box)
     set_size_request(-1, @window.notebook.current.term.allocation.to_a[3] - 8)
@@ -67,7 +80,8 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
   end
 
   def generate_preview_image(pixbuf)
-    scaled_pix = pixbuf.scale(150, 75, :bilinear)
+    # scaled_pix = pixbuf.scale(150, 75, :bilinear)
+    scaled_pix = pixbuf.scale(200, 100, :bilinear)
     img = Gtk::Image.new(:pixbuf => scaled_pix)
     img.show
     img
