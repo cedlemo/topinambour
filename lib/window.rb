@@ -156,6 +156,8 @@ class TopinambourWindow < Gtk::ApplicationWindow
     current_label_signals
     # Value is changed when notebook switch tabs or notebook add tab.
     @current_tab = builder["current_tab"]
+    headerbar.remove(@current_label)
+    headerbar.custom_title = @current_label
     next_prev_new_signals(builder)
     overview_signal(builder)
     main_menu_signal(builder)

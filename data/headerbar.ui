@@ -60,8 +60,8 @@
         <property name="tooltip_text" translatable="yes">Change the name of the tab and hit
 enter in order to validate
 </property>
-        <property name="max_length">40</property>
-        <property name="max_width_chars">40</property>
+        <property name="max_length">100</property>
+        <property name="max_width_chars">100</property>
         <property name="shadow_type">etched-in</property>
         <property name="secondary_icon_name">edit-clear-symbolic</property>
         <property name="primary_icon_tooltip_text" translatable="yes">Close this tab</property>
