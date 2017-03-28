@@ -5,42 +5,22 @@
 
 <a href="https://raw.github.com/cedlemo/topinambour/master/screenshot_color_scheme.png"><img src="https://raw.github.com/cedlemo/topinambour/master/screenshot_color_scheme.png" alt="Topinambour Preview"></a>
 
-<a href="https://raw.github.com/cedlemo/topinambour/master/screenshot_shortcuts.png"><img src="https://raw.github.com/cedlemo/topinambour/master/screenshot_shortcuts.png" alt="Topinambour Shortcuts"></a>
-
-<a href="https://raw.github.com/cedlemo/topinambour/master/terminal_selector_screen.gif"><img src="https://raw.github.com/cedlemo/topinambour/master/terminal_selector_screen.gif" style="width:576px;height:324px;" alt="Color selection gif"></a>
-
-<a href="https://raw.github.com/cedlemo/topinambour/master/color_selection_screen.gif"><img src="https://raw.github.com/cedlemo/topinambour/master/color_selection_screen.gif" style="width:576px;height:324px;" alt="Color selection gif"></a>
-
-<a href="https://raw.github.com/cedlemo/topinambour/master/terminal_regex_color.gif"><img src="https://raw.github.com/cedlemo/topinambour/master/terminal_regex_color.gif" style="width:576px;height:324px;" alt="Regex color gif"></a>
-
-
-Topinambour is Terminal written with the Gtk3 and Vte3 ruby bindings from the project [Ruby-GNOME2](https://github.com/ruby-gnome2/ruby-gnome2). I have written it for testing purpose, but Topinambour works well and I use it as my primary terminal emulator.
-
 ## Features
+
+Topinambour is Terminal written with the **Gtk3** and **Vte3** ruby bindings from the project [Ruby-GNOME2](https://github.com/ruby-gnome2/ruby-gnome2).
 
 *    Tabs supports
 *    Tabs can be reordered or selected through the preview mode ( `Shift + Ctrl + o` ).
 *    Each tab can be named.
-*    The configuration can be done via a Css file.
-*    Terminal colors can be changed on the fly and saved in the CSS configuration file.
-*    Terminal font can be changed on the fly and saved in the CSS configuration file.
-*    The Css file can be edited in a tab of Topinambour and saved. Each modifications are applied while you are writting them. (Use `Shift + Ctrl + w` to close the editor)
+*    The theme can be done via a Css file, there is a load button that allow to reload the Css file when needed.
+*    Terminal colors can be changed on the fly and saved.
+*    Terminal font can be changed on the fly and saved.
 *    In the terminals, some patterns can be clicked (urls, emails, color names ...) in order to launch the appropriate application or a related dialog window.
 *    Topinambour allows users to modify existing modules. For example if a user copy the css_editor.rb in the directory *~/.config/topinambour/lib/css_editor.rb*, he should be able to modify it in order to fit its needs.
 
-##  TODO:
-*   Name all the important widgets so that they can be easily themed in Css.
-    *    `#topinambour-overview-box`
-    *    `#topinambour-headerbar`
-    *    `#topinambour-window`
-    *    `#topinambour-scrollbar`
-    *    `#topinambour-notebook`
-
-*   Write a description of the widgets that have a Css name/Id.
-*   Improve the Css editor with a part for the Css parsing error when the user writes. Add a color chooser widget in the related tab.
-*   Make Topinambour allows users to easily create their own modules. For example create a tab that will act as a MPD client. There will be widgets that control a MPD server and a GtkTree widget that displays the playlist of the MPD server for example.
-
 ## Shortcuts
+
+<a href="https://raw.github.com/cedlemo/topinambour/master/screenshot_shortcuts.png"><img src="https://raw.github.com/cedlemo/topinambour/master/screenshot_shortcuts.png" alt="Topinambour Shortcuts"></a>
 
 *    `Shift + Ctrl + t`  new tab
 
@@ -64,10 +44,95 @@ Topinambour is Terminal written with the Gtk3 and Vte3 ruby bindings from the pr
 
 *    `Shift + Ctrl + Up` diminue topinambour window size to its minimum or resize to its previous height.
 
-*    `Shift + Ctrl + Scroll` scroll down or up in order to decrease or increase the opacity.
+*    `Shift + Ctrl + PageUp` increase the opacity.
+
+*    `Shift + Ctrl + PageDown` decrease the opacity.
+
+## Css theming
+
+By default, topinambour will look for the file `~/.config/topinambour/topinambour.css`. You can select another file in the preferences dialog.
+Various widget can be themed via the Css like the headerbar for example. Here is the Css used in the first screenshot (the Gtk theme is the Arc theme).
+
+```css
+*{
+}
+
+#topinambour-window, #topinambour-notebook {
+  background-color: rgba(0,0,0,0);
+}
+
+#topinambour-overview-box {
+  background-color: rgba(43,45,54,0.95);
+  border-radius: 6px 0px 0px 6px;
+  color: #B0B0B0;
+}
+
+#topinambour-headerbar {
+  background-color: #282828;
+  border: none;
+  box-shadow: none;
+}
+
+#topinambour-headerbar:backdrop {
+  background-color: rgba(50,50,50,0.7);
+  border: none;
+  box-shadow: none;
+}
+
+#topinambour-scrollbar {
+  background-color: rgba(0,0,0,0);
+  border: none;
+}
+
+#topinambour-scrollbar trough{
+  background-color: rgba(0,0,0,0);
+  border: none;
+}
+#topinambour-scrollbar slider{
+  margin-left: 8px;
+  background-color: #076678;
+}
+
+#topinambour-tab-term {
+  background-color: rgb(40,40,40);
+}
+
+grid button {
+  margin: 0px;
+  padding: 0px;
+}
+
+grid button image {
+  border: solid 3px rgba(0, 0, 0, 0.0);
+  margin: 0px;
+  padding: 0px;
+}
+```
+
+## Old version (before 1.0.11)
+
+<a href="https://raw.github.com/cedlemo/topinambour/master/terminal_selector_screen.gif"><img src="https://raw.github.com/cedlemo/topinambour/master/terminal_selector_screen.gif" style="width:576px;height:324px;" alt="Color selection gif"></a>
+
+<a href="https://raw.github.com/cedlemo/topinambour/master/color_selection_screen.gif"><img src="https://raw.github.com/cedlemo/topinambour/master/color_selection_screen.gif" style="width:576px;height:324px;" alt="Color selection gif"></a>
+
+<a href="https://raw.github.com/cedlemo/topinambour/master/terminal_regex_color.gif"><img src="https://raw.github.com/cedlemo/topinambour/master/terminal_regex_color.gif" style="width:576px;height:324px;" alt="Regex color gif"></a>
 
 
-## User configuration
+
+###  TODO:
+*   Name all the important widgets so that they can be easily themed in Css.
+    *    `#topinambour-overview-box`
+    *    `#topinambour-headerbar`
+    *    `#topinambour-window`
+    *    `#topinambour-scrollbar`
+    *    `#topinambour-notebook`
+
+*   Write a description of the widgets that have a Css name/Id.
+*   Improve the Css editor with a part for the Css parsing error when the user writes. Add a color chooser widget in the related tab.
+*   Make Topinambour allows users to easily create their own modules. For example create a tab that will act as a MPD client. There will be widgets that control a MPD server and a GtkTree widget that displays the playlist of the MPD server for example.
+
+
+### User configuration
 
 It can be found in the file `$HOME/.config/topinambour/topinambour.css` (Be carefull by default Topinambour use fish as a default shell, if you want to use another one specify it in the topinambour.css file)
 
