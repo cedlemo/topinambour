@@ -3,6 +3,7 @@
 [![Gem Version](https://badge.fury.io/rb/topinambour.svg)](https://badge.fury.io/rb/topinambour)
 [![Code Climate](https://codeclimate.com/github/cedlemo/topinambour/badges/gpa.svg)](https://codeclimate.com/github/cedlemo/topinambour)
 
+<a href="https://raw.github.com/cedlemo/topinambour/master/screenshot_color_scheme.png"><img src="https://raw.github.com/cedlemo/topinambour/master/screenshot_color_scheme_prev.png" alt="Topinambour Preview"></a>
 
 <a href="https://raw.github.com/cedlemo/topinambour/master/terminal_selector_screen.gif"><img src="https://raw.github.com/cedlemo/topinambour/master/terminal_selector_screen.gif" style="width:576px;height:324px;" alt="Color selection gif"></a>
 
