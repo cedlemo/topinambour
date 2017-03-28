@@ -79,17 +79,4 @@ module TopinambourShortcuts
       handle_simple(event, window)
     end
   end
-
-  def self.handle_scroll(window, event)
-    if ctrl_shift?(event)
-      case event.direction
-      when Gdk::ScrollDirection::UP
-        window.opacity = window.opacity + 0.05
-        true
-      when Gdk::ScrollDirection::DOWN
-        window.opacity = window.opacity - 0.05
-        true
-      end
-    end
-  end
 end
