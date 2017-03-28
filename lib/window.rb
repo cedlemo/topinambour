@@ -124,6 +124,14 @@ class TopinambourWindow < Gtk::ApplicationWindow
     end
   end
 
+  def show_shortcuts
+    resource_file = "/com/github/cedlemo/topinambour/shortcuts.ui"
+    builder = Gtk::Builder.new(:resource => resource_file)
+    shortcuts_win = builder["shortcuts-window"]
+    shortcuts_win.transient_for = self
+    shortcuts_win.show
+  end
+
   private
 
   def load_settings

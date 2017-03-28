@@ -75,9 +75,16 @@ module TopinambourActions
     action
   end
 
+  def self.generate_shortcuts_action(application)
+    action = generate_action("shortcuts") do |_act, _param|
+      application.windows[0].show_shortcuts
+    end
+    action
+  end
+
   def self.add_actions_to(application)
     # preferences
-    %w(about quit term_copy term_paste preferences).each do |name|
+    %w(about quit term_copy term_paste preferences shortcuts).each do |name|
       add_action_to(name, application)
     end
   end
