@@ -62,8 +62,11 @@ module TopinambourShortcuts
     when Gdk::Keyval::KEY_slash
       window.show_searchbar
       true
-    when Gdk::Keyval::KEY_Up
-      window.toggle_shrink
+    when Gdk::Keyval::KEY_Page_Up
+      window.opacity = window.opacity + 0.05
+      true
+    when Gdk::Keyval::KEY_Page_Down
+      window.opacity = window.opacity - 0.05
       true
     end
   end
