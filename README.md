@@ -5,6 +5,8 @@
 
 <a href="https://raw.github.com/cedlemo/topinambour/master/screenshot_color_scheme.png"><img src="https://raw.github.com/cedlemo/topinambour/master/screenshot_color_scheme.png" alt="Topinambour Preview"></a>
 
+<a href="https://raw.github.com/cedlemo/topinambour/master/screenshot_shortcuts.png"><img src="https://raw.github.com/cedlemo/topinambour/master/screenshot_shortcuts.png" alt="Topinambour Shortcuts"></a>
+
 <a href="https://raw.github.com/cedlemo/topinambour/master/terminal_selector_screen.gif"><img src="https://raw.github.com/cedlemo/topinambour/master/terminal_selector_screen.gif" style="width:576px;height:324px;" alt="Color selection gif"></a>
 
 <a href="https://raw.github.com/cedlemo/topinambour/master/color_selection_screen.gif"><img src="https://raw.github.com/cedlemo/topinambour/master/color_selection_screen.gif" style="width:576px;height:324px;" alt="Color selection gif"></a>
