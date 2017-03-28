@@ -5,17 +5,31 @@
 
 <a href="https://raw.github.com/cedlemo/topinambour/master/screenshot_color_scheme.png"><img src="https://raw.github.com/cedlemo/topinambour/master/screenshot_color_scheme.png" alt="Topinambour Preview"></a>
 
+## Introduction
+Topinambour is a Terminal written with the **Gtk3** and **Vte3** ruby bindings from the project [Ruby-GNOME2](https://github.com/ruby-gnome2/ruby-gnome2).
+
+
+    gem build topinambour.gemspec
+    gem install topinambour-x.x.x.gem
+    ~> topinambour
+
+*Tips:*
+> Don't forget, if you install it localy, you need that your system know the path of
+the ruby gem binaries (for example).
+
+    export PATH="${PATH}:/home/${USER}/bin:${HOME}/gem/ruby/2.3.0/bin"
+
+
 ## Features
 
-Topinambour is Terminal written with the **Gtk3** and **Vte3** ruby bindings from the project [Ruby-GNOME2](https://github.com/ruby-gnome2/ruby-gnome2).
 
-*    Tabs supports
-*    Tabs can be reordered or selected through the preview mode ( `Shift + Ctrl + o` ).
-*    Each tab can be named.
-*    The theme can be done via a Css file, there is a load button that allow to reload the Css file when needed.
-*    Terminal colors can be changed on the fly and saved.
-*    Terminal font can be changed on the fly and saved.
-*    In the terminals, some patterns can be clicked (urls, emails, color names ...) in order to launch the appropriate application or a related dialog window.
+*    supports tabs
+*    tabs can be reordered or selected through the preview mode ( `Shift + Ctrl + o` ).
+*    each tab can be named.
+*    the theme can be done via a Css file, there is a load button that allow to reload the Css file when needed.
+*    terminal colors can be changed on the fly and saved.
+*    terminal font can be changed on the fly and saved.
+*    in the terminals, some patterns can be clicked (urls, emails, color names ...) in order to launch the appropriate application or a related dialog window.
 *    Topinambour allows users to modify existing modules. For example if a user copy the css_editor.rb in the directory *~/.config/topinambour/lib/css_editor.rb*, he should be able to modify it in order to fit its needs.
 
 ## Shortcuts
@@ -205,7 +219,7 @@ Which means that the old file can be something like that : *topinambour.css_2016
 
 ## Installation
 
-### Dependancies
+### Dependencies
 
 *   gtk3 vte3 sass
 
@@ -221,7 +235,7 @@ Which means that the old file can be something like that : *topinambour.css_2016
 
     ~> topinambour
 
-### Tips:
+#### Tips:
 
 Don't forget, if you install it localy, you need that your system know the path of
 the ruby gem binaries (for example).
