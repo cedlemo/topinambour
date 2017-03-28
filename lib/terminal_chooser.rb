@@ -119,7 +119,6 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     entry.signal_connect "activate" do |widget|
       label.text = widget.buffer.text
       term.custom_title = widget.buffer.text
-      term.toplevel.current_label.text = widget.buffer.text
       popup.destroy
     end
   end
