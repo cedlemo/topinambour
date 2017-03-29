@@ -57,7 +57,7 @@ class TopinambourPreferences < Gtk::Window
       def on_shell_entry_activate_cb(entry)
         style_context = entry.style_context
 
-        if File.exists?(entry.text)
+        if File.exist?(entry.text)
           settings = entry.toplevel.settings
           entry.set_icon_from_icon_name(:secondary, nil)
           style_context.remove_class("error")
@@ -68,10 +68,10 @@ class TopinambourPreferences < Gtk::Window
         end
       end
 
-      def on_shell_entry_focus_out_event_cb(entry, nope)
+      def on_shell_entry_focus_out_event_cb(entry, _)
         style_context = entry.style_context
 
-        if File.exists?(entry.text)
+        if File.exist?(entry.text)
           settings = entry.toplevel.settings
           entry.set_icon_from_icon_name(:secondary, nil)
           style_context.remove_class("error")
@@ -88,7 +88,7 @@ class TopinambourPreferences < Gtk::Window
         parent.application.reload_css_config
       end
 
-      def on_custom_css_switch_state_set(switch, state)
+      def on_custom_css_switch_state_set(switch, _state)
         parent = switch.toplevel.transient_for
         setting = "custom-css"
         settings = parent.application.settings
@@ -104,11 +104,10 @@ class TopinambourPreferences < Gtk::Window
   def initialize(parent)
     super(:type => :toplevel)
     set_transient_for(parent)
-    headerbar = Gtk::HeaderBar.new
-    headerbar.title = "Topinambour Preferences"
-    headerbar.show_close_button = true
-    set_titlebar(headerbar)
     @parent = parent
+
+    configure_headerbar
+
     signal_connect "delete-event" do |widget|
       widget.destroy
       @parent.notebook.current.term.grab_focus
@@ -124,7 +123,8 @@ class TopinambourPreferences < Gtk::Window
     bind_switch_state_with_setting(allow_bold_switch, "allow-bold")
     bind_switch_state_with_setting(audible_bell_switch, "audible-bell")
     bind_switch_state_with_setting(scroll_on_output_switch, "scroll-on-output")
-    bind_switch_state_with_setting(scroll_on_keystroke_switch, "scroll-on-keystroke")
+    bind_switch_state_with_setting(scroll_on_keystroke_switch,
+                                   "scroll-on-keystroke")
     bind_switch_state_with_setting(rewrap_on_resize_switch, "rewrap-on-resize")
     bind_switch_state_with_setting(mouse_autohide_switch, "mouse-autohide")
 
@@ -135,11 +135,18 @@ class TopinambourPreferences < Gtk::Window
 
     shell_entry.text = @settings["default-shell"]
 
-    css_chooser_button.current_folder = "#{ENV["HOME"]}/.config/topinambour/"
+    css_chooser_button.current_folder = "#{ENV['HOME']}/.config/topinambour/"
     css_chooser_button.filename = @parent.application.check_css_file_path || ""
   end
 
   private
+
+  def configure_headerbar
+    headerbar = Gtk::HeaderBar.new
+    headerbar.title = "Topinambour Preferences"
+    headerbar.show_close_button = true
+    set_titlebar(headerbar)
+  end
 
   def initialize_use_custom_css_settings
     setting = "custom-css"
@@ -148,9 +155,9 @@ class TopinambourPreferences < Gtk::Window
     css_chooser_button.sensitive = @settings[setting]
   end
 
-  def set_switch_to_initial_state(switch, setting)
+  def set_switch_to_initial_state(_switch, setting)
     state = @settings[setting]
-    m = "#{setting.gsub(/-/,"_")}="
+    m = "#{setting.tr('-', '_')}="
     @parent.notebook.each do |tab|
       tab.term.send(m, state)
     end
@@ -159,24 +166,20 @@ class TopinambourPreferences < Gtk::Window
   def bind_switch_state_with_setting(switch, setting)
     set_switch_to_initial_state(switch, setting)
     @settings.bind(setting,
-                  switch,
-                  "active",
-                  Gio::SettingsBindFlags::DEFAULT)
-    switch.signal_connect "state-set" do |switch, state|
-      m = "#{setting.gsub(/-/,"_")}="
-      @parent.notebook.each do |tab|
-        tab.term.send(m, !state)
-      end
+                   switch,
+                   "active",
+                   Gio::SettingsBindFlags::DEFAULT)
+    switch.signal_connect "state-set" do |_switch, state|
+      m = "#{setting.tr('-', '_')}="
+      @parent.notebook.each { |tab| tab.term.send(m, state) }
       false
     end
   end
 
-  def set_combo_to_initial_state(combo_box, setting)
+  def set_combo_to_initial_state(_combo_box, setting)
     active = @settings[setting]
-    m = "#{setting.gsub(/-/,"_")}="
-    @parent.notebook.each do |tab|
-      tab.term.send(m, active)
-    end
+    m = "#{setting.tr('-', '_')}="
+    @parent.notebook.each { |tab| tab.term.send(m, active) }
   end
 
   def bind_combo_box_with_setting(combo_box, setting)
@@ -186,11 +189,8 @@ class TopinambourPreferences < Gtk::Window
                    "active",
                    Gio::SettingsBindFlags::DEFAULT)
     combo_box.signal_connect "changed" do
-      index = combo_box.active
-      m = "#{setting.gsub(/-/,"_")}="
-      @parent.notebook.each do |tab|
-        tab.term.send(m, index)
-      end
+      m = "#{setting.tr('-', '_')}="
+      @parent.notebook.each { |tab| tab.term.send(m, combo_box.active) }
       false
     end
   end
