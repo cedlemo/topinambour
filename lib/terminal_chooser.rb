@@ -71,6 +71,7 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     button.angle = 45
     hbox.pack_start(button, :expand => false, :fill => false, :padding => 6)
     button = generate_preview_button(term, list_box_row)
+    add_drag_and_drop_functionalities(button)
     hbox.pack_start(button, :expand => false, :fill => false, :padding => 6)
     label = generate_label(term)
     hbox.pack_start(label, :expand => true, :fill => false, :padding => 6)
@@ -165,6 +166,76 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
       hbox = row.children[0]
       label = hbox.children[0]
       label.text = "tab. #{i + 1}"
+    end
+  end
+
+  def add_drag_and_drop_functionalities(button)
+    add_dnd_source(button)
+    add_dnd_destination(button)
+  end
+
+  def add_dnd_source(button)
+    button.drag_source_set(Gdk::ModifierType::BUTTON1_MASK |
+                           Gdk::ModifierType::BUTTON2_MASK,
+                           [["test", Gtk::TargetFlags::SAME_APP, 12_345]],
+                           Gdk::DragAction::COPY |
+                           Gdk::DragAction::MOVE)
+    # Drag source signals
+    # drag-begin	User starts a drag	Set-up drag icon
+    # drag-data-get	When drag data is requested by the destination	Transfer
+    # drag data from source to destination
+    # drag-data-delete	When a drag with the action Gdk.DragAction.MOVE is
+    # completed	Delete data from the source to complete the "move"
+    # drag-end	When the drag is complete	Undo anything done in drag-begin
+
+    button.signal_connect "drag-begin" do |widget|
+      puts "ok"
+      widget.drag_source_set_icon_pixbuf(widget.image.pixbuf)
+    end
+
+    button.signal_connect("drag-data-get") do |widget, _, selection_data, _, _|
+      index = widget.parent.parent.index
+      selection_data.set(Gdk::Selection::TYPE_INTEGER, index.to_s)
+    end
+    # button.signal_connect "drag-data-delete" do
+    #   puts "drag data delete for #{inex}"
+    # end
+    # button.signal_connect "drag-end" do
+    #   puts "drag end for #{index}"
+    # end
+  end
+
+  def add_dnd_destination(button)
+    button.drag_dest_set(Gtk::DestDefaults::MOTION |
+                         Gtk::DestDefaults::HIGHLIGHT,
+                         [["test", :same_app, 12_345]],
+                         Gdk::DragAction::COPY |
+                         Gdk::DragAction::MOVE)
+
+    # Drag destination signals
+    # drag-motion	Drag icon moves over a drop area	Allow only certain areas to
+    # be dropped onto drag-drop	Icon is dropped onto a drag area	Allow only
+    # certain areas to be dropped onto drag-data-received	When drag data is
+    # received by the destination	Transfer drag data from source to destination
+    # button.signal_connect "drag-motion" do
+    #   puts "drag motion for #{index}"
+    # end
+    button.signal_connect("drag-drop") do |widget, context, _x, _y, time|
+      widget.drag_get_data(context, context.targets[0], time)
+    end
+
+    button.signal_connect("drag-data-received") do |widget, context, _x, _y, selection_data|
+      index = widget.parent.parent.index
+      index_of_dragged_object = index
+      context.targets.each do |target|
+        next unless target.name == "test" || selection_data.type == :type_integer
+        data_len = selection_data.data.size
+        index_of_dragged_object = selection_data.data.pack("C#{data_len}").to_i
+      end
+      if index_of_dragged_object != index
+        puts "new index #{index}"
+        #drag_image_and_reorder_terms(index_of_dragged_object, index)
+      end
     end
   end
 end
