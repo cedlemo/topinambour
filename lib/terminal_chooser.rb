@@ -49,10 +49,17 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
   private
 
   def fill_list_box
+    @listbox.selection_mode = :single
+    @listbox.signal_connect "row-selected" do |list, row|
+      @window.notebook.current_page = row.index
+    end
+
     @window.notebook.children.each_with_index do |child, i|
       row = generate_list_box_row(child.term, i)
       @listbox.insert(row, i)
     end
+    current_row = @listbox.get_row_at_index(@window.notebook.current_page)
+    @listbox.select_row(current_row)
   end
 
   def generate_list_box_row(term, index)
