@@ -39,11 +39,22 @@ class TopinambourTerminal < Vte::Terminal
   # Create a new TopinambourTerminal instance that runs command_string
   def initialize(command_string, working_dir = nil)
     super()
-    # TODO: make a begin/rescue like in glib2-2.2.4/sample/shell.rb
-    command_array = GLib::Shell.parse(command_string)
+
+    begin
+      command_array = GLib::Shell.parse(command_string)
+    rescue GLib::ShellError => e
+      puts "domain  = #{e.domain}"
+      puts "code    = #{e.code}"
+      puts "message = #{e.message}"
+    end
+
+    begin
     @pid = spawn(:argv => command_array,
                  :working_directory => working_dir,
                  :spawn_flags => GLib::Spawn::SEARCH_PATH)
+    rescue => e
+      STDERR.puts e.message
+    end
 
     signal_connect "child-exited" do |widget|
       tabterm = widget.parent

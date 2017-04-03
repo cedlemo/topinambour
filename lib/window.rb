@@ -30,13 +30,13 @@ class TopinambourWindow < Gtk::ApplicationWindow
     end
   end
 
-  def add_terminal
-    shell = application.settings["default-shell"]
+  def add_terminal(cmd = nil)
+    cmd = cmd || application.settings["default-shell"]
+
     exit_overlay_mode
     working_dir = nil
     working_dir = @notebook.current.term.pid_dir if @notebook.current
-
-    terminal = TopinambourTabTerm.new(shell, working_dir)
+    terminal = TopinambourTabTerm.new(cmd, working_dir)
     terminal.show_all
 
     @notebook.append_page(terminal)
@@ -44,7 +44,6 @@ class TopinambourWindow < Gtk::ApplicationWindow
     @notebook.set_tab_reorderable(terminal, true)
     @notebook.set_page(@notebook.n_pages - 1)
     @notebook.current.term.grab_focus
-
   end
 
   def quit_gracefully
