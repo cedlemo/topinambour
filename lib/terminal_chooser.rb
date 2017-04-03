@@ -177,7 +177,7 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
   def add_dnd_source(button)
     button.drag_source_set(Gdk::ModifierType::BUTTON1_MASK |
                            Gdk::ModifierType::BUTTON2_MASK,
-                           [["test", Gtk::TargetFlags::SAME_APP, 12_345]],
+                           [["drag_term", Gtk::TargetFlags::SAME_APP, 12_345]],
                            Gdk::DragAction::COPY |
                            Gdk::DragAction::MOVE)
     # Drag source signals
@@ -189,7 +189,6 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     # drag-end	When the drag is complete	Undo anything done in drag-begin
 
     button.signal_connect "drag-begin" do |widget|
-      puts "ok"
       widget.drag_source_set_icon_pixbuf(widget.image.pixbuf)
     end
 
@@ -208,7 +207,7 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
   def add_dnd_destination(button)
     button.drag_dest_set(Gtk::DestDefaults::MOTION |
                          Gtk::DestDefaults::HIGHLIGHT,
-                         [["test", :same_app, 12_345]],
+                         [["drag_term", :same_app, 12_345]],
                          Gdk::DragAction::COPY |
                          Gdk::DragAction::MOVE)
 
@@ -228,15 +227,25 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
       index = widget.parent.parent.index
       index_of_dragged_object = index
       context.targets.each do |target|
-        next unless target.name == "test" || selection_data.type == :type_integer
+        next unless target.name == "drag_term" || selection_data.type == :type_integer
         data_len = selection_data.data.size
         index_of_dragged_object = selection_data.data.pack("C#{data_len}").to_i
       end
       if index_of_dragged_object != index
-        puts "new index #{index}"
-        #drag_image_and_reorder_terms(index_of_dragged_object, index)
+        drag_image_and_reorder_terms(index_of_dragged_object, index)
       end
     end
   end
-end
 
+  def drag_image_and_reorder_terms(src_index, dest_index)
+    dragged = @window.notebook.get_nth_page(src_index)
+    @window.notebook.reorder_child(dragged, dest_index)
+    @window.notebook.children.each_with_index do |child, i|
+      list_box_row = @listbox.get_row_at_index(i)
+      row_h_box = list_box_row.children[0]
+      row_h_box.children[1].image = generate_preview_image(child.term.preview)
+      row_h_box.children[2].text = child.term.terminal_title
+    end
+  end
+
+end
