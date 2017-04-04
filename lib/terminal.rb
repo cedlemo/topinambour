@@ -40,6 +40,7 @@ class TopinambourTerminal < Vte::Terminal
   def initialize(command_string, working_dir = nil)
     super()
 
+    command_array = nil
     begin
       command_array = GLib::Shell.parse(command_string)
     rescue GLib::ShellError => e
@@ -49,9 +50,9 @@ class TopinambourTerminal < Vte::Terminal
     end
 
     begin
-    @pid = spawn(:argv => command_array,
-                 :working_directory => working_dir,
-                 :spawn_flags => GLib::Spawn::SEARCH_PATH)
+      @pid = spawn(:argv => command_array,
+                   :working_directory => working_dir,
+                   :spawn_flags => GLib::Spawn::SEARCH_PATH)
     rescue => e
       STDERR.puts e.message
     end
