@@ -35,9 +35,7 @@ class TopinambourApplication < Gtk::Application
     signal_connect "activate" do |application|
       window = TopinambourWindow.new(application)
       window.present
-      puts @options[:execute]
       window.add_terminal(@options[:execute])
-      window.notebook.current.term.grab_focus
     end
 
 
