@@ -43,9 +43,9 @@ class TopinambourTerminal < Vte::Terminal
     begin
       command_array = GLib::Shell.parse(command_string)
     rescue GLib::ShellError => e
-      puts "domain  = #{e.domain}"
-      puts "code    = #{e.code}"
-      puts "message = #{e.message}"
+      STDERR.puts "domain  = #{e.domain}"
+      STDERR.puts "code    = #{e.code}"
+      STDERR.puts "message = #{e.message}"
     end
 
     begin
