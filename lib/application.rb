@@ -20,6 +20,8 @@ class TopinambourApplication < Gtk::Application
   attr_accessor :settings
   def initialize
     @options = {}
+    @exit_status = 0
+
     super("com.github.cedlemo.topinambour", [:non_unique, :handles_command_line])
 
     signal_connect "startup" do |application|
@@ -45,7 +47,7 @@ class TopinambourApplication < Gtk::Application
       rescue SystemExit => error
         error.status
       rescue OptionParser::InvalidOption => error
-        puts error.message
+        STDERR.puts error.message
         1
       rescue => error
         STDERR.puts "#{error.class}: #{error.message}"
