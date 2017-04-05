@@ -207,14 +207,16 @@ class TopinambourWindow < Gtk::ApplicationWindow
       ui_file = "/com/github/cedlemo/topinambour/window-menu.ui"
       winmenu = Gtk::Builder.new(:resource => ui_file)["winmenu"]
       event = Gtk.current_event
-      menu = Gtk::Popover.new(button, winmenu)
-      x, y = event.window.coords_to_parent(event.x,
-                                         event.y)
-      rect = Gdk::Rectangle.new(x - button.allocation.x,
-                                y - button.allocation.y,
-                                1, 1)
-      menu.set_pointing_to(rect)
-      menu.show
+      if event.type == :button_release
+        menu = Gtk::Popover.new(button, winmenu)
+        x, y = event.window.coords_to_parent(event.x,
+                                           event.y)
+        rect = Gdk::Rectangle.new(x - button.allocation.x,
+                                  y - button.allocation.y,
+                                  1, 1)
+        menu.set_pointing_to(rect)
+        menu.show
+      end
     end
   end
 
