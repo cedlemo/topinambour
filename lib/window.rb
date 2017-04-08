@@ -204,25 +204,24 @@ class TopinambourWindow < Gtk::ApplicationWindow
   def main_menu_signal(builder)
     button = builder["menu_button"]
     ui_file = "/com/github/cedlemo/topinambour/main-menu-popover.ui"
-    main_menu = Gtk::Builder.new(:resource => ui_file)["main_menu_popover"]
+    menu_builder = Gtk::Builder.new(:resource => ui_file)
+    main_menu = menu_builder["main_menu_popover"]
     button.set_popover(main_menu)
     button.popover.modal = true
+    add_theme_menu_buttons_signals(menu_builder)
   end
 
   def add_theme_menu_buttons_signals(builder)
     builder["css_reload_button"].signal_connect "clicked" do
-      @theme_menu.popdown
       application.reload_css_config
       queue_draw
     end
 
     builder["font_sel_button"].signal_connect "clicked" do
-      @theme_menu.popdown
       show_font_selector
     end
 
     builder["colors_sel_button"].signal_connect "clicked" do
-      @theme_menu.popdown
       show_color_selector
     end
   end
