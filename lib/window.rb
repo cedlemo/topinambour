@@ -165,7 +165,6 @@ class TopinambourWindow < Gtk::ApplicationWindow
     next_prev_new_signals(builder)
     overview_signal(builder)
     main_menu_signal(builder)
-    theme_menu_signal(builder)
   end
 
   def current_label_signals
@@ -208,31 +207,6 @@ class TopinambourWindow < Gtk::ApplicationWindow
     main_menu = Gtk::Builder.new(:resource => ui_file)["main_menu_popover"]
     button.set_popover(main_menu)
     button.popover.modal = true
-  end
-
-  def theme_menu_signal(builder)
-    builder["theme_button"].signal_connect "clicked" do |button|
-      unless @theme_menu
-        ui_file = "/com/github/cedlemo/topinambour/theme-popover.ui"
-        b = Gtk::Builder.new(:resource => ui_file)
-        @theme_menu = b["theme_popover"]
-        add_theme_menu_buttons_signals(b)
-      end
-
-      if @theme_menu.mapped?
-        @theme_menu.popdown
-      else
-        @theme_menu.relative_to = button
-        event = Gtk.current_event
-        x, y = event.window.coords_to_parent(event.x,
-                                           event.y)
-        rect = Gdk::Rectangle.new(x - button.allocation.x,
-                                  y - button.allocation.y,
-                                  1, 1)
-        @theme_menu.set_pointing_to(rect)
-        @theme_menu.popup
-      end
-    end
   end
 
   def add_theme_menu_buttons_signals(builder)
