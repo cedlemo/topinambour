@@ -1,10 +1,9 @@
 Main Ideas:
   *  Follow principles of GNOME/Gtk :
      - simplify the ui
-       - remove the tab close signal in the title entry
-       - merge the theme menu and the main menu in the headerbar
-       - use a ListBox for the terminal chooser
   *  add main terminal emulator commands line support
+  *  create a way to hide terminals in the terminal overview
+  *  create a way to push hidden terminals in a new topinambour window via the terminal overview
   *  find solution for warning :
      Gtk-WARNING **: Allocating size to topinambour-scrollbar 0x3d78710 without\\
      calling gtk_widget_get_preferred_width/height(). How does the code know the\
