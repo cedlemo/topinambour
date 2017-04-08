@@ -112,25 +112,6 @@ default label for the current tab
       </packing>
     </child>
     <child>
-      <object class="GtkButton" id="theme_button">
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="receives_default">True</property>
-        <property name="tooltip_text" translatable="yes">Set the color scheme</property>
-        <child>
-          <object class="GtkImage">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="icon_name">emblem-system-symbolic</property>
-          </object>
-        </child>
-      </object>
-      <packing>
-        <property name="pack_type">end</property>
-        <property name="position">7</property>
-      </packing>
-    </child>
-    <child>
       <object class="GtkButton" id="term_overv_button">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
@@ -146,7 +127,7 @@ default label for the current tab
       </object>
       <packing>
         <property name="pack_type">end</property>
-        <property name="position">8</property>
+        <property name="position">7</property>
       </packing>
     </child>
   </object>
