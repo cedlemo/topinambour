@@ -7,6 +7,7 @@
     <file preprocess="xml-stripblanks">terminal-menu.ui</file>
     <file preprocess="xml-stripblanks">prefs-dialog.ui</file>
     <file preprocess="xml-stripblanks">theme-popover.ui</file>
+    <file preprocess="xml-stripblanks">main-menu-popover.ui</file>
     <file preprocess="xml-stripblanks">headerbar.ui</file>
     <file preprocess="xml-stripblanks">shortcuts.ui</file>
   </gresource>
