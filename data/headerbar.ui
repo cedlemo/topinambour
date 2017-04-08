@@ -92,7 +92,7 @@ default label for the current tab
       </packing>
     </child>
     <child>
-      <object class="GtkButton" id="menu_button">
+      <object class="GtkMenuButton" id="menu_button">
         <property name="name">menu_button</property>
         <property name="visible">True</property>
         <property name="can_focus">True</property>
