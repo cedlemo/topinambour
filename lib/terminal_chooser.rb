@@ -47,7 +47,8 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     @box.pack_start(hbox, :expand => false, :fill => true, :padding => 6)
     @listbox.margin = 12
     @box.pack_start(@listbox, :expand => true, :fill => true, :padding => 12)
-    hidden_title = Gtk::Label.new("Hidden terminals")
+    hidden_title = Gtk::Label.new("> Hidden terminals :")
+    hidden_title.halign = :start
     @box.pack_start(hidden_title, :expand => false, :fill => true, :padding => 6)
     @box.pack_start(@listbox_hidden, :expand => true, :fill => true, :padding => 12)
     add(@box)
