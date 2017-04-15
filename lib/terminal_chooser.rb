@@ -226,6 +226,12 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
       label = hbox.children[0]
       label.text = "tab. #{i + 1}"
     end
+
+    @listbox_hidden.children.each_with_index do |row, i|
+      hbox = row.children[0]
+      label = hbox.children[0]
+      label.text = "tab. #{i + 1}"
+    end
   end
 
   def add_drag_and_drop_functionalities(button)
