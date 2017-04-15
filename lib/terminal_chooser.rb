@@ -30,7 +30,7 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     @listbox_hidden.margin = 12
     @listbox_hidden.show_all
     fill_list_box
-
+    fill_hidden_list_box
     @box = Gtk::Box.new(:vertical, 4)
     @box.name = "topinambour-overview-box"
     hbox = Gtk::Box.new(:horizontal, 6)
@@ -73,6 +73,15 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     current_row.grab_focus
   end
 
+  def fill_hidden_list_box
+    @listbox_hidden.selection_mode = :single
+
+    @window.notebook.hidden.each_with_index do |child, i|
+      row = generate_hidden_list_box_row(child.term, i)
+      @listbox_hidden.insert(row, i)
+    end
+  end
+
   def generate_list_box_row(term, index)
     list_box_row = Gtk::ListBoxRow.new
     hbox = Gtk::Box.new(:horizontal, 6)
@@ -87,6 +96,24 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     button = generate_close_tab_button(list_box_row)
     hbox.pack_start(button, :expand => false, :fill => false, :padding => 6)
     button = generate_hide_button(list_box_row)
+    hbox.pack_start(button, :expand => false, :fill => false, :padding => 6)
+    list_box_row.add(hbox)
+  end
+
+  def generate_hidden_list_box_row(term, index)
+    list_box_row = Gtk::ListBoxRow.new
+    hbox = Gtk::Box.new(:horizontal, 6)
+    button = Gtk::Label.new("tab. #{index + 1}")
+    button.angle = 45
+    hbox.pack_start(button, :expand => false, :fill => false, :padding => 6)
+    button = generate_preview_button(term, list_box_row)
+    add_drag_and_drop_functionalities(button)
+    hbox.pack_start(button, :expand => false, :fill => false, :padding => 6)
+    label = generate_label(term)
+    hbox.pack_start(label, :expand => true, :fill => false, :padding => 6)
+    button = generate_close_tab_button(list_box_row)
+    hbox.pack_start(button, :expand => false, :fill => false, :padding => 6)
+    button = generate_show_button(list_box_row)
     hbox.pack_start(button, :expand => false, :fill => false, :padding => 6)
     list_box_row.add(hbox)
   end
