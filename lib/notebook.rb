@@ -14,9 +14,11 @@
 # You should have received a copy of the GNU General Public License
 # along with Topinambour.  If not, see <http://www.gnu.org/licenses/>.
 class TopinambourNotebook < Gtk::Notebook
-  attr_reader :visible
+  attr_reader :visible, :hidden
+
   def initialize
     super()
+    @hidden = []
     signal_connect("hide") { @visible = false }
 
     signal_connect("show") { @visible = true }
@@ -87,5 +89,15 @@ class TopinambourNotebook < Gtk::Notebook
     each do |tab|
       tab.term.send(method_name, *values)
     end
+  end
+
+  def hide(index)
+    child = get_nth_page(index)
+    @hidden << child
+    remove_page(index)
+  end
+
+  def unhide(index)
+    append_page(@hidden[index])
   end
 end
