@@ -24,6 +24,11 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
 
     window.notebook.generate_tab_preview
     @listbox = Gtk::ListBox.new
+    @listbox_hidden = Gtk::ListBox.new
+    hidden_title = Gtk::Label.new("Hidden terminals")
+    @listbox_hidden.placeholder = hidden_title
+    @listbox_hidden.margin = 12
+    @listbox_hidden.show_all
     fill_list_box
 
     @box = Gtk::Box.new(:vertical, 4)
@@ -42,6 +47,9 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     @box.pack_start(hbox, :expand => false, :fill => true, :padding => 6)
     @listbox.margin = 12
     @box.pack_start(@listbox, :expand => true, :fill => true, :padding => 12)
+    hidden_title = Gtk::Label.new("Hidden terminals")
+    @box.pack_start(hidden_title, :expand => false, :fill => true, :padding => 6)
+    @box.pack_start(@listbox_hidden, :expand => true, :fill => true, :padding => 12)
     add(@box)
     set_size_request(-1, @window.notebook.current.term.allocation.to_a[3] - 8)
   end
@@ -75,6 +83,8 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     hbox.pack_start(button, :expand => false, :fill => false, :padding => 6)
     label = generate_label(term)
     hbox.pack_start(label, :expand => true, :fill => false, :padding => 6)
+    button = generate_hide_button(list_box_row)
+    hbox.pack_start(button, :expand => false, :fill => false, :padding => 6)
     button = generate_close_tab_button(list_box_row)
     hbox.pack_start(button, :expand => false, :fill => false, :padding => 6)
     list_box_row.add(hbox)
@@ -95,6 +105,26 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     img = Gtk::Image.new(:pixbuf => scaled_pix)
     img.show
     img
+  end
+
+  def generate_hide_button(list_box_row)
+    button = Gtk::Button.new(:label => "Hide")
+    button.valign = :center
+    button.vexpand = false
+    button.signal_connect "clicked" do |widget|
+      tab_num = list_box_row.index
+      if  @window.notebook.n_pages == 1
+        @window.quit_gracefully
+      else
+        @window.notebook.hide(tab_num)
+      end
+      list_box_row_bkp = list_box_row
+
+      @listbox.remove(list_box_row)
+      @listbox_hidden.insert(list_box_row_bkp, -1)
+      update_tabs_num_labels
+    end
+    button
   end
 
   def generate_close_tab_button(list_box_row)
