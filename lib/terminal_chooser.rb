@@ -83,9 +83,9 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     hbox.pack_start(button, :expand => false, :fill => false, :padding => 6)
     label = generate_label(term)
     hbox.pack_start(label, :expand => true, :fill => false, :padding => 6)
-    button = generate_hide_button(list_box_row)
-    hbox.pack_start(button, :expand => false, :fill => false, :padding => 6)
     button = generate_close_tab_button(list_box_row)
+    hbox.pack_start(button, :expand => false, :fill => false, :padding => 6)
+    button = generate_hide_button(list_box_row)
     hbox.pack_start(button, :expand => false, :fill => false, :padding => 6)
     list_box_row.add(hbox)
   end
@@ -119,9 +119,37 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
         @window.notebook.hide(tab_num)
       end
       list_box_row_bkp = list_box_row
+      container = list_box_row_bkp.children[0]
+      hide_button = list_box_row_bkp.children[0].children[4]
+      container.remove(hide_button)
+      show_button = generate_show_button(list_box_row_bkp)
+      show_button.show
+      container.pack_start(show_button, :expand => false, :fill => false, :padding => 6)
 
       @listbox.remove(list_box_row)
       @listbox_hidden.insert(list_box_row_bkp, -1)
+      update_tabs_num_labels
+    end
+    button
+  end
+
+  def generate_show_button(list_box_row)
+    button = Gtk::Button.new(:label => "Show")
+    button.valign = :center
+    button.vexpand = false
+    button.signal_connect "clicked" do |widget|
+      tab_num = list_box_row.index
+      @window.notebook.unhide(tab_num)
+      list_box_row_bkp = list_box_row
+      container = list_box_row_bkp.children[0]
+      show_button = list_box_row_bkp.children[0].children[4]
+      container.remove(show_button)
+      hide_button = generate_hide_button(list_box_row_bkp)
+      hide_button.show
+      container.pack_start(hide_button, :expand => false, :fill => false, :padding => 6)
+
+      @listbox_hidden.remove(list_box_row)
+      @listbox.insert(list_box_row_bkp, -1)
       update_tabs_num_labels
     end
     button
