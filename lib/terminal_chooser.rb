@@ -164,13 +164,9 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     button = Gtk::Button.new(:label => "Hide")
     button.valign = :center
     button.vexpand = false
-    button.signal_connect "clicked" do |widget|
-      tab_num = list_box_row.index
-      if  @window.notebook.n_pages == 1
-        @window.quit_gracefully
-      else
-        @window.notebook.hide(tab_num)
-      end
+    button.signal_connect "clicked" do
+      num = list_box_row.index
+      @notebook.n_pages == 1 ? @window.quit_gracefully : @notebook.hide(num)
       list_box_row_bkp = change_button_hide_to_show(list_box_row)
       @listbox.remove(list_box_row)
       @listbox_hidden.insert(list_box_row_bkp, -1)
@@ -183,7 +179,7 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     button = Gtk::Button.new(:label => "Show")
     button.valign = :center
     button.vexpand = false
-    button.signal_connect "clicked" do |widget|
+    button.signal_connect "clicked" do
       tab_num = list_box_row.index
       @window.notebook.unhide(tab_num)
       list_box_row_bkp = change_button_show_to_hide(list_box_row)
@@ -201,7 +197,8 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     container.remove(hide_button)
     show_button = generate_show_button(list_box_row_bkp)
     show_button.show
-    container.pack_start(show_button, :expand => false, :fill => false, :padding => 6)
+    container.pack_start(show_button,
+                         :expand => false, :fill => false, :padding => 6)
     list_box_row_bkp
   end
 
@@ -212,24 +209,18 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     container.remove(show_button)
     hide_button = generate_hide_button(list_box_row_bkp)
     hide_button.show
-    container.pack_start(hide_button, :expand => false, :fill => false, :padding => 6)
+    container.pack_start(hide_button,
+                         :expand => false, :fill => false, :padding => 6)
     list_box_row_bkp
   end
 
-  def move_row_to_hidden(row)
-
-  end
   def generate_close_tab_button(list_box_row)
     button = Gtk::Button.new(:icon_name => "window-close-symbolic",
-                           :size => :button)
+                             :size => :button)
     button.relief = :none
-    button.signal_connect "clicked" do |widget|
-      tab = @window.notebook.get_nth_page(list_box_row.index)
-      if  @window.notebook.n_pages == 1
-        @window.quit_gracefully
-      else
-        @window.notebook.remove(tab)
-      end
+    button.signal_connect "clicked" do
+      tab = @notebook.get_nth_page(list_box_row.index)
+      @notebook.n_pages == 1 ? @window.quit_gracefully : @notebook.remove(tab)
       list_box_row.destroy
       update_tabs_num_labels
     end
@@ -256,21 +247,29 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
   end
 
   def generate_label_popup(label, event, term)
+    entry = initialize_entry_popup(label)
+    pp = Gtk::Popover.new
+    add_label_popup_entry_activate_signal(entry, pp, label, term)
+    add_label_popup_entry_icon_release(entry, label, term)
+    pp.add(entry)
+    set_popup_position(pp, label, event)
+  end
+
+  def initialize_entry_popup(label)
     entry = Gtk::Entry.new
     entry.max_width_chars = 50
     entry.buffer.text = label.text
     entry.set_icon_from_icon_name(:secondary, "edit-clear-symbolic")
-    pp = Gtk::Popover.new
-    add_label_popup_entry_activate_signal(entry, pp, label, term)
-    add_label_popup_entry_icon_release(entry, label, term)
+    entry
+  end
 
-    pp.add(entry)
+  def set_popup_position(popup, label, event)
     x, y = event.window.coords_to_parent(event.x, event.y)
     rect = Gdk::Rectangle.new(x - label.allocation.x, y - label.allocation.y,
                               1, 1)
-    pp.pointing_to = rect
-    pp.relative_to = label
-    pp.show_all
+    popup.pointing_to = rect
+    popup.relative_to = label
+    popup.show_all
   end
 
   def generate_label(term)
@@ -289,7 +288,10 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
       label = hbox.children[0]
       label.text = "tab. #{i + 1}"
     end
+    update_hidden_tabs_num_labels
+  end
 
+  def update_hidden_tabs_num_labels
     @listbox_hidden.children.each_with_index do |row, i|
       hbox = row.children[0]
       label = hbox.children[0]
@@ -355,7 +357,8 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
       index = widget.parent.parent.index
       index_of_dragged_object = index
       context.targets.each do |target|
-        next unless target.name == "drag_term" || selection_data.type == :type_integer
+        next unless target.name == "drag_term" ||
+                    selection_data.type == :type_integer
         data_len = selection_data.data.size
         index_of_dragged_object = selection_data.data.pack("C#{data_len}").to_i
       end
@@ -375,5 +378,4 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
       row_h_box.children[2].text = child.term.terminal_title
     end
   end
-
 end
