@@ -98,7 +98,7 @@ class TopinambourNotebook < Gtk::Notebook
   end
 
   def unhide(index)
-    append_page(@hidden[index])
+    append_page(@hidden.delete_at(index))
     toplevel.current_tab.text = "#{current_page + 1}/#{n_pages}"
   end
 end
