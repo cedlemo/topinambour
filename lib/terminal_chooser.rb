@@ -17,66 +17,91 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
   def initialize(window)
     super(nil, nil)
     @window = window
-    set_halign(:end)
-    set_valign(:center)
-    set_policy(:never, :automatic)
-    set_name("terminal_chooser")
-
-    window.notebook.generate_tab_preview
-    @listbox = Gtk::ListBox.new
-    @listbox_hidden = Gtk::ListBox.new
-    hidden_title = Gtk::Label.new("Hidden terminals")
-    @listbox_hidden.placeholder = hidden_title
-    @listbox_hidden.margin = 12
-    @listbox_hidden.show_all
-    fill_list_box
-    fill_hidden_list_box
-    @box = Gtk::Box.new(:vertical, 4)
-    @box.name = "topinambour-overview-box"
-    hbox = Gtk::Box.new(:horizontal, 6)
-    title = Gtk::Label.new("> Terminals :")
-    title.halign = :start
-    hbox.pack_start(title, :expand => true, :fill => true, :padding => 6)
-    close_button = Gtk::Button.new(:icon_name => "window-close-symbolic",
-                                   :size => :button)
-    close_button.relief = :none
-    close_button.signal_connect "clicked" do
-      @window.exit_overlay_mode
-    end
-    hbox.pack_start(close_button, :expand => false, :fill => false, :padding => 6)
-    @box.pack_start(hbox, :expand => false, :fill => true, :padding => 6)
-    @listbox.margin = 12
-    @box.pack_start(@listbox, :expand => true, :fill => true, :padding => 12)
-    hidden_title = Gtk::Label.new("> Hidden terminals :")
-    hidden_title.halign = :start
-    @box.pack_start(hidden_title, :expand => false, :fill => true, :padding => 6)
-    @box.pack_start(@listbox_hidden, :expand => true, :fill => true, :padding => 12)
-    add(@box)
-    set_size_request(-1, @window.notebook.current.term.allocation.to_a[3] - 8)
+    @notebook = @window.notebook
+    @notebook.generate_tab_preview
+    initialize_list_box
+    initialize_hidden_list_box
+    initialize_main_box
+    configure_window
   end
 
   private
 
-  def fill_list_box
+  def configure_window
+    set_halign(:end)
+    set_valign(:center)
+    set_policy(:never, :automatic)
+    set_name("terminal_chooser")
+    add(@box)
+    set_size_request(-1, @notebook.current.term.allocation.to_a[3] - 8)
+  end
+
+  def initialize_main_box
+    @box = Gtk::Box.new(:vertical, 4)
+    @box.name = "topinambour-overview-box"
+    @box.pack_start(main_title, :expand => false, :fill => true, :padding => 6)
+    @box.pack_start(@listbox, :expand => true, :fill => true, :padding => 12)
+    @box.pack_start(box_title("Hidden terminals"),
+                    :expand => false, :fill => true, :padding => 6)
+    @box.pack_start(@listbox_hidden, :expand => true, :fill => true,
+                                     :padding => 12)
+  end
+
+  def main_title
+    hbox = Gtk::Box.new(:horizontal, 6)
+    hbox.pack_start(box_title("Terminals"),
+                    :expand => true, :fill => true, :padding => 6)
+    hbox.pack_start(box_close_button,
+                    :expand => false, :fill => false, :padding => 6)
+    hbox
+  end
+
+  def box_title(label)
+    title = Gtk::Label.new("> #{label} :")
+    title.halign = :start
+    title
+  end
+
+  def box_close_button
+    button = Gtk::Button.new(:icon_name => "window-close-symbolic",
+                             :size => :button)
+    button.relief = :none
+    button.signal_connect("clicked") { @window.exit_overlay_mode }
+    button
+  end
+
+  def initialize_list_box
+    @listbox = Gtk::ListBox.new
+    @listbox.margin = 12
     @listbox.selection_mode = :single
-    @listbox.signal_connect "row-selected" do |list, row|
-      index = row.nil? ? @window.notebook.children.size : row.index
-      @window.notebook.current_page = index
+    fill_list_box
+  end
+
+  def initialize_hidden_list_box
+    @listbox_hidden = Gtk::ListBox.new
+    @listbox_hidden.placeholder = Gtk::Label.new("Hidden terminals")
+    @listbox_hidden.margin = 12
+    @listbox_hidden.show_all
+    @listbox_hidden.selection_mode = :single
+    fill_hidden_list_box
+  end
+
+  def fill_list_box
+    @listbox.signal_connect "row-selected" do |_list, row|
+      @notebook.current_page = row.nil? ? @notebook.children.size : row.index
     end
 
-    @window.notebook.children.each_with_index do |child, i|
+    @notebook.children.each_with_index do |child, i|
       row = generate_list_box_row(child.term, i)
       @listbox.insert(row, i)
     end
-    current_row = @listbox.get_row_at_index(@window.notebook.current_page)
+    current_row = @listbox.get_row_at_index(@notebook.current_page)
     @listbox.select_row(current_row)
     current_row.grab_focus
   end
 
   def fill_hidden_list_box
-    @listbox_hidden.selection_mode = :single
-
-    @window.notebook.hidden.each_with_index do |child, i|
+    @notebook.hidden.each_with_index do |child, i|
       row = generate_hidden_list_box_row(child.term, i)
       @listbox_hidden.insert(row, i)
     end
@@ -84,17 +109,7 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
 
   def generate_list_box_row(term, index)
     list_box_row = Gtk::ListBoxRow.new
-    hbox = Gtk::Box.new(:horizontal, 6)
-    button = Gtk::Label.new("tab. #{index + 1}")
-    button.angle = 45
-    hbox.pack_start(button, :expand => false, :fill => false, :padding => 6)
-    button = generate_preview_button(term, list_box_row)
-    add_drag_and_drop_functionalities(button)
-    hbox.pack_start(button, :expand => false, :fill => false, :padding => 6)
-    label = generate_label(term)
-    hbox.pack_start(label, :expand => true, :fill => false, :padding => 6)
-    button = generate_close_tab_button(list_box_row)
-    hbox.pack_start(button, :expand => false, :fill => false, :padding => 6)
+    hbox = _generate_hbox_list_box_row(list_box_row, term, index)
     button = generate_hide_button(list_box_row)
     hbox.pack_start(button, :expand => false, :fill => false, :padding => 6)
     list_box_row.add(hbox)
@@ -102,10 +117,16 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
 
   def generate_hidden_list_box_row(term, index)
     list_box_row = Gtk::ListBoxRow.new
-    hbox = Gtk::Box.new(:horizontal, 6)
-    button = Gtk::Label.new("tab. #{index + 1}")
-    button.angle = 45
+    hbox = _generate_hbox_list_box_row(list_box_row, term, index)
+    button = generate_show_button(list_box_row)
     hbox.pack_start(button, :expand => false, :fill => false, :padding => 6)
+    list_box_row.add(hbox)
+  end
+
+  def _generate_hbox_list_box_row(list_box_row, term, index)
+    hbox = Gtk::Box.new(:horizontal, 6)
+    label = leaning_label(index)
+    hbox.pack_start(label, :expand => false, :fill => false, :padding => 6)
     button = generate_preview_button(term, list_box_row)
     add_drag_and_drop_functionalities(button)
     hbox.pack_start(button, :expand => false, :fill => false, :padding => 6)
@@ -113,16 +134,20 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     hbox.pack_start(label, :expand => true, :fill => false, :padding => 6)
     button = generate_close_tab_button(list_box_row)
     hbox.pack_start(button, :expand => false, :fill => false, :padding => 6)
-    button = generate_show_button(list_box_row)
-    hbox.pack_start(button, :expand => false, :fill => false, :padding => 6)
-    list_box_row.add(hbox)
+    hbox
+  end
+
+  def leaning_label(index)
+    label = Gtk::Label.new("tab. #{index + 1}")
+    label.angle = 45
+    label
   end
 
   def generate_preview_button(child, list_box_row)
     button = Gtk::Button.new
     button.image = generate_preview_image(child.preview)
-    button.signal_connect "clicked" do |widget|
-      @window.notebook.current_page = list_box_row.index
+    button.signal_connect("clicked") do
+      @notebook.current_page = list_box_row.index
     end
     button
   end
@@ -146,14 +171,7 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
       else
         @window.notebook.hide(tab_num)
       end
-      list_box_row_bkp = list_box_row
-      container = list_box_row_bkp.children[0]
-      hide_button = list_box_row_bkp.children[0].children[4]
-      container.remove(hide_button)
-      show_button = generate_show_button(list_box_row_bkp)
-      show_button.show
-      container.pack_start(show_button, :expand => false, :fill => false, :padding => 6)
-
+      list_box_row_bkp = change_button_hide_to_show(list_box_row)
       @listbox.remove(list_box_row)
       @listbox_hidden.insert(list_box_row_bkp, -1)
       update_tabs_num_labels
@@ -168,14 +186,7 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     button.signal_connect "clicked" do |widget|
       tab_num = list_box_row.index
       @window.notebook.unhide(tab_num)
-      list_box_row_bkp = list_box_row
-      container = list_box_row_bkp.children[0]
-      show_button = list_box_row_bkp.children[0].children[4]
-      container.remove(show_button)
-      hide_button = generate_hide_button(list_box_row_bkp)
-      hide_button.show
-      container.pack_start(hide_button, :expand => false, :fill => false, :padding => 6)
-
+      list_box_row_bkp = change_button_show_to_hide(list_box_row)
       @listbox_hidden.remove(list_box_row)
       @listbox.insert(list_box_row_bkp, -1)
       update_tabs_num_labels
@@ -183,6 +194,31 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     button
   end
 
+  def change_button_hide_to_show(list_box_row)
+    list_box_row_bkp = list_box_row
+    container = list_box_row_bkp.children[0]
+    hide_button = list_box_row_bkp.children[0].children[4]
+    container.remove(hide_button)
+    show_button = generate_show_button(list_box_row_bkp)
+    show_button.show
+    container.pack_start(show_button, :expand => false, :fill => false, :padding => 6)
+    list_box_row_bkp
+  end
+
+  def change_button_show_to_hide(list_box_row)
+    list_box_row_bkp = list_box_row
+    container = list_box_row_bkp.children[0]
+    show_button = list_box_row_bkp.children[0].children[4]
+    container.remove(show_button)
+    hide_button = generate_hide_button(list_box_row_bkp)
+    hide_button.show
+    container.pack_start(hide_button, :expand => false, :fill => false, :padding => 6)
+    list_box_row_bkp
+  end
+
+  def move_row_to_hidden(row)
+
+  end
   def generate_close_tab_button(list_box_row)
     button = Gtk::Button.new(:icon_name => "window-close-symbolic",
                            :size => :button)
