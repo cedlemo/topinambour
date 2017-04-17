@@ -20,83 +20,74 @@ class TopinambourPreferences < Gtk::Window
     def init
       resource_file = "/com/github/cedlemo/topinambour/prefs-dialog.ui"
       set_template(:resource => resource_file)
-      bind_template_child("width_spin")
-      bind_template_child("height_spin")
-      bind_template_child("shell_entry")
-      bind_template_child("audible_bell_switch")
-      bind_template_child("allow_bold_switch")
-      bind_template_child("scroll_on_output_switch")
-      bind_template_child("scroll_on_keystroke_switch")
-      bind_template_child("rewrap_on_resize_switch")
-      bind_template_child("mouse_autohide_switch")
-      bind_template_child("cursor_shape_sel")
-      bind_template_child("cursor_blink_mode_sel")
-      bind_template_child("backspace_binding_sel")
-      bind_template_child("delete_binding_sel")
-      bind_template_child("css_chooser_button")
-      bind_template_child("use_custom_css_switch")
 
-      set_connect_func do |name|
-        method(name)
+      %w(width_spin height_spin shell_entry audible_bell_switch
+         allow_bold_switch scroll_on_output_switch scroll_on_keystroke_switch
+         rewrap_on_resize_switch mouse_autohide_switch cursor_shape_sel
+         cursor_blink_mode_sel backspace_binding_sel delete_binding_sel
+         css_chooser_button use_custom_css_switch).each do |widget|
+        bind_template_child(widget)
       end
+
+      set_connect_func { |name| method(name) }
+    end
 
       private
 
-      def on_width_spin_value_changed_cb(spin)
-        parent = spin.toplevel.transient_for
-        height = parent.application.settings["height"]
-        parent.resize(spin.value, height)
+    def on_width_spin_value_changed_cb(spin)
+      parent = spin.toplevel.transient_for
+      height = parent.application.settings["height"]
+      parent.resize(spin.value, height)
+    end
+
+    def on_height_spin_value_changed_cb(spin)
+      parent = spin.toplevel.transient_for
+      width = parent.application.settings["width"]
+      parent.resize(width, spin.value)
+    end
+
+    def on_shell_entry_activate_cb(entry)
+      style_context = entry.style_context
+
+      if File.exist?(entry.text)
+        settings = entry.toplevel.settings
+        entry.set_icon_from_icon_name(:secondary, nil)
+        style_context.remove_class("error")
+        settings["default-shell"] = entry.text if settings
+      else
+        style_context.add_class("error")
+        entry.set_icon_from_icon_name(:secondary, "dialog-warning-symbolic")
       end
+    end
 
-      def on_height_spin_value_changed_cb(spin)
-        parent = spin.toplevel.transient_for
-        width = parent.application.settings["width"]
-        parent.resize(width, spin.value)
+    def on_shell_entry_focus_out_event_cb(entry, _)
+      style_context = entry.style_context
+
+      if File.exist?(entry.text)
+        settings = entry.toplevel.settings
+        entry.set_icon_from_icon_name(:secondary, nil)
+        style_context.remove_class("error")
+        settings["default-shell"] = entry.text if settings
+      else
+        style_context.add_class("error")
+        entry.set_icon_from_icon_name(:secondary, "dialog-warning-symbolic")
       end
+    end
 
-      def on_shell_entry_activate_cb(entry)
-        style_context = entry.style_context
+    def on_css_file_selected_cb(filechooser)
+      parent = filechooser.toplevel.transient_for
+      parent.application.settings["css-file"] = filechooser.filename
+      parent.application.reload_css_config
+    end
 
-        if File.exist?(entry.text)
-          settings = entry.toplevel.settings
-          entry.set_icon_from_icon_name(:secondary, nil)
-          style_context.remove_class("error")
-          settings["default-shell"] = entry.text if settings
-        else
-          style_context.add_class("error")
-          entry.set_icon_from_icon_name(:secondary, "dialog-warning-symbolic")
-        end
-      end
-
-      def on_shell_entry_focus_out_event_cb(entry, _)
-        style_context = entry.style_context
-
-        if File.exist?(entry.text)
-          settings = entry.toplevel.settings
-          entry.set_icon_from_icon_name(:secondary, nil)
-          style_context.remove_class("error")
-          settings["default-shell"] = entry.text if settings
-        else
-          style_context.add_class("error")
-          entry.set_icon_from_icon_name(:secondary, "dialog-warning-symbolic")
-        end
-      end
-
-      def on_css_file_selected_cb(filechooser)
-        parent = filechooser.toplevel.transient_for
-        parent.application.settings["css-file"] = filechooser.filename
-        parent.application.reload_css_config
-      end
-
-      def on_custom_css_switch_state_set(switch, _state)
-        parent = switch.toplevel.transient_for
-        setting = "custom-css"
-        settings = parent.application.settings
-        settings[setting] = switch.active?
-        switch.toplevel.css_chooser_button.sensitive = settings[setting]
-        parent.application.reload_css_config
-        false
-      end
+    def on_custom_css_switch_state_set(switch, _state)
+      parent = switch.toplevel.transient_for
+      setting = "custom-css"
+      settings = parent.application.settings
+      settings[setting] = switch.active?
+      switch.toplevel.css_chooser_button.sensitive = settings[setting]
+      parent.application.reload_css_config
+      false
     end
   end
 
