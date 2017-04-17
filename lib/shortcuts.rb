@@ -22,7 +22,6 @@ module TopinambourShortcuts
   end
 
   def self.handle_simple(event, window)
-    overlay_mode = window.in_overlay_mode?
     case event.keyval
     when Gdk::Keyval::KEY_Escape # escape from overlay mode
       if window.in_overlay_mode?
@@ -72,7 +71,6 @@ module TopinambourShortcuts
   end
 
   def self.handle_key_press(window, event)
-    keyval = event.keyval
     if ctrl_shift?(event)
       handle_ctrl_shift(event, window)
     else
