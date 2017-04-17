@@ -19,7 +19,7 @@
 
 class TopinambourTabTerm < Gtk::Box
   attr_reader :term
-  def initialize(command_string, working_dir=nil)
+  def initialize(command_string, working_dir = nil)
     super(:horizontal, 0)
     set_name("topinambour-tab-term")
     @term = TopinambourTerminal.new(command_string, working_dir)
@@ -40,22 +40,8 @@ class TopinambourTerminal < Vte::Terminal
   def initialize(command_string, working_dir = nil)
     super()
 
-    command_array = nil
-    begin
-      command_array = GLib::Shell.parse(command_string)
-    rescue GLib::ShellError => e
-      STDERR.puts "domain  = #{e.domain}"
-      STDERR.puts "code    = #{e.code}"
-      STDERR.puts "message = #{e.message}"
-    end
-
-    begin
-      @pid = spawn(:argv => command_array,
-                   :working_directory => working_dir,
-                   :spawn_flags => GLib::Spawn::SEARCH_PATH)
-    rescue => e
-      STDERR.puts e.message
-    end
+    command_array = parse_command(command_string)
+    rescued_spawn(command_array, working_dir)
 
     signal_connect "child-exited" do |widget|
       tabterm = widget.parent
@@ -71,24 +57,7 @@ class TopinambourTerminal < Vte::Terminal
       when_terminal_title_change if notebook && notebook.current.term == self
     end
 
-    builder = Gtk::Builder.new(:resource =>
-                               "/com/github/cedlemo/topinambour/terminal-menu.ui")
-    @menu = Gtk::Popover.new(self, builder["termmenu"])
-
-    signal_connect "button-press-event" do |widget, event|
-      if event.type == Gdk::EventType::BUTTON_PRESS &&
-         event.button == Gdk::BUTTON_SECONDARY
-        manage_regex_on_right_click(widget, event)
-        display_copy_past_menu(widget, event)
-        true
-      elsif event.button == Gdk::BUTTON_PRIMARY
-        manage_regex_on_click(widget, event)
-        false # let false so that it doesn't block the event
-      else
-        false
-      end
-    end
-
+    add_popup_menu
     configure
   end
 
@@ -108,7 +77,7 @@ class TopinambourTerminal < Vte::Terminal
 
   def colors
     colors_strings = application.settings["colorscheme"]
-    @colors = colors_strings.map {|c| Gdk::RGBA.parse(c) }
+    @colors = colors_strings.map { |c| Gdk::RGBA.parse(c) }
     @colors
   end
 
@@ -133,6 +102,42 @@ class TopinambourTerminal < Vte::Terminal
   end
 
   private
+
+  def parse_command(command_string)
+    GLib::Shell.parse(command_string)
+  rescue GLib::ShellError => e
+    STDERR.puts "domain  = #{e.domain}"
+    STDERR.puts "code    = #{e.code}"
+    STDERR.puts "message = #{e.message}"
+  end
+
+  def rescued_spawn(command_array, working_dir)
+    @pid = spawn(:argv => command_array,
+                 :working_directory => working_dir,
+                 :spawn_flags => GLib::Spawn::SEARCH_PATH)
+  rescue => e
+    STDERR.puts e.message
+  end
+
+  def add_popup_menu
+    ui = "/com/github/cedlemo/topinambour/terminal-menu.ui"
+    builder = Gtk::Builder.new(:resource => ui)
+    @menu = Gtk::Popover.new(self, builder["termmenu"])
+
+    signal_connect "button-press-event" do |widget, event|
+      if event.type == Gdk::EventType::BUTTON_PRESS &&
+         event.button == Gdk::BUTTON_SECONDARY
+        manage_regex_on_right_click(widget, event)
+        display_copy_past_menu(widget, event)
+        true
+      elsif event.button == Gdk::BUTTON_PRIMARY
+        manage_regex_on_click(widget, event)
+        false # let false so that it doesn't block the event
+      else
+        false
+      end
+    end
+  end
 
   def configure
     set_rewrap_on_resize(true)
@@ -189,11 +194,9 @@ class TopinambourTerminal < Vte::Terminal
   end
 
   def launch_default_for_regex_match(match, regex_type)
-    begin
-      Gio::AppInfo.launch_default_for_uri(match)
-    rescue => e
-      puts "error : #{e.message}\n\tfor match: #{match} of type :#{regex_type}"
-    end
+    Gio::AppInfo.launch_default_for_uri(match)
+  rescue => e
+    puts "error : #{e.message}\n\tfor match: #{match} of type :#{regex_type}"
   end
 
   def launch_color_visualizer(color_name)
