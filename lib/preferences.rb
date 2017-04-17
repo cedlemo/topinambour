@@ -32,7 +32,7 @@ class TopinambourPreferences < Gtk::Window
       set_connect_func { |name| method(name) }
     end
 
-      private
+    private
 
     def on_width_spin_value_changed_cb(spin)
       parent = spin.toplevel.transient_for
@@ -106,23 +106,16 @@ class TopinambourPreferences < Gtk::Window
 
     @settings = @parent.application.settings
 
-    bind_spin_button_with_setting(width_spin, "width")
-    bind_spin_button_with_setting(height_spin, "height")
+    initialize_widgets
+  end
 
+  private
+
+  def initialize_widgets
     initialize_use_custom_css_settings
-
-    bind_switch_state_with_setting(allow_bold_switch, "allow-bold")
-    bind_switch_state_with_setting(audible_bell_switch, "audible-bell")
-    bind_switch_state_with_setting(scroll_on_output_switch, "scroll-on-output")
-    bind_switch_state_with_setting(scroll_on_keystroke_switch,
-                                   "scroll-on-keystroke")
-    bind_switch_state_with_setting(rewrap_on_resize_switch, "rewrap-on-resize")
-    bind_switch_state_with_setting(mouse_autohide_switch, "mouse-autohide")
-
-    bind_combo_box_with_setting(cursor_shape_sel, "cursor-shape")
-    bind_combo_box_with_setting(cursor_blink_mode_sel, "cursor-blink-mode")
-    bind_combo_box_with_setting(backspace_binding_sel, "backspace-binding")
-    bind_combo_box_with_setting(delete_binding_sel, "delete-binding")
+    bind_spin_buttons_with_settings
+    bind_switches_with_settings
+    bind_combo_boxes_with_settings
 
     shell_entry.text = @settings["default-shell"]
 
@@ -130,7 +123,27 @@ class TopinambourPreferences < Gtk::Window
     css_chooser_button.filename = @parent.application.check_css_file_path || ""
   end
 
-  private
+  def bind_switches_with_settings
+    bind_switch_state_with_setting(allow_bold_switch, "allow-bold")
+    bind_switch_state_with_setting(audible_bell_switch, "audible-bell")
+    bind_switch_state_with_setting(scroll_on_output_switch, "scroll-on-output")
+    bind_switch_state_with_setting(scroll_on_keystroke_switch,
+                                   "scroll-on-keystroke")
+    bind_switch_state_with_setting(rewrap_on_resize_switch, "rewrap-on-resize")
+    bind_switch_state_with_setting(mouse_autohide_switch, "mouse-autohide")
+  end
+
+  def bind_combo_boxes_with_settings
+    bind_combo_box_with_setting(cursor_shape_sel, "cursor-shape")
+    bind_combo_box_with_setting(cursor_blink_mode_sel, "cursor-blink-mode")
+    bind_combo_box_with_setting(backspace_binding_sel, "backspace-binding")
+    bind_combo_box_with_setting(delete_binding_sel, "delete-binding")
+  end
+
+  def bind_spin_buttons_with_settings
+    bind_spin_button_with_setting(width_spin, "width")
+    bind_spin_button_with_setting(height_spin, "height")
+  end
 
   def configure_headerbar
     headerbar = Gtk::HeaderBar.new
