@@ -3,25 +3,17 @@
 [![Gem Version](https://badge.fury.io/rb/topinambour.svg)](https://badge.fury.io/rb/topinambour)
 [![Code Climate](https://codeclimate.com/github/cedlemo/topinambour/badges/gpa.svg)](https://codeclimate.com/github/cedlemo/topinambour)
 
-<a href="https://raw.github.com/cedlemo/topinambour/master/screenshot_color_scheme.png"><img src="https://raw.github.com/cedlemo/topinambour/master/screenshot_color_scheme.png" alt="Topinambour Preview"></a>
+<a href="https://raw.github.com/cedlemo/topinambour/master/screenshot_terminal_chooser.png"><img src="https://raw.github.com/cedlemo/topinambour/master/screenshot_terminal_chooser.png" alt="Topinambour Preview"></a>
 
 ## Introduction
 Topinambour is a Terminal written with the **Gtk3** and **Vte3** ruby bindings from the project [Ruby-GNOME2](https://github.com/ruby-gnome2/ruby-gnome2).
 
 
-    gem build topinambour.gemspec
-    gem install topinambour-x.x.x.gem
-    ~> topinambour
-
-*Tips:*
-> Don't forget, if you install it localy, you need that your system know the path of
-the ruby gem binaries (for example).
-
-    export PATH="${PATH}:/home/${USER}/bin:${HOME}/gem/ruby/2.3.0/bin"
-
+    gem install topinambour
 
 ## Features
 
+<a href="https://raw.github.com/cedlemo/topinambour/master/screenshot_color_scheme.png"><img src="https://raw.github.com/cedlemo/topinambour/master/screenshot_color_scheme.png" alt="Topinambour Preview"></a>
 
 *    supports tabs
 *    tabs can be reordered or selected through the preview mode ( `Shift + Ctrl + o` ).
@@ -76,9 +68,10 @@ Various widget can be themed via the Css like the headerbar for example. Here is
 }
 
 #topinambour-overview-box {
-  background-color: rgba(43,45,54,0.95);
-  border-radius: 6px 0px 0px 6px;
-  color: #B0B0B0;
+  margin-right: 24px;
+  background-color: rgba(87,91,108,0.95);
+  border-radius: 6px;
+  color: #b0b0b0;
 }
 
 #topinambour-headerbar {
@@ -122,6 +115,22 @@ grid button image {
   padding: 0px;
 }
 ```
+
+## Build and Install git version.
+
+    git clone git@github.com:cedlemo/topinambour.git
+    cd topinambour
+    gem build topinambour.gemspec
+    gem install topinambour-x.x.x.gem
+    ~> topinambour
+
+*Tips:*
+> Don't forget, if you install it localy, you need that your system know the path of
+the ruby gem binaries (for example).
+
+    export PATH="${PATH}:/home/${USER}/bin:${HOME}/gem/ruby/2.3.0/bin"
+
+
 
 ## Old version (before 1.0.11)
 
