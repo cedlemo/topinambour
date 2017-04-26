@@ -2,16 +2,7 @@
 
 <schemalist>
 
-	<schema path="/com/github/cedlemo/topinambour/preferences/" id="com.github.cedlemo.topinambour">
-    <key name='totoche' type='b'>
-      <default>true</default>
-      <summary>Automatically install updates</summary>
-      <description>
-        If enabled, updates will automatically be downlaoded and installed.
-        If disabled, updates will still be downloaded, but the user will be
-        asked to install them manually.
-      </description>
-    </key>
+    <schema path="/com/github/cedlemo/topinambour/preferences/" id="com.github.cedlemo.topinambour">
     <key name='colorscheme' type='as'>
 	    <default>['#aeafad', '#323232', '#000000', '#b9214f', '#A6E22E',
 		    '#ff9800', '#3399ff', '#8e33ff', '#06a2dc', '#B0B0B0',
@@ -22,13 +13,16 @@
                         :blue, :magenta, :cyan, :white, :brightblack,
                         :brightred, :brightgreen, :brightyellow, :brightblue,
                         :brightmagenta, :brightcyan, :brightwhite
-	</description>
+	    </description>
     </key>
     <key name="default-shell" type="s">
         <default>"/usr/bin/bash"</default>
+	<summary>Default shell.</summary>
+	<description>This shell is used when a new tab is created</description>
     </key>
     <key name="font" type="s">
 	<default>"Monospace 11"</default>
+	<summary>Font of the terminal.</summary>
     </key>
      <key name="width" type="i">
       <range min="1" max="2000"/>
