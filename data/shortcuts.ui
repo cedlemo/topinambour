@@ -107,13 +107,6 @@
                 <property name="title" translatable="yes">Toggle shrink mode (Only Headerbar visible)</property>
               </object>
             </child>
-            <child>
-              <object class="GtkShortcutsShortcut">
-                <property name="visible">1</property>
-                <property name="accelerator">&lt;ctrl&gt;&lt;Shift&gt;F</property>
-                <property name="title" translatable="yes">Display a font selector</property>
-              </object>
-	    </child>
 	    <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">1</property>
