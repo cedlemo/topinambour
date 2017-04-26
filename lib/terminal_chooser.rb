@@ -132,9 +132,20 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     hbox.pack_start(button, :expand => false, :fill => false, :padding => 6)
     label = generate_label(term)
     hbox.pack_start(label, :expand => true, :fill => false, :padding => 6)
-    button = generate_close_tab_button(list_box_row)
+    button = generate_hidden_list_box_row_close(list_box_row)
     hbox.pack_start(button, :expand => false, :fill => false, :padding => 6)
     hbox
+  end
+
+  def generate_hidden_list_box_row_close(list_box_row)
+    button = Gtk::Button.new(:icon_name => "window-close-symbolic",
+                             :size => :button)
+    button.relief = :none
+    button.signal_connect "clicked" do
+      @notebook.hidden.delete_at(list_box_row.index)
+      list_box_row.destroy
+    end
+    button
   end
 
   def leaning_label(index)
