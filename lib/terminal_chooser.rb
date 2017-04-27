@@ -158,7 +158,9 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     button = Gtk::Button.new
     button.image = generate_preview_image(child.preview)
     button.signal_connect("clicked") do
-      @notebook.current_page = list_box_row.index
+      if list_box_row.parent == @listbox
+        @notebook.current_page = list_box_row.index
+      end
     end
     button
   end
