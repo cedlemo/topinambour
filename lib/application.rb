@@ -37,9 +37,10 @@ class TopinambourApplication < Gtk::Application
     signal_connect "activate" do |application|
       window = TopinambourWindow.new(application)
       window.present
-      window.add_terminal(@options[:execute]) unless @options[:commands]
-      @options[:commands].each do |cmd|
+      @options[:execute].each do |cmd|
         window.add_terminal(cmd)
+        window.notebook.current.term.custom_title = cmd
+        window.current_label.text = cmd
       end
     end
 
@@ -108,11 +109,8 @@ class TopinambourApplication < Gtk::Application
 
   def parse_command_line(arguments)
     parser = OptionParser.new
-    parser.on("-e", "--execute COMMAND", "Run a command") do |cmd|
-      @options[:execute] = cmd
-    end
-    parser.on("-l", "--launch COMMAND1,COMMAND2,COMMAND3", Array, "Open multiple commands") do |cmds|
-      @options[:commands] = cmds
+    parser.on("-e", "--execute COMMAND1,COMMAND2,COMMAND3", Array, "Run a command") do |cmds|
+      @options[:execute] = cmds
     end
     parser.parse(arguments)
   end
