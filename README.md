@@ -8,8 +8,14 @@
 ## Introduction
 Topinambour is a Terminal written with the **Gtk3** and **Vte3** ruby bindings from the project [Ruby-GNOME2](https://github.com/ruby-gnome2/ruby-gnome2).
 
+ ### Install
 
     gem install topinambour
+
+### Launch
+
+    topinambour
+    topinambour -e "/usr/bin/htop,/usr/bin/glances"
 
 ## Features
 
