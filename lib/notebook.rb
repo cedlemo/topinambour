@@ -64,7 +64,12 @@ class TopinambourNotebook < Gtk::Notebook
 
   def remove_current_page
     if n_pages == 1
-      toplevel.quit_gracefully
+      if @hidden.empty?
+        toplevel.quit_gracefully
+      else
+        append_page(@hidden.pop)
+        remove_current_page
+      end
     else
       remove(current)
       current.term.grab_focus
