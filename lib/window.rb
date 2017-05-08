@@ -37,13 +37,15 @@ class TopinambourWindow < Gtk::ApplicationWindow
     working_dir = nil
     working_dir = @notebook.current.term.pid_dir if @notebook.current
     terminal = TopinambourTabTerm.new(cmd, working_dir)
-    terminal.show_all
+    if terminal.term.pid
+      terminal.show_all
 
-    @notebook.append_page(terminal)
-    terminal.term.load_settings
-    @notebook.set_tab_reorderable(terminal, true)
-    @notebook.set_page(@notebook.n_pages - 1)
-    @notebook.current.term.grab_focus
+      @notebook.append_page(terminal)
+      terminal.term.load_settings
+      @notebook.set_tab_reorderable(terminal, true)
+      @notebook.set_page(@notebook.n_pages - 1)
+      @notebook.current.term.grab_focus
+    end
   end
 
   def quit_gracefully
