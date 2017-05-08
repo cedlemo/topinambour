@@ -111,7 +111,7 @@ class TopinambourApplication < Gtk::Application
     parser.on("-e", "--execute COMMAND", "Run a command") do |cmd|
       @options[:execute] = cmd
     end
-    parser.on("-l", "--launch COMMANDS", Array, "Open multiple commands") do |cmds|
+    parser.on("-l", "--launch COMMAND1,COMMAND2,COMMAND3", Array, "Open multiple commands") do |cmds|
       @options[:commands] = cmds
     end
     parser.parse(arguments)
