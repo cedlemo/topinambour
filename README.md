@@ -28,7 +28,6 @@ Topinambour is a Terminal written with the **Gtk3** and **Vte3** ruby bindings f
 *    terminal colors can be changed on the fly and saved.
 *    terminal font can be changed on the fly and saved.
 *    in the terminals, some patterns can be clicked (urls, emails, color names ...) in order to launch the appropriate application or a related dialog window.
-*    Topinambour allows users to modify existing modules. For example if a user copy the css_editor.rb in the directory *~/.config/topinambour/lib/css_editor.rb*, he should be able to modify it in order to fit its needs.
 
 ## Shortcuts
 
