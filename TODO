@@ -1,3 +1,6 @@
+Priority :
+ * start support Vte::Regex for Vte::Version::STRING > 0.46
+
 Main Ideas:
   *  Follow principles of GNOME/Gtk :
      - simplify the ui
