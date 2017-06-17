@@ -37,10 +37,14 @@ class TopinambourApplication < Gtk::Application
     signal_connect "activate" do |application|
       window = TopinambourWindow.new(application)
       window.present
-      @options[:execute].each do |cmd|
-        window.add_terminal(cmd)
-        window.notebook.current.term.custom_title = cmd
-        window.current_label.text = cmd
+      if @options[:execute]
+        @options[:execute].each do |cmd|
+          window.add_terminal(cmd)
+          window.notebook.current.term.custom_title = cmd
+          window.current_label.text = cmd
+        end
+      else
+        window.add_terminal
       end
     end
 
