@@ -1,4 +1,5 @@
 Priority :
+ * Write close buttons for ChooserListRow instances in terminal_chooser.rb
  * start support Vte::Regex for Vte::Version::STRING > 0.46
 
 Main Ideas:
