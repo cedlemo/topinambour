@@ -109,21 +109,11 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
 
   def generate_list_box_row(term, index)
     list_box_row = ChooserListRow.new(term, index, @notebook)
-#    hbox = _generate_hbox_list_box_row(list_box_row, term, index)
-#    button = generate_hide_button(list_box_row)
-#    hbox.pack_start(button, :expand => false, :fill => false, :padding => 6)
-#    list_box_row.add(hbox)
     generate_hide_button(list_box_row)
-    list_box_row
   end
 
   def generate_hidden_list_box_row(term, index)
     list_box_row = ChooserListRow.new(term, index, @notebook)
-#    list_box_row = Gtk::ListBoxRow.new
-#    hbox = _generate_hbox_list_box_row(list_box_row, term, index)
-#    button = generate_show_button(list_box_row)
-#    hbox.pack_start(button, :expand => false, :fill => false, :padding => 6)
-#    list_box_row.add(hbox)
     generate_show_button(list_box_row)
   end
 
