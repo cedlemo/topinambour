@@ -176,13 +176,6 @@ class ChooserListRow < Gtk::ListBoxRow
     @hbox.children[4]
   end
 
-  def action_button=(button)
-    return unless button.class == Gtk::Button
-    @hbox.remove(action_button)
-    @hbox.pack_start(button,
-                     :expand => false, :fill => false, :padding => 6)
-  end
-
   def generate_new_action_button(label)
     button = Gtk::Button.new(:label => label)
     button.valign = :center
