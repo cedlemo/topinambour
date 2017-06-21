@@ -86,7 +86,7 @@ class TopinambourNotebook < Gtk::Notebook
                                       w, h)
     cr = Cairo::Context.new(surface)
     current.term.draw(cr)
-    pix = surface.to_pixbuf(0, 0, w, h)
+    pix = surface.to_pixbuf(:src_x => 0, :src_y => 0, :width => w, :height => h)
     current.term.preview = pix if pix
   end
 
