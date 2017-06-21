@@ -211,9 +211,7 @@ class ChooserListRow < Gtk::ListBoxRow
     button = Gtk::Button.new
     button.image = generate_preview_image(child.preview)
     button.signal_connect("clicked") do
-      if self.parent.class == Gtk::ListBox
-        @notebook.current_page = list_box_row.index
-      end
+      @notebook.current_page = index parent.class == Gtk::ListBox
     end
     button
   end
@@ -308,11 +306,11 @@ class ChooserListRow < Gtk::ListBoxRow
 
   def generate_close_button
     @close_button = Gtk::Button.new(:icon_name => "window-close-symbolic",
-                             :size => :button)
+                                    :size => :button)
     @close_button.relief = :none
   end
 
- def generate_action_button
+  def generate_action_button
     action_button = Gtk::Button.new(:label => "")
     action_button.valign = :center
     action_button.vexpand = false
@@ -324,8 +322,8 @@ end
 class EditableLabel < Gtk::Label
   def initialize(term)
     super(term.terminal_title)
-    halign = :start
-    selectable = true
+    set_halign(:start)
+    set_selectable(true)
     signal_connect "button-release-event" do |w, e|
       generate_label_popup(w, e, term)
     end
