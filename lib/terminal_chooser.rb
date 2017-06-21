@@ -118,9 +118,8 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
   end
 
   def generate_show_button(list_box_row)
-    button = list_box_row.action_button
-    button.label = "Show"
-    button.signal_connect "clicked" do
+    list_box_row.generate_new_action_button("Show")
+    list_box_row.action_button.signal_connect "clicked" do
       tab_num = list_box_row.index
       @window.notebook.unhide(tab_num)
       list_box_row_bkp = generate_hide_button(list_box_row)
@@ -132,9 +131,8 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
   end
 
   def generate_hide_button(list_box_row)
-    button = list_box_row.action_button
-    button.label = "Hide"
-    button.signal_connect "clicked" do
+    list_box_row.generate_new_action_button("Hide")
+    list_box_row.action_button.signal_connect "clicked" do
       num = list_box_row.index
       @notebook.n_pages == 1 ? @window.quit_gracefully : @notebook.hide(num)
       list_box_row_bkp = generate_show_button(list_box_row)
@@ -164,16 +162,38 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
 end
 
 class ChooserListRow < Gtk::ListBoxRow
-  attr_reader :action_button, :close_button
+  attr_reader :close_button
   def initialize(term, index, notebook)
     super()
     @notebook = notebook
     @hbox = Gtk::Box.new(:horizontal, 6)
     fill_hbox_list_box_row(term, index)
     generate_action_button
-    @hbox.pack_start(@action_button, :expand => false, :fill => false, :padding => 6)
     add(@hbox)
   end
+
+  def action_button
+    @hbox.children[4]
+  end
+
+  def action_button=(button)
+    return unless button.class == Gtk::Button
+    @hbox.remove(action_button)
+    @hbox.pack_start(button,
+                     :expand => false, :fill => false, :padding => 6)
+  end
+
+  def generate_new_action_button(label)
+    button = Gtk::Button.new(:label => label)
+    button.valign = :center
+    button.vexpand = false
+    @hbox.remove(action_button)
+    @hbox.pack_start(button,
+                     :expand => false, :fill => false, :padding => 6)
+    show_all
+  end
+
+  private
 
   def fill_hbox_list_box_row(term, index)
     label = leaning_label(index)
@@ -293,16 +313,18 @@ class ChooserListRow < Gtk::ListBoxRow
     end
   end
 
-  def generate_action_button
-    @action_button = Gtk::Button.new(:label => "")
-    @action_button.valign = :center
-    @action_button.vexpand = false
-  end
-
   def generate_close_button
     @close_button = Gtk::Button.new(:icon_name => "window-close-symbolic",
                              :size => :button)
     @close_button.relief = :none
+  end
+
+ def generate_action_button
+    action_button = Gtk::Button.new(:label => "")
+    action_button.valign = :center
+    action_button.vexpand = false
+    @hbox.pack_start(action_button,
+                     :expand => false, :fill => false, :padding => 6)
   end
 end
 
