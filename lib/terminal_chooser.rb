@@ -94,6 +94,9 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     @notebook.children.each_with_index do |child, i|
       row = generate_list_box_row(child.term, i)
       @listbox.insert(row, i)
+      row.close_button.signal_connect "clicked" do |widget|
+        close_button_action(widget)
+      end
     end
     current_row = @listbox.get_row_at_index(@notebook.current_page)
     @listbox.select_row(current_row)
@@ -104,6 +107,24 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     @notebook.hidden.each_with_index do |child, i|
       row = generate_hidden_list_box_row(child.term, i)
       @listbox_hidden.insert(row, i)
+      row.close_button.signal_connect "clicked" do |widget|
+        close_button_action(widget)
+      end
+    end
+  end
+
+  def close_button_action(button)
+    row = button.parent.parent
+    listbox = row.parent
+    if listbox == @listbox
+      tab = @notebook.get_nth_page(row.index)
+      @notebook.n_pages == 1 ? @window.quit_gracefully : @notebook.remove(tab)
+      row.destroy
+      update_tabs_num_labels
+    elsif listbox == @listbox_hidden
+      @notebook.hidden.delete_at(row.index)
+      row.destroy
+      update_tabs_num_labels
     end
   end
 
