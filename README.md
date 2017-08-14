@@ -135,7 +135,8 @@ the ruby gem binaries (for example).
 
     export PATH="${PATH}:/home/${USER}/bin:${HOME}/gem/ruby/2.3.0/bin"
 
-
+## TODOs
+  * find out why there is the warning message related to the Vte::Regex.
 
 ## Old version (before 1.0.11)
 
