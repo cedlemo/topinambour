@@ -152,10 +152,15 @@ class TopinambourTerminal < Vte::Terminal
                 :CSS_COLORS]
     @regexes.each do |name|
       regex_name = TopinambourRegex.const_get(name)
-      flags = [GLib::RegexCompileFlags::OPTIMIZE,
-               GLib::RegexCompileFlags::MULTILINE]
-      regex = GLib::Regex.new(regex_name, :compile_options => flags)
-      match_add_gregex(regex, 0)
+      flags = [:optimize,
+               :multiline]
+      if Vte::Regex
+        regex = Vte::Regex.new(regex_name, flags, :for_match => true)
+        match_add_regex(regex, 0)
+      else
+        regex = GLib::Regex.new(regex_name, :compile_options => flags)
+        match_add_gregex(regex, 0)
+      end
     end
   end
 
