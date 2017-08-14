@@ -137,7 +137,8 @@ the ruby gem binaries (for example).
 
 ## TODOs
   * find out why there is the warning message related to the Vte::Regex.
-
+    * http://www.pcre.org/current/doc/html/pcre2.html
+    * https://www.regexbuddy.com/pcre.html
 ## Old version (before 1.0.11)
 
 <a href="https://raw.github.com/cedlemo/topinambour/master/terminal_selector_screen.gif"><img src="https://raw.github.com/cedlemo/topinambour/master/terminal_selector_screen.gif" style="width:576px;height:324px;" alt="Color selection gif"></a>
