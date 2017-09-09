@@ -155,6 +155,11 @@ class TopinambourTerminal < Vte::Terminal
       flags = [:optimize,
                :multiline]
       if Vte::Regex
+        # PCRE2_UTF | PCRE2_NO_UTF_CHECK | PCRE2_MULTILINE
+        pcre2_utf = "0x00080000".to_i(16)
+        pcre2_no_utf_check = "0x40000000".to_i(16)
+        pcre2_multiline = "0x00000400".to_i(16)
+        flags = pcre2_utf | pcre2_no_utf_check | pcre2_multiline
         regex = Vte::Regex.new(regex_name, flags, :for_match => true)
         match_add_regex(regex, 0)
       else
