@@ -91,7 +91,8 @@ class TopinambourTerminal < Vte::Terminal
   end
 
   def font=(font_str)
-    application.settings["font"] = Pango::FontDescription.new(font_str)
+    application.settings["font"] = font_str
+    font = Pango::FontDescription.new(font_str)
     set_font(font)
     @font = font
   end

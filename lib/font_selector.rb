@@ -33,8 +33,7 @@ class TopinambourFontSelector < Gtk::Box
     font_button.use_font = true
     font_button.use_size = false
     font_button.signal_connect "font-set" do
-      font_desc = Pango::FontDescription.new(font_button.font_name)
-      @window.notebook.current.term.font = font_desc
+      @window.notebook.current.term.font = font_button.font_name
     end
     pack_start(font_button, :expand => false, :fill => false, :padding => 0)
 
