@@ -86,7 +86,7 @@ class TopinambourWindow < Gtk::ApplicationWindow
     Gtk::AboutDialog.show(self,
                           "authors" => ["Cedric Le Moigne <cedlemo@gmx.com>"],
                           "comments" => "Terminal Emulator based on the ruby bindings of Gtk3 and Vte3",
-                          "copyright" => "Copyright (C) 2015-2016 Cedric Le Moigne",
+                          "copyright" => "Copyright (C) 2015-2017 Cedric Le Moigne",
                           "license" => "This program is licenced under the licence GPL-3.0 and later.",
                           "logo_icon_name" => "utilities-terminal-symbolic",
                           "program_name" => "Topinambour",
