@@ -2,7 +2,7 @@ require "rake"
 
 Gem::Specification.new do |s|
   s.name        = "topinambour"
-  s.version     = "1.0.14"
+  s.version     = "1.0.15"
   s.summary     = "Ruby-gnome2 Terminal emulator"
   s.description = "Terminal Emulator based on the libs vte3 and gtk3 from the ruby-gnome2 project"
   s.author      = "Cedric LE MOIGNE"
