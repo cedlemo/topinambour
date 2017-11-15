@@ -232,7 +232,7 @@ class ChooserListRow < Gtk::ListBoxRow
     button = Gtk::Button.new
     button.image = generate_preview_image(child.preview)
     button.signal_connect("clicked") do
-      @notebook.current_page = index parent.class == Gtk::ListBox
+      @notebook.current_page = index if parent.class == Gtk::ListBox
     end
     button
   end
