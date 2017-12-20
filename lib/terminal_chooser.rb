@@ -318,7 +318,7 @@ class ChooserListRow < Gtk::ListBoxRow
     dragged = @notebook.get_nth_page(src_index)
     @notebook.reorder_child(dragged, dest_index)
     @notebook.children.each_with_index do |child, i|
-      list_box_row = @listbox.get_row_at_index(i)
+      list_box_row = parent.get_row_at_index(i)
       row_h_box = list_box_row.children[0]
       row_h_box.children[1].image = generate_preview_image(child.term.preview)
       row_h_box.children[2].text = child.term.terminal_title
