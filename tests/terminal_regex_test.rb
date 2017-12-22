@@ -9,34 +9,29 @@ LIB_PATH = "#{PATH}/../lib"
 require "#{LIB_PATH}/rgb_names_regexes"
 require "#{LIB_PATH}/terminal_regex"
 
+def switch_assert(val, string, result)
+  case result
+  when :ENTIRE
+    assert_equal(string, val)
+  when :NULL
+    assert_nil(val)
+  else
+    assert_equal(result, val)
+  end
+end
+
 def assert_match_anchored(constant_name, string, result)
   pattern = TopinambourRegex.const_get(constant_name)
   regex = GLib::Regex.new(pattern)
   match_info = regex.match(string, :match_options => GLib::RegexMatchFlags::ANCHORED)
-  case result
-  when :ENTIRE
-    reference = string
-  when :NULL
-    reference = nil
-  else
-    reference = result
-  end
-  assert_equal(reference, match_info.fetch(0))
+  switch_assert(match_info.fetch(0), string, result)
 end
 
 def assert_match_anchored_extended(constant_name, additional_pattern, string, result)
   pattern = TopinambourRegex.const_get(constant_name)
   regex = GLib::Regex.new(pattern + additional_pattern)
   match_info = regex.match(string, :match_options => GLib::RegexMatchFlags::ANCHORED)
-  case result
-  when :ENTIRE
-    reference = string
-  when :NULL
-    reference = nil
-  else
-    reference = result
-  end
-  assert_equal(reference, match_info.fetch(0))
+  switch_assert(match_info.fetch(0), string, result)
 end
 
 def assert_match_anchored_added(constant_names, string, result)
@@ -46,45 +41,21 @@ def assert_match_anchored_added(constant_names, string, result)
   end
   regex = GLib::Regex.new(pattern)
   match_info = regex.match(string, :match_options => GLib::RegexMatchFlags::ANCHORED)
-  case result
-  when :ENTIRE
-    reference = string
-  when :NULL
-    reference = nil
-  else
-    reference = result
-  end
-  assert_equal(reference, match_info.fetch(0))
+  switch_assert(match_info.fetch(0), string, result)
 end
 
 def assert_match_b(constant_name, string, result)
   pattern = TopinambourRegex.const_get(constant_name)
   regex = GLib::Regex.new(pattern)
   match_info = regex.match(string)
-  case result
-  when :ENTIRE
-    reference = string
-  when :NULL
-    reference = nil
-  else
-    reference = result
-  end
-  assert_equal(reference, match_info.fetch(0))
+  switch_assert(match_info.fetch(0), string, result)
 end
 
 def assert_match_extended(constant_name, additional_pattern, string, result)
   pattern = TopinambourRegex.const_get(constant_name)
   regex = GLib::Regex.new(pattern + additional_pattern)
   match_info = regex.match(string)
-  case result
-  when :ENTIRE
-    reference = string
-  when :NULL
-    reference = nil
-  else
-    reference = result
-  end
-  assert_equal(reference, match_info.fetch(0))
+  switch_assert(match_info.fetch(0), string, result)
 end
 
 def assert_match_added(constant_names, string, result)
@@ -94,15 +65,7 @@ def assert_match_added(constant_names, string, result)
   end
   regex = GLib::Regex.new(pattern)
   match_info = regex.match(string)
-  case result
-  when :ENTIRE
-    reference = string
-  when :NULL
-    reference = nil
-  else
-    reference = result
-  end
-  assert_equal(reference, match_info.fetch(0))
+  switch_assert(match_info.fetch(0), string, result)
 end
 
 class TestTerminalRegexBasics < MiniTest::Test
