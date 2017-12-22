@@ -6,6 +6,7 @@ require "gtk3"
 PATH = File.expand_path(File.dirname("__FILE__"))
 LIB_PATH = "#{PATH}/../lib"
 
+require "#{LIB_PATH}/rgb_names_regexes"
 require "#{LIB_PATH}/terminal_regex"
 
 def assert_match_anchored(constant_name, string, result)
@@ -278,8 +279,21 @@ class TestTerminalRegexBasics < MiniTest::Test
   end
 
   def test_url_path
-    assert_match_anchored(:URLPATH, "/ab/cd",       :ENTIRE);
-    assert_match_anchored(:URLPATH, "/ab/cd.html.", "/ab/cd.html");
+    assert_match_anchored_added([:DEFS, :URLPATH], "/ab/cd",       :ENTIRE)
+    assert_match_anchored_added([:DEFS, :URLPATH], "/ab/cd.html.", "/ab/cd.html")
+    assert_match_anchored_added([:DEFS, :URLPATH], "/The_Offspring_(album)", :ENTIRE)
+    assert_match_anchored_added([:DEFS, :URLPATH], "/The_Offspring)", "/The_Offspring")
+    assert_match_anchored_added([:DEFS, :URLPATH], "/a((b(c)d)e(f))", :ENTIRE)
+    assert_match_anchored_added([:DEFS, :URLPATH], "/a((b(c)d)e(f)))", "/a((b(c)d)e(f))")
+    assert_match_anchored_added([:DEFS, :URLPATH], "/a(b).(c).", "/a(b).(c)")
+    assert_match_anchored_added([:DEFS, :URLPATH], "/a.(b.(c.).).(d.(e.).).)", "/a.(b.(c.).).(d.(e.).)")
+    assert_match_anchored_added([:DEFS, :URLPATH], "/a)b(c", "/a")
+    assert_match_anchored_added([:DEFS, :URLPATH], "/.", "/")
+    assert_match_anchored_added([:DEFS, :URLPATH], "/(.", "/")
+    assert_match_anchored_added([:DEFS, :URLPATH], "/).", "/")
+    assert_match_anchored_added([:DEFS, :URLPATH], "/().", "/()")
+    assert_match_anchored_added([:DEFS, :URLPATH], "/", :ENTIRE)
+    assert_match_anchored_added([:DEFS, :URLPATH], "", :ENTIRE)
   end
 end
 
@@ -330,6 +344,11 @@ class TestTerminalRegexComplex < MiniTest::Test
     assert_match_b(:REGEX_URL_AS_IS, "http://invalidusername!@host",           "http://invalidusername")
     assert_match_b(:REGEX_URL_AS_IS, "http://ab.cd/ef?g=h&i=j|k=l#m=n:o=p", :ENTIRE)
     assert_match_b(:REGEX_URL_AS_IS, "http:///foo",                         :NULL)
+    assert_match_b(:REGEX_URL_AS_IS, "https://en.wikipedia.org/wiki/The_Offspring_(album)", :ENTIRE)
+    assert_match_b(:REGEX_URL_AS_IS, "[markdown](https://en.wikipedia.org/wiki/The_Offspring)", "https://en.wikipedia.org/wiki/The_Offspring")
+    assert_match_b(:REGEX_URL_AS_IS, "[markdown](https://en.wikipedia.org/wiki/The_Offspring_(album))", "https://en.wikipedia.org/wiki/The_Offspring_(album)")
+    assert_match_b(:REGEX_URL_AS_IS, "[markdown](http://foo.bar/(a(b)c)d)e)f", "http://foo.bar/(a(b)c)d")
+    assert_match_b(:REGEX_URL_AS_IS, "[markdown](http://foo.bar/a)b(c", "http://foo.bar/a")
   end
 
   def test_url_http
@@ -438,7 +457,7 @@ class TestColorsRegex < MiniTest::Test
     assert_match_b(:RGBPERC_COLOR, "rgb(100,150,255)", :NULL)
     assert_match_b(:RGBPERC_COLOR, "rgb(350, 150,255)", :NULL)
   end
-  
+
   def test_rgba_color
     assert_match_b(:RGBA_COLOR, "rgba(100,150,255, 0.5)", :ENTIRE)
     assert_match_b(:RGBA_COLOR, "rgba(100|150,255)", :NULL)
@@ -450,7 +469,7 @@ class TestColorsRegex < MiniTest::Test
     assert_match_b(:RGBAPERC_COLOR, "rgba(100,150,255)", :NULL)
     assert_match_b(:RGBAPERC_COLOR, "rgba(350, 150,255)", :NULL)
   end
-  
+
   def test_css_colors
     assert_match_b(:CSS_COLORS, "rgba(100%,15%,0%, 1.0)", :ENTIRE)
     assert_match_b(:CSS_COLORS, "rgba(100,150,255, 0.5)", :ENTIRE)
