@@ -3,7 +3,7 @@ require "minitest/autorun"
 require "fileutils"
 require "gtk3"
 
-PATH = File.expand_path(File.dirname("__FILE__"))
+PATH = File.expand_path(File.dirname(__FILE__))
 LIB_PATH = "#{PATH}/../lib"
 
 require "#{LIB_PATH}/rgb_names_regexes"
