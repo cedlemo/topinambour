@@ -257,6 +257,13 @@ class TestTerminalRegexBasics < MiniTest::Test
     assert_match_anchored_added([:DEFS, :URLPATH], "/().", "/()")
     assert_match_anchored_added([:DEFS, :URLPATH], "/", :ENTIRE)
     assert_match_anchored_added([:DEFS, :URLPATH], "", :ENTIRE)
+    assert_match_anchored_added([:DEFS, :URLPATH], "/php?param[]=value1&param[]=value2", :ENTIRE)
+    assert_match_anchored_added([:DEFS, :URLPATH], "/foo?param1[index1]=value1&param2[index2]=value2", :ENTIRE)
+    assert_match_anchored_added([:DEFS, :URLPATH], "/[[[]][]]", :ENTIRE)
+    assert_match_anchored_added([:DEFS, :URLPATH], "/[([])]([()])", :ENTIRE)
+    assert_match_anchored_added([:DEFS, :URLPATH], "/([()])[([])]", :ENTIRE)
+    assert_match_anchored_added([:DEFS, :URLPATH], "/[(])", "/")
+    assert_match_anchored_added([:DEFS, :URLPATH], "/([)]", "/")
   end
 end
 

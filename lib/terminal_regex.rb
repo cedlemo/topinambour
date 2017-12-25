@@ -94,11 +94,11 @@ module PathRegexes
   PATHCHARS_CLASS = "[-[:alnum:]\\Q_$.+!*,:;@&=?/~#|%\\E]"
   # Chars to end a URL
   PATHTERM_CLASS = "[-[:alnum:]\\Q_$+*:;@&=/~#|%\\E]"
-  # Recursive definition of PATH that allows parentheses only if balanced, see bug 763980.
-  PATH_INNER_DEF = "(?(DEFINE)(?<PATH_INNER>(?x: (?: #{PATHCHARS_CLASS}* \\( (?&PATH_INNER) \\) )* #{PATHCHARS_CLASS}* )))"
+  # Recursive definition of PATH that allows parentheses and square brackets only if balanced, see bug 763980.
+  PATH_INNER_DEF = "(?(DEFINE)(?<PATH_INNER>(?x: (?: #{PATHCHARS_CLASS}* (?: \\( (?&PATH_INNER) \\) | \\[ (?&PATH_INNER) \\] ) )* #{PATHCHARS_CLASS}* )))"
   #                "(?(DEFINE)(?<PATH_INNER>(?x: (?: " PATHCHARS_CLASS"* \\( (?&PATH_INNER) \\) )* " PATHCHARS_CLASS "* )))"
   # Same as above, but the last character (if exists and is not a parenthesis) must be from PATHTERM_CLASS.
-  PATH_DEF = "(?(DEFINE)(?<PATH>(?x: (?: #{PATHCHARS_CLASS}* \\( (?&PATH_INNER) \\) )* (?: #{PATHCHARS_CLASS}* #{PATHTERM_CLASS} )? )))"
+  PATH_DEF = "(?(DEFINE)(?<PATH>(?x: (?: #{PATHCHARS_CLASS}* (?: \\( (?&PATH_INNER) \\) | \\[ (?&PATH_INNER) \\] ) )* (?: #{PATHCHARS_CLASS}* #{PATHTERM_CLASS} )? )))"
   URLPATH = "(?x: /(?&PATH) )?"
   VOIP_PATH = "(?x: [;?](?&PATH) )?"
 end
