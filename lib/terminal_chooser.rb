@@ -13,6 +13,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Topinambour.  If not, see <http://www.gnu.org/licenses/>.
+
 class TopinambourTermChooser < Gtk::ScrolledWindow
   def initialize(window)
     super(nil, nil)
@@ -136,6 +137,7 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
   def generate_hidden_list_box_row(term, index)
     list_box_row = ChooserListRow.new(term, index, @notebook)
     generate_show_button(list_box_row)
+    preview_action_for_hidden_list(list_box_row)
   end
 
   def generate_show_button(list_box_row)
@@ -147,6 +149,28 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
       @listbox_hidden.remove(list_box_row)
       @listbox.insert(list_box_row_bkp, -1)
       update_tabs_num_labels
+      preview_action_for_shown_list(list_box_row_bkp)
+    end
+    list_box_row
+  end
+
+  def preview_action_for_hidden_list(list_box_row)
+    list_box_row.preview_button.signal_connect "clicked" do
+      tab_num = list_box_row.index
+      @window.notebook.unhide(tab_num)
+      list_box_row_bkp = generate_hide_button(list_box_row)
+      @listbox_hidden.remove(list_box_row)
+      @listbox.insert(list_box_row_bkp, -1)
+      @notebook.current_page = (@listbox.children.length - 1)
+      update_tabs_num_labels
+      preview_action_for_shown_list(list_box_row_bkp)
+    end
+    list_box_row
+  end
+
+  def preview_action_for_shown_list(list_box_row)
+    list_box_row.preview_button.signal_connect "clicked" do
+      @notebook.current_page = list_box_row.index
     end
     list_box_row
   end
@@ -157,6 +181,7 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
       num = list_box_row.index
       @notebook.n_pages == 1 ? @window.quit_gracefully : @notebook.hide(num)
       list_box_row_bkp = generate_show_button(list_box_row)
+      preview_action_for_hidden_list(list_box_row_bkp)
       @listbox.remove(list_box_row)
       @listbox_hidden.insert(list_box_row_bkp, -1)
       update_tabs_num_labels
@@ -195,6 +220,10 @@ class ChooserListRow < Gtk::ListBoxRow
 
   def action_button
     @hbox.children[4]
+  end
+
+  def preview_button
+    @prev_button
   end
 
   def generate_new_action_button(label)
