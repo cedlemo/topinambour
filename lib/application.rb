@@ -22,7 +22,7 @@ class TopinambourApplication < Gtk::Application
     @options = {}
     @exit_status = 0
 
-    super("com.github.cedlemo.topinambour", [:non_unique, :handles_command_line])
+    super("com.github.cedlemo.topinambour", [:handles_command_line])
 
     signal_connect "startup" do |application|
       ENV["GSETTINGS_SCHEMA_DIR"] = DATA_PATH
@@ -35,8 +35,17 @@ class TopinambourApplication < Gtk::Application
     end
 
     signal_connect "activate" do |application|
+
       window = TopinambourWindow.new(application)
       window.present
+
+      application.windows.each_with_index do |win, i|
+        puts "Topinambour #{i}"
+        win.notebook.children.each_with_index do |tab|
+          puts tab.term.terminal_title
+        end
+      end
+
       if @options[:execute]
         @options[:execute].each do |cmd|
           window.add_terminal(cmd)
