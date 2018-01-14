@@ -159,6 +159,7 @@ class TopinambourWindow < Gtk::ApplicationWindow
     # Text is modified when notebook switch tabs or
     # Vte::Terminal command change and if it is the current Vte.
     @current_label = builder["current_label"]
+    @current_label.name = "topinambour-current-label"
     current_label_signals
     # Value is changed when notebook switch tabs or notebook add tab.
     @current_tab = builder["current_tab"]
