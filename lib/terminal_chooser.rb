@@ -241,8 +241,7 @@ class ChooserListRow < Gtk::ListBoxRow
   def fill_hbox_list_box_row(term, index)
     label = leaning_label(index)
     @hbox.pack_start(label, :expand => false, :fill => false, :padding => 6)
-    @prev_button = generate_preview_button(term)
-    add_drag_and_drop_functionalities
+    @prev_button = PreviewButton.new(term, @notebook)
     @hbox.pack_start(@prev_button, :expand => false, :fill => false, :padding => 6)
     label = EditableLabel.new(term)
     @hbox.pack_start(label, :expand => true, :fill => false, :padding => 6)
@@ -257,34 +256,53 @@ class ChooserListRow < Gtk::ListBoxRow
     label
   end
 
-  def generate_preview_button(child)
-    button = Gtk::Button.new
-    button.image = generate_preview_image(child.preview)
-    button.signal_connect("clicked") do
-      @notebook.current_page = index if parent.class == Gtk::ListBox
-    end
-    button
+  def generate_close_button
+    @close_button = Gtk::Button.new(:icon_name => "window-close-symbolic",
+                                    :size => :button)
+    @close_button.relief = :none
   end
 
+  def generate_action_button
+    action_button = Gtk::Button.new(:label => "")
+    action_button.valign = :center
+    action_button.vexpand = false
+    @hbox.pack_start(action_button,
+                     :expand => false, :fill => false, :padding => 6)
+  end
+end
+
+class PreviewButton < Gtk::Button
+  def initialize(term, notebook)
+    super()
+    self.image = generate_preview_image(term.preview)
+    # TODO: remove ?
+    @notebook = notebook
+    signal_connect "clicked" do
+      @notebook.current_page = index if parent.class == Gtk::ListBox
+    end
+    add_dnd_functionalities
+  end
+
+  private
+
   def generate_preview_image(pixbuf)
-    # scaled_pix = pixbuf.scale(150, 75, :bilinear)
     scaled_pix = pixbuf.scale(200, 100, :bilinear)
     img = Gtk::Image.new(:pixbuf => scaled_pix)
     img.show
     img
   end
 
-  def add_drag_and_drop_functionalities
-    add_dnd_source(@prev_button)
-    add_dnd_destination(@prev_button)
+  def add_dnd_functionalities
+    add_dnd_source
+    add_dnd_destination
   end
 
-  def add_dnd_source(button)
-    button.drag_source_set(Gdk::ModifierType::BUTTON1_MASK |
-                           Gdk::ModifierType::BUTTON2_MASK,
-                           [["drag_term", Gtk::TargetFlags::SAME_APP, 12_345]],
-                           Gdk::DragAction::COPY |
-                           Gdk::DragAction::MOVE)
+  def add_dnd_source
+    drag_source_set(Gdk::ModifierType::BUTTON1_MASK |
+                    Gdk::ModifierType::BUTTON2_MASK,
+                    [["drag_term", Gtk::TargetFlags::SAME_APP, 12_345]],
+                    Gdk::DragAction::COPY |
+                    Gdk::DragAction::MOVE)
     # Drag source signals
     # drag-begin	User starts a drag	Set-up drag icon
     # drag-data-get	When drag data is requested by the destination	Transfer
@@ -293,11 +311,11 @@ class ChooserListRow < Gtk::ListBoxRow
     # completed	Delete data from the source to complete the "move"
     # drag-end	When the drag is complete	Undo anything done in drag-begin
 
-    button.signal_connect "drag-begin" do |widget|
+    signal_connect "drag-begin" do |widget|
       widget.drag_source_set_icon_pixbuf(widget.image.pixbuf)
     end
 
-    button.signal_connect("drag-data-get") do |widget, _, selection_data, _, _|
+    signal_connect "drag-data-get" do |widget, _, selection_data, _, _|
       index = widget.parent.parent.index
       selection_data.set(Gdk::Selection::TYPE_INTEGER, index.to_s)
     end
@@ -309,12 +327,12 @@ class ChooserListRow < Gtk::ListBoxRow
     # end
   end
 
-  def add_dnd_destination(button)
-    button.drag_dest_set(Gtk::DestDefaults::MOTION |
-                         Gtk::DestDefaults::HIGHLIGHT,
-                         [["drag_term", :same_app, 12_345]],
-                         Gdk::DragAction::COPY |
-                         Gdk::DragAction::MOVE)
+  def add_dnd_destination
+    drag_dest_set(Gtk::DestDefaults::MOTION |
+                  Gtk::DestDefaults::HIGHLIGHT,
+                  [["drag_term", :same_app, 12_345]],
+                  Gdk::DragAction::COPY |
+                  Gdk::DragAction::MOVE)
 
     # Drag destination signals
     # drag-motion	Drag icon moves over a drop area	Allow only certain areas to
@@ -324,11 +342,11 @@ class ChooserListRow < Gtk::ListBoxRow
     # button.signal_connect "drag-motion" do
     #   puts "drag motion for #{index}"
     # end
-    button.signal_connect("drag-drop") do |widget, context, _x, _y, time|
+    signal_connect "drag-drop" do |widget, context, _x, _y, time|
       widget.drag_get_data(context, context.targets[0], time)
     end
 
-    button.signal_connect("drag-data-received") do |widget, context, _x, _y, selection_data|
+    signal_connect("drag-data-received") do |widget, context, _x, _y, selection_data|
       index = widget.parent.parent.index
       index_of_dragged_object = index
       context.targets.each do |target|
@@ -343,29 +361,24 @@ class ChooserListRow < Gtk::ListBoxRow
     end
   end
 
+  def listbox_ancestor
+    ancestor = parent
+    loop do
+      ancestor = ancestor.parent
+      break if ancestor.is_a? Gtk::ListBox
+    end
+    ancestor
+  end
+
   def drag_image_and_reorder_terms(src_index, dest_index)
     dragged = @notebook.get_nth_page(src_index)
     @notebook.reorder_child(dragged, dest_index)
     @notebook.children.each_with_index do |child, i|
-      list_box_row = parent.get_row_at_index(i)
+      list_box_row = listbox_ancestor.get_row_at_index(i)
       row_h_box = list_box_row.children[0]
       row_h_box.children[1].image = generate_preview_image(child.term.preview)
       row_h_box.children[2].text = child.term.terminal_title
     end
-  end
-
-  def generate_close_button
-    @close_button = Gtk::Button.new(:icon_name => "window-close-symbolic",
-                                    :size => :button)
-    @close_button.relief = :none
-  end
-
-  def generate_action_button
-    action_button = Gtk::Button.new(:label => "")
-    action_button.valign = :center
-    action_button.vexpand = false
-    @hbox.pack_start(action_button,
-                     :expand => false, :fill => false, :padding => 6)
   end
 end
 
