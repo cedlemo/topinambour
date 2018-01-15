@@ -19,7 +19,6 @@
 # vte 3 bindings.
 # Author:: Cedlemo (mailto:cedlemo@gmx.com)
 
-require "gtk3"
 require "vte3"
 require "fileutils"
 
