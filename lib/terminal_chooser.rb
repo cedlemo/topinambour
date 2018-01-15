@@ -20,8 +20,7 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     @window = window
     @notebook = @window.notebook
     @notebook.generate_tab_preview
-    initialize_list_box
-    initialize_hidden_list_box
+    initialize_listboxes
     initialize_main_box
     configure_window
   end
@@ -50,7 +49,7 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
 
   def main_title
     hbox = Gtk::Box.new(:horizontal, 6)
-    hbox.pack_start(box_title("Terminals"),
+    hbox.pack_start(box_title("Terminals Overview"),
                     :expand => true, :fill => true, :padding => 6)
     hbox.pack_start(box_close_button,
                     :expand => false, :fill => false, :padding => 6)
@@ -71,135 +70,29 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     button
   end
 
-  def initialize_list_box
-    @listbox = Gtk::ListBox.new
-    @listbox.margin = 12
-    @listbox.selection_mode = :single
-    fill_list_box
+  def initialize_listboxes
+    @visible_terms = VisibleTermsList.new(@notebook.children, @notebook)
+    @hidden_terms = HiddenTermsList.new(@notebook.hidden, @notebook)
+  end
+end
+
+class ChooserListBox < Gtk::ListBox
+  def initialize(name, tabs, notebook)
+    placeholder = box_title(name)
+    margin = 12
+    selection_mode = :single
+    @tabs = terms
+    @notebook = notebook
   end
 
-  def initialize_hidden_list_box
-    @listbox_hidden = Gtk::ListBox.new
-    @listbox_hidden.placeholder = Gtk::Label.new("Hidden terminals")
-    @listbox_hidden.margin = 12
-    @listbox_hidden.show_all
-    @listbox_hidden.selection_mode = :single
-    fill_hidden_list_box
-  end
-
-  def fill_list_box
-    @listbox.signal_connect "row-selected" do |_list, row|
-      @notebook.current_page = row.nil? ? @notebook.children.size : row.index
-    end
-
-    @notebook.children.each_with_index do |child, i|
-      row = generate_list_box_row(child.term, i)
-      @listbox.insert(row, i)
-      row.close_button.signal_connect "clicked" do |widget|
-        close_button_action(widget)
-      end
-    end
-    current_row = @listbox.get_row_at_index(@notebook.current_page)
-    @listbox.select_row(current_row)
-    current_row.grab_focus
-  end
-
-  def fill_hidden_list_box
-    @notebook.hidden.each_with_index do |child, i|
-      row = generate_hidden_list_box_row(child.term, i)
-      @listbox_hidden.insert(row, i)
-      row.close_button.signal_connect "clicked" do |widget|
-        close_button_action(widget)
-      end
-    end
-  end
-
-  def close_button_action(button)
-    row = button.parent.parent
-    listbox = row.parent
-    if listbox == @listbox
-      tab = @notebook.get_nth_page(row.index)
-      @notebook.n_pages == 1 ? @window.quit_gracefully : @notebook.remove(tab)
-      row.destroy
-      update_tabs_num_labels
-    elsif listbox == @listbox_hidden
-      @notebook.hidden.delete_at(row.index)
-      row.destroy
-      update_tabs_num_labels
-    end
-  end
-
-  def generate_list_box_row(term, index)
-    list_box_row = ChooserListRow.new(term, index, @notebook)
-    generate_hide_button(list_box_row)
-  end
-
-  def generate_hidden_list_box_row(term, index)
-    list_box_row = ChooserListRow.new(term, index, @notebook)
-    generate_show_button(list_box_row)
-    preview_action_for_hidden_list(list_box_row)
-  end
-
-  def generate_show_button(list_box_row)
-    list_box_row.generate_new_action_button("Show")
-    list_box_row.action_button.signal_connect "clicked" do
-      tab_num = list_box_row.index
-      @window.notebook.unhide(tab_num)
-      list_box_row_bkp = generate_hide_button(list_box_row)
-      @listbox_hidden.remove(list_box_row)
-      @listbox.insert(list_box_row_bkp, -1)
-      update_tabs_num_labels
-      preview_action_for_shown_list(list_box_row_bkp)
-    end
-    list_box_row
-  end
-
-  def preview_action_for_hidden_list(list_box_row)
-    list_box_row.preview_button.signal_connect "clicked" do
-      tab_num = list_box_row.index
-      @window.notebook.unhide(tab_num)
-      list_box_row_bkp = generate_hide_button(list_box_row)
-      @listbox_hidden.remove(list_box_row)
-      @listbox.insert(list_box_row_bkp, -1)
-      @notebook.current_page = (@listbox.children.length - 1)
-      update_tabs_num_labels
-      preview_action_for_shown_list(list_box_row_bkp)
-    end
-    list_box_row
-  end
-
-  def preview_action_for_shown_list(list_box_row)
-    list_box_row.preview_button.signal_connect "clicked" do
-      @notebook.current_page = list_box_row.index
-    end
-    list_box_row
-  end
-
-  def generate_hide_button(list_box_row)
-    list_box_row.generate_new_action_button("Hide")
-    list_box_row.action_button.signal_connect "clicked" do
-      num = list_box_row.index
-      @notebook.n_pages == 1 ? @window.quit_gracefully : @notebook.hide(num)
-      list_box_row_bkp = generate_show_button(list_box_row)
-      preview_action_for_hidden_list(list_box_row_bkp)
-      @listbox.remove(list_box_row)
-      @listbox_hidden.insert(list_box_row_bkp, -1)
-      update_tabs_num_labels
-    end
-    list_box_row
+  def box_title(label)
+    title = Gtk::Label.new("> #{label} :")
+    title.halign = :start
+    title
   end
 
   def update_tabs_num_labels
-    @listbox.children.each_with_index do |row, i|
-      hbox = row.children[0]
-      label = hbox.children[0]
-      label.text = "tab. #{i + 1}"
-    end
-    update_hidden_tabs_num_labels
-  end
-
-  def update_hidden_tabs_num_labels
-    @listbox_hidden.children.each_with_index do |row, i|
+    children.each_with_index do |row, i|
       hbox = row.children[0]
       label = hbox.children[0]
       label.text = "tab. #{i + 1}"
@@ -207,8 +100,55 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
   end
 end
 
+class VisibleTermsList < ChooserListBox
+  def initialize(tabs, notebook)
+    super("Terminals", terms, notebook)
+    @tabs.each_with_index do |tab, i|
+      row = generate_listbox_row(tab.term, i)
+      insert(row, i)
+      row.close_button.signal_connect "clicked" do |widget|
+        close_button_action(widget)
+      end
+    end
+  end
+
+  def generate_listbox_row(term, index)
+    list_box_row = ChooserListRow.new(term, index, @notebook)
+    generate_hide_button(list_box_row)
+  end
+
+  def generate_hide_button(list_box_row)
+#    list_box_row.generate_new_action_button("Hide")
+    list_box_row
+  end
+end
+
+class HiddenTermsList < ChooserListBox
+  def initialize(tabs, notebook)
+    super("Terminals", terms, notebook)
+    @tabs.each_with_index do |tab, i|
+      row = generate_hidden_listbox_row(tab.term, i)
+      insert(row, i)
+      row.close_button.signal_connect "clicked" do |widget|
+        close_button_action(widget)
+      end
+    end
+  end
+
+  def generate_hidden_listbox_row(term, index)
+    list_box_row = ChooserListRow.new(term, index, @notebook)
+    generate_show_button(list_box_row)
+  end
+
+  def generate_show_button(list_box_row)
+#    list_box_row.generate_new_action_button("Show")
+    list_box_row
+  end
+end
+
 class ChooserListRow < Gtk::ListBoxRow
   attr_reader :close_button
+
   def initialize(term, index, notebook)
     super()
     @notebook = notebook
@@ -437,3 +377,140 @@ class EditableLabel < Gtk::Label
     @popup.show_all
   end
 end
+
+#
+#  def initialize_list_box
+#    @listbox = Gtk::ListBox.new
+#    @listbox.margin = 12
+#    @listbox.selection_mode = :single
+#    fill_list_box
+#  end
+#
+#  def initialize_hidden_list_box
+#    @listbox_hidden = Gtk::ListBox.new
+#    @listbox_hidden.placeholder = Gtk::Label.new("Hidden terminals")
+#    @listbox_hidden.margin = 12
+#    @listbox_hidden.show_all
+#    @listbox_hidden.selection_mode = :single
+#    fill_hidden_list_box
+#  end
+#
+#  def fill_list_box
+#    @listbox.signal_connect "row-selected" do |_list, row|
+#      @notebook.current_page = row.nil? ? @notebook.children.size : row.index
+#    end
+#
+#    @notebook.children.each_with_index do |child, i|
+#      row = generate_list_box_row(child.term, i)
+#      @listbox.insert(row, i)
+#      row.close_button.signal_connect "clicked" do |widget|
+#        close_button_action(widget)
+#      end
+#    end
+#    current_row = @listbox.get_row_at_index(@notebook.current_page)
+#    @listbox.select_row(current_row)
+#    current_row.grab_focus
+#  end
+#
+#  def fill_hidden_list_box
+#    @notebook.hidden.each_with_index do |child, i|
+#      row = generate_hidden_list_box_row(child.term, i)
+#      @listbox_hidden.insert(row, i)
+#      row.close_button.signal_connect "clicked" do |widget|
+#        close_button_action(widget)
+#      end
+#    end
+#  end
+#
+#  def close_button_action(button)
+#    row = button.parent.parent
+#    listbox = row.parent
+#    if listbox == @listbox
+#      tab = @notebook.get_nth_page(row.index)
+#      @notebook.n_pages == 1 ? @window.quit_gracefully : @notebook.remove(tab)
+#      row.destroy
+#      update_tabs_num_labels
+#    elsif listbox == @listbox_hidden
+#      @notebook.hidden.delete_at(row.index)
+#      row.destroy
+#      update_tabs_num_labels
+#    end
+#  end
+#
+#  def generate_list_box_row(term, index)
+#    list_box_row = ChooserListRow.new(term, index, @notebook)
+#    generate_hide_button(list_box_row)
+#  end
+#
+#  def generate_hidden_list_box_row(term, index)
+#    list_box_row = ChooserListRow.new(term, index, @notebook)
+#    generate_show_button(list_box_row)
+#    preview_action_for_hidden_list(list_box_row)
+#  end
+#
+#  def generate_show_button(list_box_row)
+#    list_box_row.generate_new_action_button("Show")
+#    list_box_row.action_button.signal_connect "clicked" do
+#      tab_num = list_box_row.index
+#      @window.notebook.unhide(tab_num)
+#      list_box_row_bkp = generate_hide_button(list_box_row)
+#      @listbox_hidden.remove(list_box_row)
+#      @listbox.insert(list_box_row_bkp, -1)
+#      update_tabs_num_labels
+#      preview_action_for_shown_list(list_box_row_bkp)
+#    end
+#    list_box_row
+#  end
+#
+#  def preview_action_for_hidden_list(list_box_row)
+#    list_box_row.preview_button.signal_connect "clicked" do
+#      tab_num = list_box_row.index
+#      @window.notebook.unhide(tab_num)
+#      list_box_row_bkp = generate_hide_button(list_box_row)
+#      @listbox_hidden.remove(list_box_row)
+#      @listbox.insert(list_box_row_bkp, -1)
+#      @notebook.current_page = (@listbox.children.length - 1)
+#      update_tabs_num_labels
+#      preview_action_for_shown_list(list_box_row_bkp)
+#    end
+#    list_box_row
+#  end
+#
+#  def preview_action_for_shown_list(list_box_row)
+#    list_box_row.preview_button.signal_connect "clicked" do
+#      @notebook.current_page = list_box_row.index
+#    end
+#    list_box_row
+#  end
+#
+#  def generate_hide_button(list_box_row)
+#    list_box_row.generate_new_action_button("Hide")
+#    list_box_row.action_button.signal_connect "clicked" do
+#      num = list_box_row.index
+#      @notebook.n_pages == 1 ? @window.quit_gracefully : @notebook.hide(num)
+#      list_box_row_bkp = generate_show_button(list_box_row)
+#      preview_action_for_hidden_list(list_box_row_bkp)
+#      @listbox.remove(list_box_row)
+#      @listbox_hidden.insert(list_box_row_bkp, -1)
+#      update_tabs_num_labels
+#    end
+#    list_box_row
+#  end
+
+#  def update_tabs_num_labels
+#    @listbox.children.each_with_index do |row, i|
+#      hbox = row.children[0]
+#      label = hbox.children[0]
+#      label.text = "tab. #{i + 1}"
+#    end
+#    update_hidden_tabs_num_labels
+#  end
+#
+#  def update_hidden_tabs_num_labels
+#    @listbox_hidden.children.each_with_index do |row, i|
+#      hbox = row.children[0]
+#      label = hbox.children[0]
+#      label.text = "tab. #{i + 1}"
+#    end
+#  end
+
