@@ -40,11 +40,11 @@ class TopinambourTermChooser < Gtk::ScrolledWindow
     @box = Gtk::Box.new(:vertical, 4)
     @box.name = "topinambour-overview-box"
     @box.pack_start(main_title, :expand => false, :fill => true, :padding => 6)
-    @box.pack_start(@listbox, :expand => true, :fill => true, :padding => 12)
+    @box.pack_start(@visible_terms, :expand => true, :fill => true, :padding => 12)
     @box.pack_start(box_title("Hidden terminals"),
                     :expand => false, :fill => true, :padding => 6)
-    @box.pack_start(@listbox_hidden, :expand => true, :fill => true,
-                                     :padding => 12)
+    @box.pack_start(@hidden_terms, :expand => true, :fill => true,
+                                   :padding => 12)
   end
 
   def main_title
@@ -78,6 +78,7 @@ end
 
 class ChooserListBox < Gtk::ListBox
   def initialize(name, tabs, notebook)
+    super()
     placeholder = box_title(name)
     margin = 12
     selection_mode = :single
@@ -104,45 +105,19 @@ class VisibleTermsList < ChooserListBox
   def initialize(tabs, notebook)
     super("Terminals", tabs, notebook)
     @tabs.each_with_index do |tab, i|
-      row = generate_listbox_row(tab.term, i)
-      insert(row, i)
-      row.close_button.signal_connect "clicked" do |widget|
-        close_button_action(widget)
-      end
+      row = ChooserListRow.new(tab.term, i, @notebook)
+      self.insert(row, i)
     end
-  end
-
-  def generate_listbox_row(term, index)
-    list_box_row = ChooserListRow.new(term, index, @notebook)
-    generate_hide_button(list_box_row)
-  end
-
-  def generate_hide_button(list_box_row)
-#    list_box_row.generate_new_action_button("Hide")
-    list_box_row
   end
 end
 
 class HiddenTermsList < ChooserListBox
   def initialize(tabs, notebook)
-    super("Terminals", terms, notebook)
+    super("Hidden Terminals", tabs, notebook)
     @tabs.each_with_index do |tab, i|
-      row = generate_hidden_listbox_row(tab.term, i)
+      row = ChooserListRow.new(tab.term, i, @notebook)
       insert(row, i)
-      row.close_button.signal_connect "clicked" do |widget|
-        close_button_action(widget)
-      end
     end
-  end
-
-  def generate_hidden_listbox_row(term, index)
-    list_box_row = ChooserListRow.new(term, index, @notebook)
-    generate_show_button(list_box_row)
-  end
-
-  def generate_show_button(list_box_row)
-#    list_box_row.generate_new_action_button("Show")
-    list_box_row
   end
 end
 
