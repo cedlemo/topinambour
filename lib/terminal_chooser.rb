@@ -81,7 +81,7 @@ class ChooserListBox < Gtk::ListBox
     placeholder = box_title(name)
     margin = 12
     selection_mode = :single
-    @tabs = terms
+    @tabs = tabs
     @notebook = notebook
   end
 
@@ -102,7 +102,7 @@ end
 
 class VisibleTermsList < ChooserListBox
   def initialize(tabs, notebook)
-    super("Terminals", terms, notebook)
+    super("Terminals", tabs, notebook)
     @tabs.each_with_index do |tab, i|
       row = generate_listbox_row(tab.term, i)
       insert(row, i)
