@@ -84,6 +84,14 @@ class ChooserListBox < Gtk::ListBox
     selection_mode = :single
     @tabs = tabs
     @notebook = notebook
+
+    @tabs.each_with_index do |tab, i|
+      row = ChooserListRow.new(tab.term, i, @notebook)
+      insert(row, i)
+      row.close_button.signal_connect "clicked" do |widget|
+        close_button_action(widget, row)
+      end
+    end
   end
 
   def box_title(label)
@@ -104,50 +112,47 @@ end
 class VisibleTermsList < ChooserListBox
   def initialize(tabs, notebook)
     super("Terminals", tabs, notebook)
-    @tabs.each_with_index do |tab, i|
-      row = ChooserListRow.new(tab.term, i, @notebook)
-      self.insert(row, i)
-    end
+  end
+
+  def close_button_action(button, row)
+      tab = @notebook.get_nth_page(row.index)
+      @notebook.n_pages == 1 ? @notebook.toplevel.quit_gracefully : @notebook.remove(tab)
+      row.destroy
+      update_tabs_num_labels
   end
 end
 
 class HiddenTermsList < ChooserListBox
   def initialize(tabs, notebook)
     super("Hidden Terminals", tabs, notebook)
-    @tabs.each_with_index do |tab, i|
-      row = ChooserListRow.new(tab.term, i, @notebook)
-      insert(row, i)
-    end
+  end
+
+  def close_button_action(button, row)
+      @notebook.hidden.delete_at(row.index)
+      row.destroy
+      update_tabs_num_labels
   end
 end
 
 class ChooserListRow < Gtk::ListBoxRow
-  attr_reader :close_button
+  attr_reader :close_button, :action_button, :preview_button
 
   def initialize(term, index, notebook)
     super()
     @notebook = notebook
     @hbox = Gtk::Box.new(:horizontal, 6)
     fill_hbox_list_box_row(term, index)
-    generate_action_button
     add(@hbox)
-  end
-
-  def action_button
-    @hbox.children[4]
-  end
-
-  def preview_button
-    @prev_button
   end
 
   def generate_new_action_button(label)
     button = Gtk::Button.new(:label => label)
     button.valign = :center
     button.vexpand = false
-    @hbox.remove(action_button)
+    @hbox.remove(@action_button)
     @hbox.pack_start(button,
                      :expand => false, :fill => false, :padding => 6)
+    @action_button = button
     show_all
   end
 
@@ -156,13 +161,15 @@ class ChooserListRow < Gtk::ListBoxRow
   def fill_hbox_list_box_row(term, index)
     label = leaning_label(index)
     @hbox.pack_start(label, :expand => false, :fill => false, :padding => 6)
-    @prev_button = PreviewButton.new(term, @notebook)
-    @hbox.pack_start(@prev_button, :expand => false, :fill => false, :padding => 6)
+    @preview_button = PreviewButton.new(term, @notebook)
+    @hbox.pack_start(@preview_button, :expand => false, :fill => false, :padding => 6)
     label = EditableLabel.new(term)
     @hbox.pack_start(label, :expand => true, :fill => false, :padding => 6)
     generate_close_button
     @hbox.pack_start(@close_button, :expand => false, :fill => false, :padding => 6)
-    @hbox
+    generate_action_button
+    @hbox.pack_start(@action_button,
+                     :expand => false, :fill => false, :padding => 6)
   end
 
   def leaning_label(index)
@@ -178,11 +185,9 @@ class ChooserListRow < Gtk::ListBoxRow
   end
 
   def generate_action_button
-    action_button = Gtk::Button.new(:label => "")
-    action_button.valign = :center
-    action_button.vexpand = false
-    @hbox.pack_start(action_button,
-                     :expand => false, :fill => false, :padding => 6)
+    @action_button = Gtk::Button.new(:label => "")
+    @action_button.valign = :center
+    @action_button.vexpand = false
   end
 end
 
