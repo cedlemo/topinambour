@@ -89,9 +89,14 @@ class ChooserListBox < Gtk::ListBox
       row = ChooserListRow.new(tab.term, i, @notebook)
       insert(row, i)
       row.close_button.signal_connect "clicked" do |widget|
-        close_button_action(widget, row)
+        close_button_click(widget, row)
+      end
+
+      row.action_button.signal_connect "clicked" do |widget|
+        action_button_click(widget, row)
       end
     end
+    update_button_action_labels
   end
 
   def box_title(label)
@@ -107,18 +112,33 @@ class ChooserListBox < Gtk::ListBox
       label.text = "tab. #{i + 1}"
     end
   end
+
+  def update_button_action_labels
+    children.each do |row|
+      row.action_button.label = is_a?(VisibleTermsList) ? "Hide" : "Show"
+    end
+  end
 end
 
 class VisibleTermsList < ChooserListBox
   def initialize(tabs, notebook)
     super("Terminals", tabs, notebook)
+    current_row = get_row_at_index(@notebook.current_page)
+    select_row(current_row)
+    current_row.grab_focus
   end
 
-  def close_button_action(button, row)
-      tab = @notebook.get_nth_page(row.index)
-      @notebook.n_pages == 1 ? @notebook.toplevel.quit_gracefully : @notebook.remove(tab)
-      row.destroy
-      update_tabs_num_labels
+  def close_button_click(button, row)
+    tab = @notebook.get_nth_page(row.index)
+    @notebook.n_pages == 1 ? @notebook.toplevel.quit_gracefully : @notebook.remove(tab)
+    row.destroy
+    update_tabs_num_labels
+  end
+
+  def action_button_click(button, row)
+    num = row.index
+    @notebook.n_pages == 1 ? @notebook.toplevel.quit_gracefully : @notebook.hide(num)
+    remove(row)
   end
 end
 
@@ -127,10 +147,15 @@ class HiddenTermsList < ChooserListBox
     super("Hidden Terminals", tabs, notebook)
   end
 
-  def close_button_action(button, row)
+  def close_button_click(button, row)
       @notebook.hidden.delete_at(row.index)
       row.destroy
       update_tabs_num_labels
+  end
+
+  def action_button_click(button, row)
+    tab_num = row.index
+    @notebook.unhide(tab_num)
   end
 end
 
