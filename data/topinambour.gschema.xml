@@ -4,10 +4,10 @@
 
     <schema path="/com/github/cedlemo/topinambour/preferences/" id="com.github.cedlemo.topinambour">
     <key name='colorscheme' type='as'>
-	    <default>['#aeafad', '#323232', '#000000', '#b9214f', '#A6E22E',
-		    '#ff9800', '#3399ff', '#8e33ff', '#06a2dc', '#B0B0B0',
-		    '#5D5D5D', '#ff5c8d', '#CDEE69', '#ffff00', '#9CD9F0',
-		    '#FBB1F9', '#77DFD8', '#F7F7F7']</default>
+	    <default>['#ebdbb2', '#282828', '#282828', '#cc241d', '#98971a',
+		    '#d79921', '#458588', '#b16286', '#689d6a', '#a89984',
+		    '#928374', '#fb4934', '#b8bb26', '#fabd2f', '#83a598',
+		    '#d3869b', '#8ec07c', '#ebdbb2']</default>
 	    <summary>Default colorscheme</summary>
 	    <description>:foreground, :background, :black, :red, :green, :yellow,
                         :blue, :magenta, :cyan, :white, :brightblack,
