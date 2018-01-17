@@ -15,7 +15,7 @@
 # along with Topinambour.  If not, see <http://www.gnu.org/licenses/>.
 
 class TopinambourWindow < Gtk::ApplicationWindow
-  attr_reader :notebook, :bar, :overlay, :current_label, :current_tab
+  attr_reader :bar, :overlay
   def initialize(application)
     super(application)
     set_icon_name("utilities-terminal-symbolic")
@@ -23,7 +23,8 @@ class TopinambourWindow < Gtk::ApplicationWindow
     load_settings
     set_position(:center)
     create_header_bar
-    create_containers
+    @overlay = Gtk::Overlay.new
+    add(@overlay)
     show_all
     signal_connect "key-press-event" do |widget, event|
       TopinambourShortcuts.handle_key_press(widget, event)
@@ -33,24 +34,12 @@ class TopinambourWindow < Gtk::ApplicationWindow
   def add_terminal(cmd = nil)
     cmd = cmd || application.settings["default-shell"]
 
-    exit_overlay_mode
-    working_dir = nil
-    working_dir = @notebook.current.term.pid_dir if @notebook.current
-    terminal = TopinambourTabTerm.new(cmd, working_dir)
-    if terminal.term.pid
-      terminal.show_all
-
-      @notebook.append_page(terminal)
-      terminal.term.load_settings
-      @notebook.set_tab_reorderable(terminal, true)
-      @notebook.set_page(@notebook.n_pages - 1)
-      @notebook.current.term.grab_focus
-    end
+    terminal = TopinambourTermBox.new(cmd)
+    @overlay.add(terminal)
+    terminal.term.load_settings
   end
 
   def quit_gracefully
-    exit_overlay_mode
-    @notebook.remove_all_pages
     application.quit
   end
 
@@ -58,24 +47,8 @@ class TopinambourWindow < Gtk::ApplicationWindow
     toggle_overlay(TopinambourColorSelector)
   end
 
-  def show_prev_tab
-    exit_overlay_mode
-    @notebook.cycle_prev_page
-    @notebook.current.term.grab_focus
-  end
-
-  def show_next_tab
-    exit_overlay_mode
-    @notebook.cycle_next_page
-    @notebook.current.term.grab_focus
-  end
-
   def show_font_selector
     toggle_overlay(TopinambourFontSelector)
-  end
-
-  def show_terminal_chooser
-    toggle_overlay(TopinambourTermChooser)
   end
 
   def exit_overlay_mode
@@ -96,19 +69,8 @@ class TopinambourWindow < Gtk::ApplicationWindow
                          )
   end
 
-  def close_current_tab
-    exit_overlay_mode
-    @notebook.remove_current_page
-  end
-
   def in_overlay_mode?
     @overlay.children.size > 1 ? true : false
-  end
-
-  def show_searchbar
-    toggle_overlay(TopinambourSearchBar)
-    overlayed_widget = @overlay.children[1]
-    overlayed_widget.search_mode = true if overlayed_widget
   end
 
   def toggle_shrink
@@ -120,14 +82,6 @@ class TopinambourWindow < Gtk::ApplicationWindow
       resize(w, 1)
       @shrink_saved_height = h
     end
-  end
-
-  def show_shortcuts
-    resource_file = "/com/github/cedlemo/topinambour/shortcuts.ui"
-    builder = Gtk::Builder.new(:resource => resource_file)
-    shortcuts_win = builder["shortcuts-window"]
-    shortcuts_win.transient_for = self
-    shortcuts_win.show
   end
 
   private
@@ -143,65 +97,11 @@ class TopinambourWindow < Gtk::ApplicationWindow
     @overlay.set_overlay_pass_through(widget, false)
   end
 
-  def create_containers
-    @notebook = TopinambourNotebook.new
-    @overlay = Gtk::Overlay.new
-    @overlay.add(@notebook)
-    add(@overlay)
-  end
-
   def create_header_bar
-    resource_file = "/com/github/cedlemo/topinambour/headerbar.ui"
-    builder = Gtk::Builder.new(:resource => resource_file)
-    headerbar = builder["headerbar"]
+    headerbar = Gtk::HeaderBar.new
     headerbar.name = "topinambour-headerbar"
+    headerbar.show_close_button = true
     set_titlebar(headerbar)
-    # Text is modified when notebook switch tabs or
-    # Vte::Terminal command change and if it is the current Vte.
-    @current_label = builder["current_label"]
-    @current_label.name = "topinambour-current-label"
-    current_label_signals
-    # Value is changed when notebook switch tabs or notebook add tab.
-    @current_tab = builder["current_tab"]
-    headerbar.remove(@current_label)
-    headerbar.custom_title = @current_label
-    next_prev_new_signals(builder)
-    overview_signal(builder)
-    main_menu_signal(builder)
-  end
-
-  def current_label_signals
-    @current_label.signal_connect "activate" do |entry|
-      @notebook.current.term.custom_title = entry.text
-      @notebook.current.term.grab_focus
-    end
-
-    @current_label.signal_connect "icon-release" do |entry, position|
-      if position == :secondary
-        @notebook.current.term.custom_title = nil
-        entry.text = @notebook.current.term.window_title
-      end
-    end
-  end
-
-  def next_prev_new_signals(builder)
-    builder["prev_button"].signal_connect "clicked" do
-      show_prev_tab
-    end
-
-    builder["next_button"].signal_connect "clicked" do
-      show_next_tab
-    end
-
-    builder["new_term"].signal_connect "clicked" do
-      add_terminal
-    end
-  end
-
-  def overview_signal(builder)
-    builder["term_overv_button"].signal_connect "clicked" do
-      show_terminal_chooser
-    end
   end
 
   def main_menu_signal(builder)

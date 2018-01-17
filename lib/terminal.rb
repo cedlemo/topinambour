@@ -17,23 +17,24 @@
 ## The main full tab Gtk::Box + Vte::Terminal + Gtk::Scrollbar
 #
 
-class TopinambourTabTerm < Gtk::Box
+class TopinambourTermBox < Gtk::Box
   attr_reader :term
   def initialize(command_string, working_dir = nil)
     super(:horizontal, 0)
-    set_name("topinambour-tab-term")
+    set_name("topinambour-term-box")
     @term = TopinambourTerminal.new(command_string, working_dir)
     @scrollbar = Gtk::Scrollbar.new(:vertical, @term.vadjustment)
     @scrollbar.name = "topinambour-scrollbar"
     pack_start(@term, :expand => true, :fill => true, :padding => 0)
     pack_start(@scrollbar)
+    show_all
   end
 end
+#
 ##
 # The default vte terminal customized
 class TopinambourTerminal < Vte::Terminal
   attr_reader :pid, :menu, :regexes, :last_match
-  attr_accessor :preview, :custom_title
 
   ##
   # Create a new TopinambourTerminal instance that runs command_string
@@ -44,17 +45,7 @@ class TopinambourTerminal < Vte::Terminal
     rescued_spawn(command_array, working_dir)
 
     signal_connect "child-exited" do |widget|
-      tabterm = widget.parent
-      notebook = tabterm.parent
-      current_page = notebook.page_num(tabterm)
-      notebook.remove_page(current_page)
-      @application.quit unless notebook.n_pages >= 1
-    end
-
-    signal_connect "window-title-changed" do |widget|
-      tabterm = widget.parent
-      notebook = tabterm.parent
-      when_terminal_title_change if notebook && notebook.current.term == self
+      toplevel.application.quit
     end
 
     add_popup_menu
@@ -76,13 +67,13 @@ class TopinambourTerminal < Vte::Terminal
   end
 
   def colors
-    colors_strings = application.settings["colorscheme"]
+    colors_strings = toplevel.application.settings["colorscheme"]
     @colors = colors_strings.map { |c| Gdk::RGBA.parse(c) }
     @colors
   end
 
   def font
-    font_str = application.settings["font"]
+    font_str = toplevel.application.settings["font"]
     @font = Pango::FontDescription.new(font_str)
   end
 
@@ -91,15 +82,10 @@ class TopinambourTerminal < Vte::Terminal
   end
 
   def font=(font_str)
-    application.settings["font"] = font_str
+    toplevel.application.settings["font"] = font_str
     font = Pango::FontDescription.new(font_str)
     set_font(font)
     @font = font
-  end
-
-  def application
-    @application = self.parent.toplevel.application unless @application
-    @application
   end
 
   private
@@ -198,10 +184,6 @@ class TopinambourTerminal < Vte::Terminal
     else
       launch_default_for_regex_match(match, @regexes[regex_type])
     end
-  end
-
-  def when_terminal_title_change
-    parent.toplevel.current_label.text = terminal_title
   end
 
   def launch_default_for_regex_match(match, regex_type)
