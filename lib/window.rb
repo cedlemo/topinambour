@@ -15,7 +15,7 @@
 # along with Topinambour.  If not, see <http://www.gnu.org/licenses/>.
 
 class TopinambourWindow < Gtk::ApplicationWindow
-  attr_reader :bar, :overlay
+  attr_reader :bar, :overlay, :terminal
   def initialize(application)
     super(application)
     set_icon_name("utilities-terminal-symbolic")
@@ -36,6 +36,7 @@ class TopinambourWindow < Gtk::ApplicationWindow
 
     terminal = TopinambourTermBox.new(cmd)
     @overlay.add(terminal)
+    @terminal = terminal.term
     terminal.term.load_settings
   end
 
