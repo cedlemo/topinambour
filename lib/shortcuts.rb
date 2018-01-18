@@ -40,26 +40,11 @@ module TopinambourShortcuts
     when Gdk::Keyval::KEY_Q # Quit
       window.quit_gracefully
       true
-    when Gdk::Keyval::KEY_T # New tab
-      window.add_terminal
-      true
     when Gdk::Keyval::KEY_C
       window.show_color_selector
       true
     when Gdk::Keyval::KEY_F
       window.show_font_selector
-      true
-    when Gdk::Keyval::KEY_Left # previous tab
-      window.show_prev_tab
-      true
-    when Gdk::Keyval::KEY_Right # next tab
-      window.show_next_tab
-      true
-    when Gdk::Keyval::KEY_O
-      window.show_terminal_chooser
-      true
-    when Gdk::Keyval::KEY_slash
-      window.show_searchbar
       true
     when Gdk::Keyval::KEY_Page_Up
       window.opacity = window.opacity + 0.05
