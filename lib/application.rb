@@ -30,7 +30,7 @@ class TopinambourApplication < Gtk::Application
       initialize_css_provider
       load_css_config
 
-#      TopinambourActions.add_actions_to(application)
+      TopinambourActions.add_actions_to(application)
 #      load_menu_ui_in(application)
     end
 

@@ -30,7 +30,7 @@ class TopinambourTermBox < Gtk::Box
     show_all
   end
 end
-#
+
 ##
 # The default vte terminal customized
 class TopinambourTerminal < Vte::Terminal

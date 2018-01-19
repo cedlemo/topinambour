@@ -30,20 +30,20 @@ module TopinambourActions
     application.add_action(action)
   end
 
-  def self.generate_about_action(application)
-    action = generate_action("about") do |_act, _param|
-      application.windows[0].display_about
-    end
-    action
-  end
-
-  def self.generate_preferences_action(application)
-    action = generate_action("preferences") do |_act, _param|
-      dialog = TopinambourPreferences.new(application.windows.first)
-      dialog.show_all
-    end
-    action
-  end
+#  def self.generate_about_action(application)
+#    action = generate_action("about") do |_act, _param|
+#      application.windows[0].display_about
+#    end
+#    action
+#  end
+#
+#  def self.generate_preferences_action(application)
+#    action = generate_action("preferences") do |_act, _param|
+#      dialog = TopinambourPreferences.new(application.windows.first)
+#      dialog.show_all
+#    end
+#    action
+#  end
 
   def self.generate_quit_action(application)
     action = generate_action("quit") do |_act, _param|
@@ -54,7 +54,7 @@ module TopinambourActions
 
   def self.generate_term_copy_action(application)
     action = generate_action("term_copy") do |_act, _param|
-      term = application.windows[0].notebook.current.term
+      term = application.windows[0].terminal
       event = Gtk.current_event
 
       _match, regex_type = term.match_check_event(event)
@@ -70,21 +70,22 @@ module TopinambourActions
 
   def self.generate_term_paste_action(application)
     action = generate_action("term_paste") do |_act, _param|
-      application.windows[0].notebook.current.term.paste_clipboard
+      application.windows[0].terminal.paste_clipboard
     end
     action
   end
 
-  def self.generate_shortcuts_action(application)
-    action = generate_action("shortcuts") do |_act, _param|
-      application.windows[0].show_shortcuts
-    end
-    action
-  end
+#  def self.generate_shortcuts_action(application)
+#    action = generate_action("shortcuts") do |_act, _param|
+#      application.windows[0].show_shortcuts
+#    end
+#    action
+#  end
 
   def self.add_actions_to(application)
     # preferences
-    %w(about quit term_copy term_paste preferences shortcuts).each do |name|
+    # %w(about quit term_copy term_paste preferences shortcuts).each do |name|
+    %w(quit term_copy term_paste).each do |name|
       add_action_to(name, application)
     end
   end
