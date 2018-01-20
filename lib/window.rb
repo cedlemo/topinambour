@@ -133,7 +133,7 @@ class TopinambourWindow < Gtk::ApplicationWindow
   def toggle_overlay(klass)
     if in_overlay_mode? && @overlay.children[1].class == klass
       exit_overlay_mode
-      @notebook.current.term.grab_focus
+      @terminal.grab_focus
     else
       exit_overlay_mode
       add_overlay(klass.new(self))
