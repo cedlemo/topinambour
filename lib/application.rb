@@ -22,7 +22,7 @@ class TopinambourApplication < Gtk::Application
     @options = {}
     @exit_status = 0
 
-    super("com.github.cedlemo.topinambour", [:handles_command_line])
+    super("com.github.cedlemo.topinambour", [:non_unique,:handles_command_line])
 
     signal_connect "startup" do |application|
       ENV["GSETTINGS_SCHEMA_DIR"] = DATA_PATH
