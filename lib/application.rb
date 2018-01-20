@@ -40,11 +40,7 @@ class TopinambourApplication < Gtk::Application
       window.present
 
       if @options[:execute]
-        @options[:execute].each do |cmd|
-          window.add_terminal(cmd,"")
-#          window.notebook.current.term.custom_title = cmd
-#          window.current_label.text = cmd
-        end
+        window.add_terminal(@options[:execute])
       else
         window.add_terminal
       end
@@ -116,8 +112,8 @@ class TopinambourApplication < Gtk::Application
 
   def parse_command_line(arguments)
     parser = OptionParser.new
-    parser.on("-e", "--execute COMMAND1,COMMAND2,COMMAND3", Array, "Run a command") do |cmds|
-      @options[:execute] = cmds
+    parser.on("-e", "--execute COMMAND", String, "Run a command") do |cmd|
+      @options[:execute] = cmd
     end
     parser.parse(arguments)
   end
