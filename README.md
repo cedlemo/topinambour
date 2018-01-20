@@ -4,8 +4,9 @@
 [![Code Climate](https://codeclimate.com/github/cedlemo/topinambour/badges/gpa.svg)](https://codeclimate.com/github/cedlemo/topinambour)
 
 ## Introduction
-Topinambour is a simple Terminal written with the **Gtk3** and **Vte3** ruby bindings from the project [Ruby-GNOME2](https://github.com/ruby-gnome2/ruby-gnome2). It just provides one windows with one Vte terminal. If you need tab management, windows splitting, session management,
-uses [tmux](https://github.com/tmux/tmux/wiki) with it.
+Topinambour is a simple Terminal written with the **Gtk3** and **Vte3** ruby bindings from the project [Ruby-GNOME2](https://github.com/ruby-gnome2/ruby-gnome2).
+**It just provides one window with one Vte terminal.**
+If you need tab management, windows splitting, session management, uses [tmux](https://github.com/tmux/tmux/wiki) with it.
 
 ### Install
 
