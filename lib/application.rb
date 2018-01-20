@@ -48,6 +48,7 @@ class TopinambourApplication < Gtk::Application
       else
         window.add_terminal
       end
+      window.terminal.grab_focus
     end
 
 
