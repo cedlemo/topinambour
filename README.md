@@ -14,7 +14,7 @@ uses [tmux](https://github.com/tmux/tmux/wiki) with it.
 ### Launch
 
     topinambour
-    topinambour -e "/usr/bin/htop,/usr/bin/glances"
+    topinambour -e "/usr/bin/glances"
 
 ## Features
 
