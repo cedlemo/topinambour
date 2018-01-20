@@ -1,4 +1,4 @@
-# Copyright 2016-2017 Cedric LE MOIGNE, cedlemo@gmx.com
+# Copyright 2016-2018 Cedric LE MOIGNE, cedlemo@gmx.com
 # This file is part of Topinambour.
 #
 # Topinambour is free software: you can redistribute it and/or modify
