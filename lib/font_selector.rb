@@ -42,7 +42,7 @@ class TopinambourFontSelector < Gtk::Box
       toplevel.exit_overlay_mode
     end
     pack_start(save_button, :expand => false, :fill => false, :padding => 0)
-    set_name("font_selector")
+    set_name("topinambour-font-selector")
     show_all
     set_halign(:center)
     set_valign(:end)

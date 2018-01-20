@@ -40,7 +40,7 @@ class TopinambourTerminal < Vte::Terminal
   # Create a new TopinambourTerminal instance that runs command_string
   def initialize(command_string, working_dir = nil)
     super()
-
+    set_name("topinambour-terminal")
     command_array = parse_command(command_string)
     rescued_spawn(command_array, working_dir)
 

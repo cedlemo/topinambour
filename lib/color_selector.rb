@@ -38,7 +38,7 @@ class TopinambourColorSelector < Gtk::Box
     show_all
     set_halign(:center)
     set_valign(:end)
-    set_name("color_selector")
+    set_name("topinambour-color-selector")
   end
 
   private
@@ -81,6 +81,7 @@ class TopinambourColorSelector < Gtk::Box
     TERMINAL_COLOR_NAMES.each_with_index do |name, i|
       color_sel = Gtk::ColorButton.new(@default_colors[i])
       color_sel.title = name.to_s
+      color_sel.name = "topinambour-button-#{name}"
       color_sel.tooltip_text = name.to_s
       color_sel.signal_connect "color-set" do
         @colors[i] = color_sel.rgba
