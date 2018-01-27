@@ -31,7 +31,7 @@ class TopinambourApplication < Gtk::Application
       load_css_config
 
       TopinambourActions.add_actions_to(application)
-#      load_menu_ui_in(application)
+      load_menu_ui_in(application)
     end
 
     signal_connect "activate" do |application|
@@ -126,11 +126,11 @@ class TopinambourApplication < Gtk::Application
                                               Gtk::StyleProvider::PRIORITY_USER)
   end
 
-#  def load_menu_ui_in(application)
-#    builder = Gtk::Builder.new(:resource => "/com/github/cedlemo/topinambour/app-menu.ui")
-#    app_menu = builder["appmenu"]
-#    application.app_menu = app_menu
-#  end
+  def load_menu_ui_in(application)
+    builder = Gtk::Builder.new(:resource => "/com/github/cedlemo/topinambour/app-menu.ui")
+    app_menu = builder["appmenu"]
+    application.app_menu = app_menu
+  end
 
   def load_custom_css(file)
     if @settings["custom-css"]

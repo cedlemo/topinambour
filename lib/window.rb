@@ -60,7 +60,7 @@ class TopinambourWindow < Gtk::ApplicationWindow
     Gtk::AboutDialog.show(self,
                           "authors" => ["Cedric Le Moigne <cedlemo@gmx.com>"],
                           "comments" => "Terminal Emulator based on the ruby bindings of Gtk3 and Vte3",
-                          "copyright" => "Copyright (C) 2015-2017 Cedric Le Moigne",
+                          "copyright" => "Copyright (C) 2015-2018 Cedric Le Moigne",
                           "license" => "This program is licenced under the licence GPL-3.0 and later.",
                           "logo_icon_name" => "utilities-terminal-symbolic",
                           "program_name" => "Topinambour",
@@ -85,6 +85,13 @@ class TopinambourWindow < Gtk::ApplicationWindow
     end
   end
 
+  def show_shortcuts
+    resource_file = "/com/github/cedlemo/topinambour/shortcuts.ui"
+    builder = Gtk::Builder.new(:resource => resource_file)
+    shortcuts_win = builder["shortcuts-window"]
+    shortcuts_win.transient_for = self
+    shortcuts_win.show
+  end
   private
 
   def load_settings
