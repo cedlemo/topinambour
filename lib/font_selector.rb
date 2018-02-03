@@ -17,7 +17,7 @@ class TopinambourFontSelector < Gtk::Box
   attr_reader :font
   def initialize(window)
     @window = window
-    @font = @window.notebook.current.term.font
+    @font = @window.terminal.font
     super(:horizontal, 0)
 
     reset_button = Gtk::Button.new(:label => "Reset")
@@ -33,7 +33,7 @@ class TopinambourFontSelector < Gtk::Box
     font_button.use_font = true
     font_button.use_size = false
     font_button.signal_connect "font-set" do
-      @window.notebook.current.term.font = font_button.font_name
+      @window.terminal.font = font_button.font_name
     end
     pack_start(font_button, :expand => false, :fill => false, :padding => 0)
 
