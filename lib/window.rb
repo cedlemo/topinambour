@@ -64,7 +64,7 @@ class TopinambourWindow < Gtk::ApplicationWindow
                           "license" => "This program is licenced under the licence GPL-3.0 and later.",
                           "logo_icon_name" => "utilities-terminal-symbolic",
                           "program_name" => "Topinambour",
-                          "version" => "2.0.1",
+                          "version" => "2.0.2",
                           "website" => "https://github.com/cedlemo/topinambour",
                           "website_label" => "Topinambour github repository"
                          )
