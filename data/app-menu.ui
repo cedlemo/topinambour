@@ -15,6 +15,10 @@
         <attribute name="label" translatable="yes">_Preferences</attribute>
         <attribute name="action">app.preferences</attribute>
       </item>
+      <item>
+	<attribute name="label" translatable="yes">_Reload Css</attribute>
+	<attribute name="action">app.reload_css_config</attribute>
+      </item>
     </section>
 
     <section>
