@@ -8,6 +8,8 @@ Topinambour is a simple Terminal written with the **Gtk3** and **Vte3** ruby bin
 **It just provides one window with one Vte terminal.**
 If you need tab management, windows splitting, session management, uses [tmux](https://github.com/tmux/tmux/wiki) with it.
 
+<a href="https://raw.github.com/cedlemo/topinambour/master/topinambour_tmux.png"><img src="https://raw.github.com/cedlemo/topinambour/master/topinambour_tmux.png" alt="Topinambour Preview"></a>
+
 ### Install
 
     gem install topinambour
@@ -20,6 +22,8 @@ If you need tab management, windows splitting, session management, uses [tmux](h
 ## Features
 
 *    the Gtk theme can be modified via a Css file (~/.config/topinambour/topinambour.css).
+*    the current Css file can be reloaded via the app menu (Useful if you have edited it, no need to
+restart topinambour.
 *    terminal colors can be changed on the fly and saved.
 *    terminal font can be changed on the fly and saved.
 *    in the terminal, some patterns can be clicked (urls, emails, color names ...)
@@ -41,7 +45,7 @@ in order to launch the appropriate application or a related dialog window.
 
 ## Css theming
 
-By default, topinambour will look for the file `~/.config/topinambour/topinambour.css`. You can select another file in the preferences dialog.
+By default, topinambour will look for the file `~/.config/topinambour/topinambour.css`. You can select another file in the preferences dialog. This dialog can be shown via the application menu.
 Various widget can be themed via the Css like the headerbar for example. Here is the Css used in the first screenshot (the Gtk theme is the Arc theme).
 
 topinambour-window
@@ -56,8 +60,10 @@ topinambour-font-selector
 *{
 }
 
-#topinambour-window, #topinambour-notebook {
+#topinambour-window {
   background-color: rgba(0,0,0,0);
+  border: solid 4px #282828;
+  border-radius: 0px 0px 8px 8px;
 }
 
 #topinambour-headerbar {
@@ -81,9 +87,15 @@ topinambour-font-selector
   background-color: rgba(0,0,0,0);
   border: none;
 }
+
 #topinambour-scrollbar slider{
-  margin-left: 8px;
-  background-color: #076678;
+  margin: 0px;
+  background-color: rgba(255,255,255,0.1);
+}
+
+#topinambour-term-box {
+  border: solid 4px #282828;
+  border-radius: 0px 0px 8px 8px;
 }
 ```
 
