@@ -22,7 +22,7 @@ class TopinambourFontSelector < Gtk::Box
 
     reset_button = Gtk::Button.new(:label => "Reset")
     reset_button.signal_connect "clicked" do
-      @window.notebook.current.term.font = @font
+      @window.terminal.font = @font.to_s
     end
     pack_start(reset_button, :expand => false, :fill => false, :padding => 0)
 
