@@ -17,20 +17,20 @@
 TERMINAL_COLOR_NAMES = [:black, :red, :green, :yellow,
                         :blue, :magenta, :cyan, :white]
 
-class TopinambourColorSelector < Gtk::Box
+class TopinambourColorSelector < Gtk::Grid
   attr_reader :colors
   def initialize(window)
     @window = window
-    super(:horizontal, 0)
+    super()
 
     reset_button = generate_reset_button
-    pack_start(reset_button, :expand => false, :fill => false, :padding => 0)
+    attach(reset_button, 0, 0, 1, 2)
 
     initialize_default_colors
     add_color_selectors
 
     save_button = generate_save_button
-    pack_start(save_button, :expand => false, :fill => false, :padding => 0)
+    attach(save_button, 10, 0, 1, 2)
 
     show_all
     set_halign(:center)
@@ -50,8 +50,19 @@ class TopinambourColorSelector < Gtk::Box
     button = Gtk::Button.new(:label => "Reset")
     button.signal_connect "clicked" do
       initialize_default_colors
-      children[1..-2].each_with_index do |child, i|
-        child.rgba = @default_colors[i]
+      # foreground
+      get_child_at(1, 0).rgba = @default_colors[0]
+      # background
+      get_child_at(1, 1).rgba = @default_colors[1]
+
+      # Normal colors top row
+      TERMINAL_COLOR_NAMES.each_with_index do |_, i|
+        get_child_at(2 + i, 0).rgba = @default_colors[2 + i]
+      end
+
+      # Bright colors bottom row
+      TERMINAL_COLOR_NAMES.each_with_index do |_, i|
+        get_child_at(2 + i, 1).rgba = @default_colors[10 + i]
       end
       apply_new_colors
     end
@@ -83,18 +94,18 @@ class TopinambourColorSelector < Gtk::Box
       @colors[i] = color_sel.rgba
       apply_new_colors
     end
-    pack_start(color_sel, :expand => false, :fill => false, :padding => 0)
+    attach(color_sel, position[0], position[1], 1, 1)
   end
 
   def add_color_selectors
-    add_color_selector("foreground", 0)
-    add_color_selector("background", 1)
+    add_color_selector("foreground", 0, [1, 0])
+    add_color_selector("background", 1, [1, 1])
     TERMINAL_COLOR_NAMES.each_with_index do |name, i|
-      add_color_selector(name, i + 2)
+      add_color_selector(name, i + 2, [2 + i, 0])
     end
 
     TERMINAL_COLOR_NAMES.each_with_index do |name, i|
-      add_color_selector("bright#{name}", i + 10)
+      add_color_selector("bright#{name}", i + 10, [2 + i, 1])
     end
   end
 
