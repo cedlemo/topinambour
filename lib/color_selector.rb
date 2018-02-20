@@ -14,11 +14,8 @@
 # You should have received a copy of the GNU General Public License
 # along with Topinambour.  If not, see <http://www.gnu.org/licenses/>.
 
-TERMINAL_COLOR_NAMES = [:foreground, :background, :black, :red, :green, :yellow,
-                        :blue, :magenta, :cyan, :white, :brightblack,
-                        :brightred, :brightgreen, :brightyellow, :brightblue,
-                        :brightmagenta, :brightcyan, :brightwhite
-                       ]
+TERMINAL_COLOR_NAMES = [:black, :red, :green, :yellow,
+                        :blue, :magenta, :cyan, :white]
 
 class TopinambourColorSelector < Gtk::Box
   attr_reader :colors
@@ -77,17 +74,27 @@ class TopinambourColorSelector < Gtk::Box
     button
   end
 
+  def add_color_selector(name, i, position=nil)
+    color_sel = Gtk::ColorButton.new(@default_colors[i])
+    color_sel.title = name.to_s
+    color_sel.name = "topinambour-button-#{name}"
+    color_sel.tooltip_text = name.to_s
+    color_sel.signal_connect "color-set" do
+      @colors[i] = color_sel.rgba
+      apply_new_colors
+    end
+    pack_start(color_sel, :expand => false, :fill => false, :padding => 0)
+  end
+
   def add_color_selectors
+    add_color_selector("foreground", 0)
+    add_color_selector("background", 1)
     TERMINAL_COLOR_NAMES.each_with_index do |name, i|
-      color_sel = Gtk::ColorButton.new(@default_colors[i])
-      color_sel.title = name.to_s
-      color_sel.name = "topinambour-button-#{name}"
-      color_sel.tooltip_text = name.to_s
-      color_sel.signal_connect "color-set" do
-        @colors[i] = color_sel.rgba
-        apply_new_colors
-      end
-      pack_start(color_sel, :expand => false, :fill => false, :padding => 0)
+      add_color_selector(name, i + 2)
+    end
+
+    TERMINAL_COLOR_NAMES.each_with_index do |name, i|
+      add_color_selector("bright#{name}", i + 10)
     end
   end
 
