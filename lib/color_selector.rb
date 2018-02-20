@@ -24,13 +24,19 @@ class TopinambourColorSelector < Gtk::Grid
     super()
 
     reset_button = generate_reset_button
-    attach(reset_button, 0, 0, 1, 2)
+    attach(reset_button, 0, 0, 1, 1)
 
     initialize_default_colors
     add_color_selectors
 
     save_button = generate_save_button
-    attach(save_button, 10, 0, 1, 2)
+    attach(save_button, 0, 1, 1, 1)
+
+    import_button = generate_import_button
+    attach(import_button, 10, 0, 1, 1)
+
+    export_button = generate_export_button
+    attach(export_button, 10, 1, 1, 1)
 
     show_all
     set_halign(:center)
@@ -39,6 +45,23 @@ class TopinambourColorSelector < Gtk::Grid
   end
 
   private
+
+  def generate_import_export_button(name)
+    button = ColorSchemeSelector.new(name, @window)
+    button.signal_connect "clicked" do |widget|
+      widget.run_chooser_dialog
+      widget.chooser_destroy
+    end
+    button
+  end
+
+  def generate_import_button
+    generate_import_export_button("Import")
+  end
+
+  def generate_export_button
+    generate_import_export_button("Export")
+  end
 
   def initialize_default_colors
     colors_strings = @window.application.settings["colorscheme"]
@@ -111,5 +134,25 @@ class TopinambourColorSelector < Gtk::Grid
 
   def apply_new_colors
     @window.terminal.colors = @colors
+  end
+end
+
+class ColorSchemeSelector < Gtk::Button
+  def initialize(label, parent)
+    @parent = parent
+    super(:label => label)
+  end
+
+  def run_chooser_dialog
+    @dialog = Gtk::FileChooserDialog.new(:title => label,
+                                         :parent => @parent,
+                                         :action => :open,
+                                         :buttons => [[label, :ok],
+                                                      ["Cancel", :cancel]])
+    @dialog.run
+  end
+
+  def chooser_destroy
+    @dialog.destroy
   end
 end
