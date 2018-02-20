@@ -49,14 +49,46 @@ class TopinambourColorSelector < Gtk::Grid
   def generate_import_export_button(name)
     button = ColorSchemeSelector.new(name, @window)
     button.signal_connect "clicked" do |widget|
-      widget.run_chooser_dialog
+      filename = widget.run_chooser_dialog
+      if filename then
+        yield filename if block_given?
+      end
       widget.chooser_destroy
     end
     button
   end
 
   def generate_import_button
-    generate_import_export_button("Import")
+    generate_import_export_button("Import") do |filename|
+      file = File.read(filename)
+
+      foreground = file[/\*\.foreground:\s*(.*)/, 1]
+      child = get_child_at(1, 0)
+      child.rgba = Gdk::RGBA.parse(foreground) unless foreground.nil?
+      @colors[0] = child.rgba
+
+      background = file[/\*\.background:\s*(.*)/, 1]
+      child = get_child_at(1, 1)
+      child.rgba =  Gdk::RGBA.parse(background) unless background.nil?
+      @colors[1] = child.rgba
+      #
+      # Normal colors top row
+      TERMINAL_COLOR_NAMES.each_with_index do |_, i|
+        color = file[/\*\.color#{i}:\s*(.*)/, 1]
+        child = get_child_at(2 + i, 0)
+        child.rgba = Gdk::RGBA.parse(color) unless color.nil?
+        @colors[2 + i] = child.rgba
+      end
+
+      # Bright colors bottom row
+      TERMINAL_COLOR_NAMES.each_with_index do |_, i|
+        color = file[/\*\.color#{i + 8}:\s*(.*)/, 1]
+        child = get_child_at(2 + i, 1)
+        child.rgba = Gdk::RGBA.parse(color) unless color.nil?
+        @colors[10 + i] = child.rgba
+      end
+      apply_new_colors
+    end
   end
 
   def generate_export_button
@@ -149,7 +181,9 @@ class ColorSchemeSelector < Gtk::Button
                                          :action => :open,
                                          :buttons => [[label, :ok],
                                                       ["Cancel", :cancel]])
-    @dialog.run
+    if @dialog.run == :ok then
+      @dialog.filename
+    end
   end
 
   def chooser_destroy
