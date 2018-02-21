@@ -46,8 +46,8 @@ class TopinambourColorSelector < Gtk::Grid
 
   private
 
-  def generate_import_export_button(name)
-    button = ColorSchemeSelector.new(name, @window)
+  def generate_import_export_button(name, save_in=nil)
+    button = ColorSchemeSelector.new(name, @window, save_in)
     button.signal_connect "clicked" do |widget|
       filename = widget.run_chooser_dialog
       if filename then
@@ -91,8 +91,36 @@ class TopinambourColorSelector < Gtk::Grid
     end
   end
 
+  def double_to_hex(d)
+    (d * 255).to_i.to_s(16)
+  end
+
+  def rgba_to_hex_string(rgba)
+    "##{double_to_hex(rgba.red)}#{double_to_hex(rgba.green)}#{double_to_hex(rgba.blue)}"
+  end
+
   def generate_export_button
-    generate_import_export_button("Export")
+    generate_import_export_button("Export", "untitled") do |filename|
+      File.open(filename, 'a') do |file|
+        child = get_child_at(1, 0)
+        file.puts "*.foreground: #{rgba_to_hex_string(child.rgba)}"
+
+        child = get_child_at(1, 1)
+        file.puts "*.background: #{rgba_to_hex_string(child.rgba)}"
+
+        # Normal colors top row
+        TERMINAL_COLOR_NAMES.each_with_index do |_, i|
+          child = get_child_at(2 + i, 0)
+          file.puts "*.color#{i}: #{rgba_to_hex_string(child.rgba)}"
+        end
+
+        # Bright colors bottom row
+        TERMINAL_COLOR_NAMES.each_with_index do |_, i|
+          child = get_child_at(2 + i, 1)
+          file.puts "*.color#{i + 8}: #{rgba_to_hex_string(child.rgba)}"
+        end
+      end
+    end
   end
 
   def initialize_default_colors
@@ -170,17 +198,21 @@ class TopinambourColorSelector < Gtk::Grid
 end
 
 class ColorSchemeSelector < Gtk::Button
-  def initialize(label, parent)
+  def initialize(label, parent, save_in)
     @parent = parent
+    @save_in = save_in
+    @action = @save_in.nil? ? :open : :save
+    puts @action
     super(:label => label)
   end
 
   def run_chooser_dialog
     @dialog = Gtk::FileChooserDialog.new(:title => label,
                                          :parent => @parent,
-                                         :action => :open,
+                                         :action => @action,
                                          :buttons => [[label, :ok],
                                                       ["Cancel", :cancel]])
+    @dialog.current_name = @save_in unless @save_in.nil?
     if @dialog.run == :ok then
       @dialog.filename
     end
