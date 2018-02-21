@@ -62,19 +62,19 @@ class TopinambourColorSelector < Gtk::Grid
     generate_import_export_button("Import") do |filename|
       file = File.read(filename)
 
-      foreground = file[/\*\.foreground:\s*(.*)/, 1]
+      foreground = file[/\*\.?foreground:\s*(.*)/, 1]
       child = get_child_at(1, 0)
       child.rgba = Gdk::RGBA.parse(foreground) unless foreground.nil?
       @colors[0] = child.rgba
 
-      background = file[/\*\.background:\s*(.*)/, 1]
+      background = file[/\*\.?background:\s*(.*)/, 1]
       child = get_child_at(1, 1)
       child.rgba =  Gdk::RGBA.parse(background) unless background.nil?
       @colors[1] = child.rgba
       #
       # Normal colors top row
       TERMINAL_COLOR_NAMES.each_with_index do |_, i|
-        color = file[/\*\.color#{i}:\s*(.*)/, 1]
+        color = file[/\*\.?color#{i}:\s*(.*)/, 1]
         child = get_child_at(2 + i, 0)
         child.rgba = Gdk::RGBA.parse(color) unless color.nil?
         @colors[2 + i] = child.rgba
@@ -82,7 +82,7 @@ class TopinambourColorSelector < Gtk::Grid
 
       # Bright colors bottom row
       TERMINAL_COLOR_NAMES.each_with_index do |_, i|
-        color = file[/\*\.color#{i + 8}:\s*(.*)/, 1]
+        color = file[/\*\.?color#{i + 8}:\s*(.*)/, 1]
         child = get_child_at(2 + i, 1)
         child.rgba = Gdk::RGBA.parse(color) unless color.nil?
         @colors[10 + i] = child.rgba
@@ -202,7 +202,6 @@ class ColorSchemeSelector < Gtk::Button
     @parent = parent
     @save_in = save_in
     @action = @save_in.nil? ? :open : :save
-    puts @action
     super(:label => label)
   end
 
