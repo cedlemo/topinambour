@@ -20,7 +20,7 @@ class TopinambourWindow < Gtk::ApplicationWindow
     super(application)
     set_icon_name("utilities-terminal-symbolic")
     set_name("topinambour-window")
-    load_settings
+    # load_settings
     set_position(:center)
     create_header_bar
     @overlay = Gtk::Overlay.new
@@ -74,24 +74,24 @@ class TopinambourWindow < Gtk::ApplicationWindow
     @overlay.children.size > 1 ? true : false
   end
 
-  def toggle_shrink
-    w, h = size
-    if @shrink_saved_height
-      resize(w, @shrink_saved_height)
-      @shrink_saved_height = nil
-    else
-      resize(w, 1)
-      @shrink_saved_height = h
-    end
-  end
+#  def toggle_shrink
+#    w, h = size
+#    if @shrink_saved_height
+#      resize(w, @shrink_saved_height)
+#      @shrink_saved_height = nil
+#    else
+#      resize(w, 1)
+#      @shrink_saved_height = h
+#    end
+#  end
 
   private
 
-  def load_settings
-    height = application.settings["height"]
-    width = application.settings["width"]
-    resize(width, height)
-  end
+ # def load_settings
+ #   height = application.settings["height"]
+ #   width = application.settings["width"]
+ #   resize(width, height)
+ # end
 
   def add_overlay(widget)
     @overlay.add_overlay(widget)

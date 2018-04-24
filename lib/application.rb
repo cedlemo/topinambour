@@ -44,7 +44,10 @@ class TopinambourApplication < Gtk::Application
       else
         window.add_terminal
       end
+      window.show_all
       window.terminal.grab_focus
+      window.terminal.set_size(80, 80)
+      puts window.terminal.methods
     end
 
 

@@ -24,14 +24,6 @@
 	<default>"Monospace 11"</default>
 	<summary>Font of the terminal.</summary>
     </key>
-     <key name="width" type="i">
-      <range min="1" max="2000"/>
-      <default>800</default>
-    </key>
-     <key name="height" type="i">
-      <range min="1" max="2000"/>
-      <default>500</default>
-    </key>
     <key name="custom-css" type="b">
       <default>false</default>
     </key>

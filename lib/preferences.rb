@@ -21,7 +21,8 @@ class TopinambourPreferences < Gtk::Window
       resource_file = "/com/github/cedlemo/topinambour/prefs-dialog.ui"
       set_template(:resource => resource_file)
 
-      %w(width_spin height_spin shell_entry audible_bell_switch
+#      %w(width_spin height_spin shell_entry audible_bell_switch
+      %w(shell_entry audible_bell_switch
          allow_bold_switch scroll_on_output_switch scroll_on_keystroke_switch
          rewrap_on_resize_switch mouse_autohide_switch cursor_shape_sel
          cursor_blink_mode_sel backspace_binding_sel delete_binding_sel
@@ -34,17 +35,17 @@ class TopinambourPreferences < Gtk::Window
 
     private
 
-    def on_width_spin_value_changed_cb(spin)
-      parent = spin.toplevel.transient_for
-      height = parent.application.settings["height"]
-      parent.resize(spin.value, height)
-    end
-
-    def on_height_spin_value_changed_cb(spin)
-      parent = spin.toplevel.transient_for
-      width = parent.application.settings["width"]
-      parent.resize(width, spin.value)
-    end
+#    def on_width_spin_value_changed_cb(spin)
+#      parent = spin.toplevel.transient_for
+#      height = parent.application.settings["height"]
+#      parent.resize(spin.value, height)
+#    end
+#
+#    def on_height_spin_value_changed_cb(spin)
+#      parent = spin.toplevel.transient_for
+#      width = parent.application.settings["width"]
+#      parent.resize(width, spin.value)
+#    end
 
     def on_shell_entry_activate_cb(entry)
       style_context = entry.style_context
@@ -113,7 +114,7 @@ class TopinambourPreferences < Gtk::Window
 
   def initialize_widgets
     initialize_use_custom_css_settings
-    bind_spin_buttons_with_settings
+#    bind_spin_buttons_with_settings
     bind_switches_with_settings
     bind_combo_boxes_with_settings
 
@@ -140,10 +141,10 @@ class TopinambourPreferences < Gtk::Window
     bind_combo_box_with_setting(delete_binding_sel, "delete-binding")
   end
 
-  def bind_spin_buttons_with_settings
-    bind_spin_button_with_setting(width_spin, "width")
-    bind_spin_button_with_setting(height_spin, "height")
-  end
+#  def bind_spin_buttons_with_settings
+#    bind_spin_button_with_setting(width_spin, "width")
+#    bind_spin_button_with_setting(height_spin, "height")
+#  end
 
   def configure_headerbar
     headerbar = Gtk::HeaderBar.new

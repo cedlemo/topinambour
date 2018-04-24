@@ -27,7 +27,11 @@ class TopinambourTermBox < Gtk::Box
     @scrollbar.name = "topinambour-scrollbar"
     pack_start(@term, :expand => true, :fill => true, :padding => 0)
     pack_start(@scrollbar)
-    show_all
+    puts preferred_size()[0].width
+    puts preferred_size()[0].height
+    puts preferred_size()[1].width
+    puts preferred_size()[1].height
+
   end
 end
 
@@ -127,6 +131,7 @@ class TopinambourTerminal < Vte::Terminal
   end
 
   def configure
+    set_size(80, 80)
     set_rewrap_on_resize(true)
     set_scrollback_lines(-1)
     search_set_wrap_around(true)
