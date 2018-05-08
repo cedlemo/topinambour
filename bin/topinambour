@@ -38,10 +38,10 @@ DATA_PATH = "#{CURRENT_PATH}/../data"
 CONFIG_DIR = File.expand_path("#{ENV['HOME']}/.config/topinambour")
 USR_CSS = "#{CONFIG_DIR}/topinambour.css"
 USR_LIB_PATH  = "#{CONFIG_DIR}/lib"
-gresource_bin = "#{DATA_PATH}/topinambour.gresource"
-
-resource = Gio::Resource.load(gresource_bin)
-Gio::Resources.register(resource)
+# gresource_bin = "#{DATA_PATH}/topinambour.gresource"
+#
+# resource = Gio::Resource.load(gresource_bin)
+# Gio::Resources.register(resource)
 # Load default libraries !!WARNING!! loading order matters
 
 %w(actions application rgb_names_regexes
