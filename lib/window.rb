@@ -65,7 +65,7 @@ class TopinambourWindow < Gtk::ApplicationWindow
 
   def add_terminal(cmd = "/usr/bin/zsh")
     terminal = TopinambourTermBox.new(cmd, self)
-    @overlay.add(terminal)
+    @overlay.add_main_widget(terminal)
     @terminal = terminal.term
   end
 
@@ -80,20 +80,29 @@ end
 
 class TopinambourOverlay < Gtk::Overlay
 
+  def initialize
+    super()
+  end
+
+  def add_main_widget(terminal)
+    @terminal = terminal
+    add(@terminal)
+  end
+
   # Add a widget over the main widget of the overlay.
   def add_overlay(widget)
-    @overlay.add_overlay(widget)
-    @overlay.set_overlay_pass_through(widget, false)
+    add_overlay(widget)
+    set_overlay_pass_through(widget, false)
   end
 
   # Check if there is a widget displayed on top of the main widget.
   def in_overlay_mode?
-    @overlay.children.size > 1
+    children.size > 1
   end
 
   # Display only the main widget.
   def exit_overlay_mode
-    @overlay.children[1].destroy if in_overlay_mode?
+    children[1].destroy if in_overlay_mode?
   end
 
   def toggle_overlay(klass)
@@ -102,7 +111,7 @@ class TopinambourOverlay < Gtk::Overlay
       @terminal.grab_focus
     else
       add_overlay(klass.new(self))
-      @overlay.children[1].show_all
+      children[1].show_all
     end
   end
 end
