@@ -38,7 +38,7 @@ module TopinambourWindowActions
                           "license" => "This program is licenced under the licence GPL-3.0 and later.",
                           "logo_icon_name" => "utilities-terminal-symbolic",
                           "program_name" => "Topinambour",
-                          "version" => "2.0.4",
+                          "version" => "2.0.5",
                           "website" => "https://github.com/cedlemo/topinambour",
                           "website_label" => "Topinambour github repository"
                          )
