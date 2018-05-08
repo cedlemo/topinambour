@@ -83,20 +83,12 @@ class TopinambourTerminal < Vte::Terminal
   def add_matches
     REGEXES.each do |name|
       regex_name = TopinambourRegex.const_get(name)
-      flags = [:optimize,
-               :multiline]
-      if Vte::Regex
-        # PCRE2_UTF | PCRE2_NO_UTF_CHECK | PCRE2_MULTILINE
-        pcre2_utf = "0x00080000".to_i(16)
-        pcre2_no_utf_check = "0x40000000".to_i(16)
-        pcre2_multiline = "0x00000400".to_i(16)
-        flags = pcre2_utf | pcre2_no_utf_check | pcre2_multiline
-        regex = Vte::Regex.new(regex_name, flags, :for_match => true)
-        match_add_regex(regex, 0)
-      else
-        regex = GLib::Regex.new(regex_name, :compile_options => flags)
-        match_add_gregex(regex, 0)
-      end
+      regex = if Vte::Regex
+                Vte::Regex.new(regex_name, Pcre2::ALL_FLAGS, :for_match => true)
+              else
+                GLib::Regex.new(regex_name, :compile_options => [:optimize, :multiline])
+              end
+      match_add_regex(regex, 0)
     end
   end
 
@@ -108,7 +100,7 @@ class TopinambourTerminal < Vte::Terminal
         # display_copy_past_menu(widget, event)
         true
       elsif event.button == Gdk::BUTTON_PRIMARY
-        manage_regex_on_click(widget, event)
+        manage_regex_on_left_click(widget, event)
         false # let false so that it doesn't block the event
       else
         false
@@ -116,22 +108,11 @@ class TopinambourTerminal < Vte::Terminal
     end
   end
 
-  def display_copy_past_menu(widget, event)
-    x, y = event.window.coords_to_parent(event.x,
-                                         event.y)
-    rect = Gdk::Rectangle.new(x - allocation.x,
-                              y - allocation.y,
-                              1,
-                              1)
-    widget.menu.set_pointing_to(rect)
-    widget.menu.show
-  end
-
   def manage_regex_on_right_click(_widget, event)
     @last_match, _regex_type = match_check_event(event)
   end
 
-  def manage_regex_on_click(_widget, event)
+  def manage_regex_on_left_click(_widget, event)
     match, regex_type = match_check_event(event)
     return nil if regex_type == -1
     case REGEXES[regex_type]
@@ -146,6 +127,7 @@ class TopinambourTerminal < Vte::Terminal
     end
   end
 
+  # Open default application on a left click.
   def launch_default_for_regex_match(match, regex_type)
     Gio::AppInfo.launch_default_for_uri(match)
   rescue => e
