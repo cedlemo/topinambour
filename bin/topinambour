@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# Copyright 2015-2017 Cedric LE MOIGNE, cedlemo@gmx.com
+# Copyright 2015-2018 Cedric LE MOIGNE, cedlemo@gmx.com
 # This file is part of Topinambour.
 #
 # Topinambour is free software: you can redistribute it and/or modify
@@ -22,36 +22,31 @@
 require "vte3"
 require "fileutils"
 
-Signal.trap("INT") {
+Signal.trap("INT") do
   STDERR.puts "\tTopinambour processus pid = #{Process.pid} has been interrupted with Ctrl-C"
   exit
-}
+end
 
-Signal.trap("TERM") {
+Signal.trap("TERM") do
   STDERR.puts "\tTopinambour processus pid = #{Process.pid} has been killed"
   exit
-}
+end
 
-CURRENT_PATH = File.expand_path(File.dirname(__FILE__))
-LIB_PATH = "#{CURRENT_PATH}/../lib"
-DATA_PATH = "#{CURRENT_PATH}/../data"
+CURRENT_PATH = __dir__
+LIB_PATH = "#{CURRENT_PATH}/../lib".freeze
+DATA_PATH = "#{CURRENT_PATH}/../data".freeze
 CONFIG_DIR = File.expand_path("#{ENV['HOME']}/.config/topinambour")
-USR_CSS = "#{CONFIG_DIR}/topinambour.css"
-USR_LIB_PATH  = "#{CONFIG_DIR}/lib"
-# gresource_bin = "#{DATA_PATH}/topinambour.gresource"
+USR_CSS = "#{CONFIG_DIR}/topinambour.css".freeze
+USR_LIB_PATH  = "#{CONFIG_DIR}/lib".freeze
+gresource_bin = "#{DATA_PATH}/topinambour.gresource"
+resource = Gio::Resource.load(gresource_bin)
+Gio::Resources.register(resource)
 #
-# resource = Gio::Resource.load(gresource_bin)
-# Gio::Resources.register(resource)
 # Load default libraries !!WARNING!! loading order matters
-
-%w(actions application rgb_names_regexes
-terminal_regex terminal color_selector font_selector
-shortcuts window preferences).each do |l|
-  if File.exist?("#{USR_LIB_PATH}/#{l}.rb")
-    require "#{USR_LIB_PATH}/#{l}.rb"
-  else
-    require "#{LIB_PATH}/#{l}.rb"
-  end
+%w[actions application rgb_names_regexes
+   terminal_regex terminal color_selector font_selector
+   shortcuts window preferences].each do |l|
+  require "#{LIB_PATH}/#{l}.rb"
 end
 
 topinambour = TopinambourApplication.new
