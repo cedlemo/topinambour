@@ -27,6 +27,10 @@ class TopinambourApplication < Gtk::Application
     signal_connect "startup" do |application|
       ENV["GSETTINGS_SCHEMA_DIR"] = DATA_PATH
       @settings  = Gio::Settings.new("com.github.cedlemo.topinambour")
+
+      initialize_css_provider
+      load_css_config
+
     end
 
     signal_connect "activate" do |application|
@@ -70,5 +74,51 @@ class TopinambourApplication < Gtk::Application
       @options[:execute] = cmd
     end
     parser.parse(arguments)
+  end
+
+  #########################
+  # CSS related functions #
+  #########################
+
+  def initialize_css_provider
+    screen = Gdk::Display.default.default_screen
+    @provider = Gtk::CssProvider.new
+    Gtk::StyleContext.add_provider_for_screen(screen,
+                                              @provider,
+                                              Gtk::StyleProvider::PRIORITY_USER)
+  end
+
+  def load_css_config
+    return unless @settings["custom-css"]
+    css_file = check_css_file_path
+    if css_file
+      begin
+        load_custom_css(css_file)
+      rescue => e
+        error_popup = TopinambourCssErrorPopup.new(windows.first)
+        error_popup.message = e.message + "\n\nBad css file using default css"
+        error_popup.show_all
+      end
+    else
+      puts "No custom CSS, using default theme"
+    end
+  end
+
+  def load_custom_css(file)
+    if @settings["custom-css"]
+      @css_content = File.open(file, "r").read
+      @provider.load(:data => @css_content)
+    else
+      @provider.load(:data => "")
+    end
+  end
+
+  def check_css_file_path
+    css_file = if File.exist?(@settings["css-file"])
+                 @settings["css-file"]
+               else
+                 "#{CONFIG_DIR}/#{@settings["css-file"]}"
+               end
+    File.exist?(css_file) ? css_file : nil
   end
 end
