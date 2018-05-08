@@ -31,7 +31,7 @@ class TopinambourApplication < Gtk::Application
       TopinambourActions.add_actions_to(application)
       initialize_css_provider
       load_css_config
-
+      load_menu_ui(application)
     end
 
     signal_connect "activate" do |application|
@@ -75,6 +75,12 @@ class TopinambourApplication < Gtk::Application
       @options[:execute] = cmd
     end
     parser.parse(arguments)
+  end
+
+  def load_menu_ui(application)
+    builder = Gtk::Builder.new(:resource => "/com/github/cedlemo/topinambour/app-menu.ui")
+    app_menu = builder["appmenu"]
+    application.app_menu = app_menu
   end
 
   #########################
