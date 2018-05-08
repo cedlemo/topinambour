@@ -15,20 +15,22 @@
 # along with Topinambour.  If not, see <http://www.gnu.org/licenses/>.
 
 class TopinambourWindow < Gtk::ApplicationWindow
-  attr_reader :bar, :terminal
+  attr_reader :terminal, :overlay
   def initialize(application)
     super(application)
     set_icon_name("utilities-terminal-symbolic")
     set_name("topinambour-window")
     set_position(:center)
+    @overlay = TopinambourOverlay.new
     create_header_bar
     signal_connect "key-press-event" do |widget, event|
     end
+    add(@overlay)
   end
 
   def add_terminal(cmd = "/usr/bin/zsh")
     terminal = TopinambourTermBox.new(cmd)
-    add(terminal)
+    @overlay.add(terminal)
     @terminal = terminal.term
   end
 
@@ -38,4 +40,35 @@ class TopinambourWindow < Gtk::ApplicationWindow
     headerbar.show_close_button = true
     set_titlebar(headerbar)
   end
+
+end
+
+class TopinambourOverlay < Gtk::Overlay
+
+  # Add a widget over the main widget of the overlay.
+  def add_overlay(widget)
+    @overlay.add_overlay(widget)
+    @overlay.set_overlay_pass_through(widget, false)
+  end
+
+  # Check if there is a widget displayed on top of the main widget.
+  def in_overlay_mode?
+    @overlay.children.size > 1
+  end
+
+  # Display only the main widget.
+  def exit_overlay_mode
+    @overlay.children[1].destroy if in_overlay_mode?
+  end
+
+  def toggle_overlay(klass)
+    exit_overlay_mode
+    if in_overlay_mode? && @overlay.children[1].class == klass
+      @terminal.grab_focus
+    else
+      add_overlay(klass.new(self))
+      @overlay.children[1].show_all
+    end
+  end
+
 end
