@@ -34,7 +34,7 @@ end
 ##
 # The default vte terminal customized
 class TopinambourTerminal < Vte::Terminal
-  attr_reader :pid, :menu
+  attr_reader :pid, :menu, :last_match
   REGEXES = [:REGEX_URL_AS_IS, :REGEX_URL_FILE, :REGEX_URL_HTTP,
                 :REGEX_URL_VOIP, :REGEX_EMAIL, :REGEX_NEWS_MAN,
                 :CSS_COLORS]
@@ -55,6 +55,7 @@ class TopinambourTerminal < Vte::Terminal
 
     load_settings
     add_matches
+    add_popup_menu
     handle_mouse_clic
   end
 
@@ -143,12 +144,18 @@ class TopinambourTerminal < Vte::Terminal
     end
   end
 
+  def add_popup_menu
+    ui = "/com/github/cedlemo/topinambour/terminal-menu.ui"
+    builder = Gtk::Builder.new(:resource => ui)
+    @menu = Gtk::Popover.new(self, builder["termmenu"])
+  end
+
   def handle_mouse_clic
     signal_connect "button-press-event" do |widget, event|
       if event.type == Gdk::EventType::BUTTON_PRESS &&
          event.button == Gdk::BUTTON_SECONDARY
         manage_regex_on_right_click(widget, event)
-        # display_copy_past_menu(widget, event)
+        display_copy_past_menu(event)
         true
       elsif event.button == Gdk::BUTTON_PRIMARY
         manage_regex_on_left_click(widget, event)
@@ -161,6 +168,17 @@ class TopinambourTerminal < Vte::Terminal
 
   def manage_regex_on_right_click(_widget, event)
     @last_match, _regex_type = match_check_event(event)
+  end
+
+  def display_copy_past_menu(event)
+    x, y = event.window.coords_to_parent(event.x,
+                                         event.y)
+    rect = Gdk::Rectangle.new(x - allocation.x,
+                              y - allocation.y,
+                              1,
+                              1)
+    @menu.set_pointing_to(rect)
+    @menu.show
   end
 
   def manage_regex_on_left_click(_widget, event)
