@@ -72,8 +72,8 @@ class TopinambourWindow < Gtk::ApplicationWindow
 
   def add_terminal(cmd = "/usr/bin/zsh")
     terminal = TopinambourTermBox.new(cmd, self)
-    @overlay.add_main_widget(terminal)
     @terminal = terminal.term
+    @overlay.add_main_widget(terminal)
   end
 
   def create_header_bar
@@ -115,7 +115,7 @@ class TopinambourOverlay < Gtk::Overlay
   def toggle_overlay(klass)
     exit_overlay_mode
     if in_overlay_mode? && @overlay.children[1].class == klass
-      @terminal.grab_focus
+      @terminal.term.grab_focus
     else
       add_secondary_widget(klass.new(@terminal.toplevel))
       children[1].show_all
