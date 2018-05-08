@@ -25,6 +25,8 @@ class TopinambourApplication < Gtk::Application
     super("com.github.cedlemo.topinambour", [:non_unique,:handles_command_line])
 
     signal_connect "startup" do |application|
+      ENV["GSETTINGS_SCHEMA_DIR"] = DATA_PATH
+      @settings  = Gio::Settings.new("com.github.cedlemo.topinambour")
     end
 
     signal_connect "activate" do |application|
