@@ -24,8 +24,8 @@ module TopinambourShortcuts
   def self.handle_simple(event, window)
     case event.keyval
     when Gdk::Keyval::KEY_Escape # escape from overlay mode
-      if window.in_overlay_mode?
-        window.exit_overlay_mode
+      if window.overlay.in_overlay_mode?
+        window.overlay.exit_overlay_mode
         window.terminal.grab_focus
         true
       end
@@ -34,9 +34,6 @@ module TopinambourShortcuts
 
   def self.handle_ctrl_shift(event, window)
     case event.keyval
-    when Gdk::Keyval::KEY_W # close the current tab
-      window.close_current_tab
-      true
     when Gdk::Keyval::KEY_Q # Quit
       window.quit_gracefully
       true

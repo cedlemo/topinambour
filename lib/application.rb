@@ -27,24 +27,24 @@ class TopinambourApplication < Gtk::Application
     signal_connect "startup" do |application|
       ENV["GSETTINGS_SCHEMA_DIR"] = DATA_PATH
       @settings  = Gio::Settings.new("com.github.cedlemo.topinambour")
-      initialize_css_provider
-      load_css_config
 
       TopinambourActions.add_actions_to(application)
-      load_menu_ui_in(application)
+      initialize_css_provider
+      load_css_config
+      load_menu_ui(application)
     end
 
     signal_connect "activate" do |application|
 
       window = TopinambourWindow.new(application)
-      window.present
 
       if @options[:execute]
         window.add_terminal(@options[:execute])
       else
         window.add_terminal
       end
-      window.terminal.grab_focus
+      window.show_all
+      window.present
     end
 
 
@@ -72,27 +72,27 @@ class TopinambourApplication < Gtk::Application
     bad_css = nil
     css_file = check_css_file_path
     if css_file
-      @provider.signal_connect "parsing-error" do |css_provider, section, error|
+      @provider.signal_connect "parsing-error" do |_css_prov, section, error|
         buf = Gtk::TextBuffer.new
         buf.text = @css_content
         start_i = buf.get_iter_at(:line => section.start_line,
                                   :index => section.start_position)
-        end_i =  buf.get_iter_at(:line => section.start_line + 10,
-                                 :index => section.end_position)
+        end_i = buf.get_iter_at(:line => section.start_line + 10,
+                                :index => section.end_position)
         bad_css = ""
         buf.get_text(start_i, end_i, true).lines.each_with_index do |line, i|
-          bad_css += "#{section.start_line  + 1 + i}  #{line}"
+          bad_css += "#{section.start_line + 1 + i}  #{line}"
         end
       end
 
       begin
         load_custom_css(css_file)
       rescue => e
-        self.windows.first.exit_overlay_mode
+        windows.first.exit_overlay_mode
         # TODO : deal with the preferences window which is a transient one
         # that keeps the focus even when the popup shows up.
-        error_popup = TopinambourCssErrorPopup.new(self.windows.first)
-        error_popup.transient_for = self.windows.first
+        error_popup = TopinambourCssErrorPopup.new(windows.first)
+        error_popup.transient_for = windows.first
         error_popup.message = e.message + "\n\n" + bad_css
         error_popup.show_all
       end
@@ -118,6 +118,16 @@ class TopinambourApplication < Gtk::Application
     parser.parse(arguments)
   end
 
+  def load_menu_ui(application)
+    builder = Gtk::Builder.new(:resource => "/com/github/cedlemo/topinambour/app-menu.ui")
+    app_menu = builder["appmenu"]
+    application.app_menu = app_menu
+  end
+
+  #########################
+  # CSS related functions #
+  #########################
+
   def initialize_css_provider
     screen = Gdk::Display.default.default_screen
     @provider = Gtk::CssProvider.new
@@ -126,10 +136,20 @@ class TopinambourApplication < Gtk::Application
                                               Gtk::StyleProvider::PRIORITY_USER)
   end
 
-  def load_menu_ui_in(application)
-    builder = Gtk::Builder.new(:resource => "/com/github/cedlemo/topinambour/app-menu.ui")
-    app_menu = builder["appmenu"]
-    application.app_menu = app_menu
+  def load_css_config
+    return unless @settings["custom-css"]
+    css_file = check_css_file_path
+    if css_file
+      begin
+        load_custom_css(css_file)
+      rescue => e
+        error_popup = TopinambourCssErrorPopup.new(windows.first)
+        error_popup.message = e.message + "\n\nBad css file using default css"
+        error_popup.show_all
+      end
+    else
+      puts "No custom CSS, using default theme"
+    end
   end
 
   def load_custom_css(file)
@@ -141,46 +161,4 @@ class TopinambourApplication < Gtk::Application
     end
   end
 
-  def load_css_config
-    return unless @settings["custom-css"]
-    css_file = check_css_file_path
-    if css_file
-      begin
-        load_custom_css(css_file)
-      rescue => e
-        puts "Bad css file using default css #{e.message}"
-        error_popup = TopinambourCssErrorPopup.new(self.windows.first)
-        error_popup.message = e.message + "\n\nBad css file using default css"
-        error_popup.show_all
-      end
-    else
-      puts "No custom CSS, using default theme"
-    end
-  end
-
-  def check_and_create_if_no_config_dir
-    Dir.mkdir(CONFIG_DIR) unless Dir.exist?(CONFIG_DIR)
-  end
-end
-
-class TopinambourCssErrorPopup < Gtk::MessageDialog
-
-  def initialize(parent)
-    super(:parent => parent, :flags => 0,
-          :type => Gtk::MessageType::ERROR,
-          :buttons_type => Gtk::ButtonsType::CLOSE,
-          :message => "Css Error")
-
-    @message = Gtk::Label.new("")
-    content_area.add(@message)
-    signal_connect("response") { |widget| widget.destroy }
-  end
-
-  def message=(message)
-    @message.text = message
-  end
-
-  def message
-    @message.text
-  end
 end

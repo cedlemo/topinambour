@@ -14,46 +14,20 @@
 # You should have received a copy of the GNU General Public License
 # along with Topinambour.  If not, see <http://www.gnu.org/licenses/>.
 
-class TopinambourWindow < Gtk::ApplicationWindow
-  attr_reader :bar, :overlay, :terminal
-  def initialize(application)
-    super(application)
-    set_icon_name("utilities-terminal-symbolic")
-    set_name("topinambour-window")
-    load_settings
-    set_position(:center)
-    create_header_bar
-    @overlay = Gtk::Overlay.new
-    add(@overlay)
-    show_all
-    signal_connect "key-press-event" do |widget, event|
-      TopinambourShortcuts.handle_key_press(widget, event)
-    end
-  end
+# Actions of the window that will be called throught the Application instance.
+# or throught terminal signals.
 
-  def add_terminal(cmd = nil)
-    cmd = cmd || application.settings["default-shell"]
-
-    terminal = TopinambourTermBox.new(cmd)
-    @overlay.add(terminal)
-    @terminal = terminal.term
-    terminal.term.load_settings
-  end
-
+module TopinambourWindowActions
   def quit_gracefully
     application.quit
   end
 
   def show_color_selector
-    toggle_overlay(TopinambourColorSelector)
+    @overlay.toggle_overlay(TopinambourColorSelector)
   end
 
   def show_font_selector
-    toggle_overlay(TopinambourFontSelector)
-  end
-
-  def exit_overlay_mode
-    @overlay.children[1].destroy if in_overlay_mode?
+    @overlay.toggle_overlay(TopinambourFontSelector)
   end
 
   def display_about
@@ -70,21 +44,6 @@ class TopinambourWindow < Gtk::ApplicationWindow
                          )
   end
 
-  def in_overlay_mode?
-    @overlay.children.size > 1 ? true : false
-  end
-
-  def toggle_shrink
-    w, h = size
-    if @shrink_saved_height
-      resize(w, @shrink_saved_height)
-      @shrink_saved_height = nil
-    else
-      resize(w, 1)
-      @shrink_saved_height = h
-    end
-  end
-
   def show_shortcuts
     resource_file = "/com/github/cedlemo/topinambour/shortcuts.ui"
     builder = Gtk::Builder.new(:resource => resource_file)
@@ -92,17 +51,31 @@ class TopinambourWindow < Gtk::ApplicationWindow
     shortcuts_win.transient_for = self
     shortcuts_win.show
   end
-  private
+end
 
-  def load_settings
-    height = application.settings["height"]
-    width = application.settings["width"]
-    resize(width, height)
+class TopinambourWindow < Gtk::ApplicationWindow
+  attr_reader :terminal, :overlay
+  include TopinambourWindowActions
+
+  def initialize(application)
+    super(application)
+    set_icon_name("utilities-terminal-symbolic")
+    set_name("topinambour-window")
+    set_position(:center)
+    @overlay = TopinambourOverlay.new
+    create_header_bar
+
+    signal_connect "key-press-event" do |widget, event|
+      TopinambourShortcuts.handle_key_press(widget, event)
+    end
+
+    add(@overlay)
   end
 
-  def add_overlay(widget)
-    @overlay.add_overlay(widget)
-    @overlay.set_overlay_pass_through(widget, false)
+  def add_terminal(cmd = "/usr/bin/zsh")
+    terminal = TopinambourTermBox.new(cmd, self)
+    @terminal = terminal.term
+    @overlay.add_main_widget(terminal)
   end
 
   def create_header_bar
@@ -112,39 +85,42 @@ class TopinambourWindow < Gtk::ApplicationWindow
     set_titlebar(headerbar)
   end
 
-  def main_menu_signal(builder)
-    button = builder["menu_button"]
-    ui_file = "/com/github/cedlemo/topinambour/main-menu-popover.ui"
-    menu_builder = Gtk::Builder.new(:resource => ui_file)
-    main_menu = menu_builder["main_menu_popover"]
-    button.set_popover(main_menu)
-    button.popover.modal = true
-    add_theme_menu_buttons_signals(menu_builder)
+end
+
+class TopinambourOverlay < Gtk::Overlay
+
+  def initialize
+    super()
   end
 
-  def add_theme_menu_buttons_signals(builder)
-    builder["css_reload_button"].signal_connect "clicked" do
-      application.reload_css_config
-      queue_draw
-    end
+  def add_main_widget(terminal)
+    @terminal = terminal
+    add(@terminal)
+  end
 
-    builder["font_sel_button"].signal_connect "clicked" do
-      show_font_selector
-    end
+  # Add a widget over the main widget of the overlay.
+  def add_secondary_widget(widget)
+    add_overlay(widget)
+    set_overlay_pass_through(widget, false)
+  end
 
-    builder["colors_sel_button"].signal_connect "clicked" do
-      show_color_selector
-    end
+  # Check if there is a widget displayed on top of the main widget.
+  def in_overlay_mode?
+    children.size > 1
+  end
+
+  # Display only the main widget.
+  def exit_overlay_mode
+    children[1].destroy if in_overlay_mode?
   end
 
   def toggle_overlay(klass)
+    exit_overlay_mode
     if in_overlay_mode? && @overlay.children[1].class == klass
-      exit_overlay_mode
-      @terminal.grab_focus
+      @terminal.term.grab_focus
     else
-      exit_overlay_mode
-      add_overlay(klass.new(self))
-      @overlay.children[1].show_all
+      add_secondary_widget(klass.new(@terminal.toplevel))
+      children[1].show_all
     end
   end
 end

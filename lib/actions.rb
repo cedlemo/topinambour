@@ -14,6 +14,8 @@
 # You should have received a copy of the GNU General Public License
 # along with Topinambour.  If not, see <http://www.gnu.org/licenses/>.
 
+# Those are all the actions that can be called via the interface with
+# the label 'app.my_action' for a method my_action.
 module TopinambourActions
   def self.generate_action(name)
     action = Gio::SimpleAction.new(name)

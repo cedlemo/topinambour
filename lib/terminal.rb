@@ -19,10 +19,10 @@
 
 class TopinambourTermBox < Gtk::Box
   attr_reader :term
-  def initialize(command_string, working_dir = nil)
+  def initialize(command_string, working_dir = nil, parent)
     super(:horizontal, 0)
     set_name("topinambour-term-box")
-    @term = TopinambourTerminal.new(command_string, working_dir)
+    @term = TopinambourTerminal.new(command_string, working_dir, parent)
     @scrollbar = Gtk::Scrollbar.new(:vertical, @term.vadjustment)
     @scrollbar.name = "topinambour-scrollbar"
     pack_start(@term, :expand => true, :fill => true, :padding => 0)
@@ -34,22 +34,29 @@ end
 ##
 # The default vte terminal customized
 class TopinambourTerminal < Vte::Terminal
-  attr_reader :pid, :menu, :regexes, :last_match
+  attr_reader :pid, :menu, :last_match
+  REGEXES = [:REGEX_URL_AS_IS, :REGEX_URL_FILE, :REGEX_URL_HTTP,
+                :REGEX_URL_VOIP, :REGEX_EMAIL, :REGEX_NEWS_MAN,
+                :CSS_COLORS]
 
   ##
   # Create a new TopinambourTerminal instance that runs command_string
-  def initialize(command_string, working_dir = nil)
+  def initialize(command_string, working_dir = nil, toplevel)
     super()
+    @toplevel = toplevel
+    @settings = toplevel.application.settings
     set_name("topinambour-terminal")
     command_array = parse_command(command_string)
     rescued_spawn(command_array, working_dir)
 
     signal_connect "child-exited" do |widget|
-      toplevel.application.quit
+      @toplevel.quit_gracefully
     end
 
+    load_settings
+    add_matches
     add_popup_menu
-    configure
+    handle_mouse_clic
   end
 
   def pid_dir
@@ -60,20 +67,31 @@ class TopinambourTerminal < Vte::Terminal
     @custom_title.class == String ? @custom_title : window_title.to_s
   end
 
+  ######################################
+  # Methods used to load Gio::Settings #
+  ######################################
+
   def load_settings
-    colors
+    load_colors
     set_colors(@colors[0], @colors[1], @colors[2..-1])
-    set_font(font)
+    set_font(load_font)
+    set_size(*load_size)
   end
 
-  def colors
-    colors_strings = toplevel.application.settings["colorscheme"]
+  def load_size
+    h = @settings["height"]
+    w = @settings["width"]
+    [w, h]
+  end
+
+  def load_colors
+    colors_strings = @settings["colorscheme"]
     @colors = colors_strings.map { |c| Gdk::RGBA.parse(c) }
     @colors
   end
 
-  def font
-    font_str = toplevel.application.settings["font"]
+  def load_font
+    font_str = @settings["font"]
     @font = Pango::FontDescription.new(font_str)
   end
 
@@ -82,13 +100,17 @@ class TopinambourTerminal < Vte::Terminal
   end
 
   def font=(font_str)
-    toplevel.application.settings["font"] = font_str
+    @settings["font"] = font_str
     font = Pango::FontDescription.new(font_str)
     set_font(font)
     @font = font
   end
 
   private
+
+  ##############################
+  # Terminal command functions #
+  ##############################
 
   def parse_command(command_string)
     GLib::Shell.parse(command_string)
@@ -106,19 +128,37 @@ class TopinambourTerminal < Vte::Terminal
     STDERR.puts e.message
   end
 
+  ###########################
+  # Regexes related methods #
+  ###########################
+
+  def add_matches
+    REGEXES.each do |name|
+      regex_name = TopinambourRegex.const_get(name)
+      regex = if Vte::Regex
+                Vte::Regex.new(regex_name, Pcre2::ALL_FLAGS, :for_match => true)
+              else
+                GLib::Regex.new(regex_name, :compile_options => [:optimize, :multiline])
+              end
+      match_add_regex(regex, 0)
+    end
+  end
+
   def add_popup_menu
     ui = "/com/github/cedlemo/topinambour/terminal-menu.ui"
     builder = Gtk::Builder.new(:resource => ui)
     @menu = Gtk::Popover.new(self, builder["termmenu"])
+  end
 
+  def handle_mouse_clic
     signal_connect "button-press-event" do |widget, event|
       if event.type == Gdk::EventType::BUTTON_PRESS &&
          event.button == Gdk::BUTTON_SECONDARY
         manage_regex_on_right_click(widget, event)
-        display_copy_past_menu(widget, event)
+        display_copy_past_menu(event)
         true
       elsif event.button == Gdk::BUTTON_PRIMARY
-        manage_regex_on_click(widget, event)
+        manage_regex_on_left_click(widget, event)
         false # let false so that it doesn't block the event
       else
         false
@@ -126,66 +166,37 @@ class TopinambourTerminal < Vte::Terminal
     end
   end
 
-  def configure
-    set_rewrap_on_resize(true)
-    set_scrollback_lines(-1)
-    search_set_wrap_around(true)
-    add_matches
+  def manage_regex_on_right_click(_widget, event)
+    @last_match, _regex_type = match_check_event(event)
   end
 
-  def add_matches
-    @regexes = [:REGEX_URL_AS_IS, :REGEX_URL_FILE, :REGEX_URL_HTTP,
-                :REGEX_URL_VOIP, :REGEX_EMAIL, :REGEX_NEWS_MAN,
-                :CSS_COLORS]
-    @regexes.each do |name|
-      regex_name = TopinambourRegex.const_get(name)
-      flags = [:optimize,
-               :multiline]
-      if Vte::Regex
-        # PCRE2_UTF | PCRE2_NO_UTF_CHECK | PCRE2_MULTILINE
-        pcre2_utf = "0x00080000".to_i(16)
-        pcre2_no_utf_check = "0x40000000".to_i(16)
-        pcre2_multiline = "0x00000400".to_i(16)
-        flags = pcre2_utf | pcre2_no_utf_check | pcre2_multiline
-        regex = Vte::Regex.new(regex_name, flags, :for_match => true)
-        match_add_regex(regex, 0)
-      else
-        regex = GLib::Regex.new(regex_name, :compile_options => flags)
-        match_add_gregex(regex, 0)
-      end
-    end
-  end
-
-  def display_copy_past_menu(widget, event)
+  def display_copy_past_menu(event)
     x, y = event.window.coords_to_parent(event.x,
                                          event.y)
     rect = Gdk::Rectangle.new(x - allocation.x,
                               y - allocation.y,
                               1,
                               1)
-    widget.menu.set_pointing_to(rect)
-    widget.menu.show
+    @menu.set_pointing_to(rect)
+    @menu.show
   end
 
-  def manage_regex_on_right_click(_widget, event)
-    @last_match, _regex_type = match_check_event(event)
-  end
-
-  def manage_regex_on_click(_widget, event)
+  def manage_regex_on_left_click(_widget, event)
     match, regex_type = match_check_event(event)
     return nil if regex_type == -1
-    case @regexes[regex_type]
+    case REGEXES[regex_type]
     when :REGEX_EMAIL
-      launch_default_for_regex_match("mailto:" + match, @regexes[regex_type])
+      launch_default_for_regex_match("mailto:" + match, REGEXES[regex_type])
     when :REGEX_URL_HTTP
-      launch_default_for_regex_match("http://" + match, @regexes[regex_type])
+      launch_default_for_regex_match("http://" + match, REGEXES[regex_type])
     when :CSS_COLORS
       launch_color_visualizer(match)
     else
-      launch_default_for_regex_match(match, @regexes[regex_type])
+      launch_default_for_regex_match(match, REGEXES[regex_type])
     end
   end
 
+  # Open default application on a left click.
   def launch_default_for_regex_match(match, regex_type)
     Gio::AppInfo.launch_default_for_uri(match)
   rescue => e
@@ -204,4 +215,5 @@ class TopinambourTerminal < Vte::Terminal
     end
     dialog.destroy
   end
+
 end

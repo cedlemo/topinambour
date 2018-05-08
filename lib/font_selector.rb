@@ -39,7 +39,7 @@ class TopinambourFontSelector < Gtk::Box
 
     save_button = Gtk::Button.new(:label => "Quit")
     save_button.signal_connect "clicked" do
-      toplevel.exit_overlay_mode
+      @window.overlay.exit_overlay_mode
     end
     pack_start(save_button, :expand => false, :fill => false, :padding => 0)
     set_name("topinambour-font-selector")
