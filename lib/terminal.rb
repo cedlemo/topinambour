@@ -25,6 +25,8 @@ class TopinambourTermBox < Gtk::Box
     @term = TopinambourTerminal.new(command_string, working_dir)
     @scrollbar = Gtk::Scrollbar.new(:vertical, @term.vadjustment)
     @scrollbar.name = "topinambour-scrollbar"
+    @term.show
+    @scrollbar.show
     pack_start(@term, :expand => true, :fill => true, :padding => 0)
     pack_start(@scrollbar)
     show_all
@@ -45,6 +47,7 @@ class TopinambourTerminal < Vte::Terminal
 
     signal_connect "child-exited" do |widget|
     end
+    set_size(180, 20)
   end
 
   def pid_dir
