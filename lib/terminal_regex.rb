@@ -138,3 +138,12 @@ module TopinambourRegex
   REGEX_NEWS_MAN = "(?i:news:|man:|info:)[-[:alnum:]\\Q^_{|}~!\"#$%&'()*+,./;:=?`\\E]+"
   include ColorRegexes
 end
+
+module Pcre2
+  # PCRE2_UTF | PCRE2_NO_UTF_CHECK | PCRE2_MULTILINE
+  UTF = "0x00080000".to_i(16)
+  NO_UTF_CHECK = "0x40000000".to_i(16)
+  MULTILINE = "0x00000400".to_i(16)
+  ALL_FLAGS = UTF | NO_UTF_CHECK | MULTILINE
+
+end
