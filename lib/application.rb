@@ -67,6 +67,38 @@ class TopinambourApplication < Gtk::Application
     end
   end
 
+  def reload_css_config
+    error_popup = nil
+    bad_css = nil
+    css_file = check_css_file_path
+    if css_file
+      @provider.signal_connect "parsing-error" do |_css_prov, section, error|
+        buf = Gtk::TextBuffer.new
+        buf.text = @css_content
+        start_i = buf.get_iter_at(:line => section.start_line,
+                                  :index => section.start_position)
+        end_i = buf.get_iter_at(:line => section.start_line + 10,
+                                :index => section.end_position)
+        bad_css = ""
+        buf.get_text(start_i, end_i, true).lines.each_with_index do |line, i|
+          bad_css += "#{section.start_line + 1 + i}  #{line}"
+        end
+      end
+
+      begin
+        load_custom_css(css_file)
+      rescue => e
+        windows.first.exit_overlay_mode
+        # TODO : deal with the preferences window which is a transient one
+        # that keeps the focus even when the popup shows up.
+        error_popup = TopinambourCssErrorPopup.new(windows.first)
+        error_popup.transient_for = windows.first
+        error_popup.message = e.message + "\n\n" + bad_css
+        error_popup.show_all
+      end
+    end
+  end
+
   private
 
   def parse_command_line(arguments)
@@ -128,4 +160,5 @@ class TopinambourApplication < Gtk::Application
                end
     File.exist?(css_file) ? css_file : nil
   end
+
 end

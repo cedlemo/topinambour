@@ -84,10 +84,16 @@ module TopinambourActions
     action
   end
 
+
+  def self.generate_reload_css_config_action(application)
+    action = generate_action("reload_css_config") do |_act, _param|
+      application.reload_css_config
+    end
+    action
+  end
+
   def self.add_actions_to(application)
-    # preferences
-    # %w(about quit term_copy term_paste preferences shortcuts).each do |name|
-    %w(quit term_copy term_paste shortcuts).each do |name|
+    %w(quit about preferences term_copy term_paste shortcuts reload_css_config).each do |name|
       add_action_to(name, application)
     end
   end
