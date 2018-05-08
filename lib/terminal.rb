@@ -66,28 +66,6 @@ class TopinambourTerminal < Vte::Terminal
     @custom_title.class == String ? @custom_title : window_title.to_s
   end
 
-  private
-
-  ##############################
-  # Terminal command functions #
-  ##############################
-
-  def parse_command(command_string)
-    GLib::Shell.parse(command_string)
-  rescue GLib::ShellError => e
-    STDERR.puts "domain  = #{e.domain}"
-    STDERR.puts "code    = #{e.code}"
-    STDERR.puts "message = #{e.message}"
-  end
-
-  def rescued_spawn(command_array, working_dir)
-    @pid = spawn(:argv => command_array,
-                 :working_directory => working_dir,
-                 :spawn_flags => GLib::Spawn::SEARCH_PATH)
-  rescue => e
-    STDERR.puts e.message
-  end
-
   ######################################
   # Methods used to load Gio::Settings #
   ######################################
@@ -125,6 +103,28 @@ class TopinambourTerminal < Vte::Terminal
     font = Pango::FontDescription.new(font_str)
     set_font(font)
     @font = font
+  end
+
+  private
+
+  ##############################
+  # Terminal command functions #
+  ##############################
+
+  def parse_command(command_string)
+    GLib::Shell.parse(command_string)
+  rescue GLib::ShellError => e
+    STDERR.puts "domain  = #{e.domain}"
+    STDERR.puts "code    = #{e.code}"
+    STDERR.puts "message = #{e.message}"
+  end
+
+  def rescued_spawn(command_array, working_dir)
+    @pid = spawn(:argv => command_array,
+                 :working_directory => working_dir,
+                 :spawn_flags => GLib::Spawn::SEARCH_PATH)
+  rescue => e
+    STDERR.puts e.message
   end
 
   ###########################
