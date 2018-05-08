@@ -41,6 +41,13 @@ module TopinambourWindowActions
                           "website" => "https://github.com/cedlemo/topinambour",
                           "website_label" => "Topinambour github repository"
                          )
+    def show_shortcuts
+      resource_file = "/com/github/cedlemo/topinambour/shortcuts.ui"
+      builder = Gtk::Builder.new(:resource => resource_file)
+      shortcuts_win = builder["shortcuts-window"]
+      shortcuts_win.transient_for = self
+      shortcuts_win.show
+    end
   end
 end
 
@@ -90,7 +97,7 @@ class TopinambourOverlay < Gtk::Overlay
   end
 
   # Add a widget over the main widget of the overlay.
-  def add_overlay(widget)
+  def add_secondary_widget(widget)
     add_overlay(widget)
     set_overlay_pass_through(widget, false)
   end
@@ -110,10 +117,8 @@ class TopinambourOverlay < Gtk::Overlay
     if in_overlay_mode? && @overlay.children[1].class == klass
       @terminal.grab_focus
     else
-      add_overlay(klass.new(self))
+      add_secondary_widget(klass.new(@terminal.toplevel))
       children[1].show_all
     end
   end
 end
-
-

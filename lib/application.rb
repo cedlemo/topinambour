@@ -28,6 +28,7 @@ class TopinambourApplication < Gtk::Application
       ENV["GSETTINGS_SCHEMA_DIR"] = DATA_PATH
       @settings  = Gio::Settings.new("com.github.cedlemo.topinambour")
 
+      TopinambourActions.add_actions_to(application)
       initialize_css_provider
       load_css_config
 

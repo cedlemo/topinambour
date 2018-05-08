@@ -14,6 +14,8 @@
 # You should have received a copy of the GNU General Public License
 # along with Topinambour.  If not, see <http://www.gnu.org/licenses/>.
 
+# Those are all the actions that can be called via the interface with
+# the label 'app.my_action' for a method my_action.
 module TopinambourActions
   def self.generate_action(name)
     action = Gio::SimpleAction.new(name)
@@ -30,12 +32,12 @@ module TopinambourActions
     application.add_action(action)
   end
 
-#  def self.generate_about_action(application)
-#    action = generate_action("about") do |_act, _param|
-#      application.windows[0].display_about
-#    end
-#    action
-#  end
+  def self.generate_about_action(application)
+    action = generate_action("about") do |_act, _param|
+      application.windows[0].display_about
+    end
+    action
+  end
 #
 #  def self.generate_preferences_action(application)
 #    action = generate_action("preferences") do |_act, _param|
@@ -75,17 +77,17 @@ module TopinambourActions
     action
   end
 
-#  def self.generate_shortcuts_action(application)
-#    action = generate_action("shortcuts") do |_act, _param|
-#      application.windows[0].show_shortcuts
-#    end
-#    action
-#  end
+  def self.generate_shortcuts_action(application)
+    action = generate_action("shortcuts") do |_act, _param|
+      application.windows[0].show_shortcuts
+    end
+    action
+  end
 
   def self.add_actions_to(application)
     # preferences
     # %w(about quit term_copy term_paste preferences shortcuts).each do |name|
-    %w(quit term_copy term_paste).each do |name|
+    %w(quit term_copy term_paste shortcuts).each do |name|
       add_action_to(name, application)
     end
   end
