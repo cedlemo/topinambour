@@ -14,8 +14,40 @@
 # You should have received a copy of the GNU General Public License
 # along with Topinambour.  If not, see <http://www.gnu.org/licenses/>.
 
+# Actions of the window that will be called throught the Application instance.
+# or throught terminal signals.
+module TopinambourWindowActions
+  def quit_gracefully
+    application.quit
+  end
+
+  def show_color_selector
+    @overlay.toggle_overlay(TopinambourColorSelector)
+  end
+
+  def show_font_selector
+    @overlay.toggle_overlay(TopinambourFontSelector)
+  end
+
+  def display_about
+    Gtk::AboutDialog.show(self,
+                          "authors" => ["Cedric Le Moigne <cedlemo@gmx.com>"],
+                          "comments" => "Terminal Emulator based on the ruby bindings of Gtk3 and Vte3",
+                          "copyright" => "Copyright (C) 2015-2018 Cedric Le Moigne",
+                          "license" => "This program is licenced under the licence GPL-3.0 and later.",
+                          "logo_icon_name" => "utilities-terminal-symbolic",
+                          "program_name" => "Topinambour",
+                          "version" => "2.0.4",
+                          "website" => "https://github.com/cedlemo/topinambour",
+                          "website_label" => "Topinambour github repository"
+                         )
+  end
+end
+
 class TopinambourWindow < Gtk::ApplicationWindow
   attr_reader :terminal, :overlay
+  include TopinambourWindowActions
+
   def initialize(application)
     super(application)
     set_icon_name("utilities-terminal-symbolic")
@@ -23,8 +55,11 @@ class TopinambourWindow < Gtk::ApplicationWindow
     set_position(:center)
     @overlay = TopinambourOverlay.new
     create_header_bar
+
     signal_connect "key-press-event" do |widget, event|
+      TopinambourShortcuts.handle_key_press(widget, event)
     end
+
     add(@overlay)
   end
 
@@ -70,5 +105,6 @@ class TopinambourOverlay < Gtk::Overlay
       @overlay.children[1].show_all
     end
   end
-
 end
+
+

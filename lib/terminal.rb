@@ -50,6 +50,7 @@ class TopinambourTerminal < Vte::Terminal
     rescued_spawn(command_array, working_dir)
 
     signal_connect "child-exited" do |widget|
+      @toplevel.quit_gracefully
     end
 
     load_settings
