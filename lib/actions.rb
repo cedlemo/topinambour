@@ -38,14 +38,14 @@ module TopinambourActions
     end
     action
   end
-#
-#  def self.generate_preferences_action(application)
-#    action = generate_action("preferences") do |_act, _param|
-#      dialog = TopinambourPreferences.new(application.windows.first)
-#      dialog.show_all
-#    end
-#    action
-#  end
+
+  def self.generate_preferences_action(application)
+    action = generate_action("preferences") do |_act, _param|
+      dialog = TopinambourPreferences.new(application.windows.first)
+      dialog.show_all
+    end
+    action
+  end
 
   def self.generate_quit_action(application)
     action = generate_action("quit") do |_act, _param|

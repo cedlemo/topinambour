@@ -37,13 +37,13 @@ class TopinambourPreferences < Gtk::Window
     def on_width_spin_value_changed_cb(spin)
       parent = spin.toplevel.transient_for
       height = parent.application.settings["height"]
-      parent.resize(spin.value, height)
+      parent.terminal.set_size(spin.value, height)
     end
 
     def on_height_spin_value_changed_cb(spin)
       parent = spin.toplevel.transient_for
       width = parent.application.settings["width"]
-      parent.resize(width, spin.value)
+      parent.terminal.set_size(width, spin.value)
     end
 
     def on_shell_entry_activate_cb(entry)
@@ -101,7 +101,7 @@ class TopinambourPreferences < Gtk::Window
 
     signal_connect "delete-event" do |widget|
       widget.destroy
-      @parent.notebook.current.term.grab_focus
+      @parent.terminal.grab_focus
     end
 
     @settings = @parent.application.settings
@@ -162,9 +162,7 @@ class TopinambourPreferences < Gtk::Window
   def set_switch_to_initial_state(_switch, setting)
     state = @settings[setting]
     m = "#{setting.tr('-', '_')}="
-    @parent.notebook.each do |tab|
-      tab.term.send(m, state)
-    end
+    @parent.terminal.send(m, state)
   end
 
   def bind_switch_state_with_setting(switch, setting)
@@ -175,7 +173,7 @@ class TopinambourPreferences < Gtk::Window
                    Gio::SettingsBindFlags::DEFAULT)
     switch.signal_connect "state-set" do |_switch, state|
       m = "#{setting.tr('-', '_')}="
-      @parent.notebook.each { |tab| tab.term.send(m, state) }
+      @parent.terminal.send(m, state)
       false
     end
   end
@@ -183,7 +181,7 @@ class TopinambourPreferences < Gtk::Window
   def set_combo_to_initial_state(_combo_box, setting)
     active = @settings[setting]
     m = "#{setting.tr('-', '_')}="
-    @parent.notebook.each { |tab| tab.term.send(m, active) }
+    @parent.terminal.send(m, active)
   end
 
   def bind_combo_box_with_setting(combo_box, setting)
@@ -194,7 +192,7 @@ class TopinambourPreferences < Gtk::Window
                    Gio::SettingsBindFlags::DEFAULT)
     combo_box.signal_connect "changed" do
       m = "#{setting.tr('-', '_')}="
-      @parent.notebook.each { |tab| tab.term.send(m, combo_box.active) }
+      @parent.terminal.send(m, state_flags)
       false
     end
   end

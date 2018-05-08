@@ -99,6 +99,15 @@ class TopinambourApplication < Gtk::Application
     end
   end
 
+  def check_css_file_path
+    css_file = if File.exist?(@settings["css-file"])
+                 @settings["css-file"]
+               else
+                 "#{CONFIG_DIR}/#{@settings["css-file"]}"
+               end
+    File.exist?(css_file) ? css_file : nil
+  end
+
   private
 
   def parse_command_line(arguments)
@@ -150,15 +159,6 @@ class TopinambourApplication < Gtk::Application
     else
       @provider.load(:data => "")
     end
-  end
-
-  def check_css_file_path
-    css_file = if File.exist?(@settings["css-file"])
-                 @settings["css-file"]
-               else
-                 "#{CONFIG_DIR}/#{@settings["css-file"]}"
-               end
-    File.exist?(css_file) ? css_file : nil
   end
 
 end
