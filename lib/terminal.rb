@@ -19,10 +19,10 @@
 
 class TopinambourTermBox < Gtk::Box
   attr_reader :term
-  def initialize(command_string, working_dir = nil)
+  def initialize(command_string, working_dir = nil, parent)
     super(:horizontal, 0)
     set_name("topinambour-term-box")
-    @term = TopinambourTerminal.new(command_string, working_dir)
+    @term = TopinambourTerminal.new(command_string, working_dir, parent)
     @scrollbar = Gtk::Scrollbar.new(:vertical, @term.vadjustment)
     @scrollbar.name = "topinambour-scrollbar"
     pack_start(@term, :expand => true, :fill => true, :padding => 0)
@@ -41,17 +41,20 @@ class TopinambourTerminal < Vte::Terminal
 
   ##
   # Create a new TopinambourTerminal instance that runs command_string
-  def initialize(command_string, working_dir = nil)
+  def initialize(command_string, working_dir = nil, toplevel)
     super()
+    @toplevel = toplevel
+    @settings = toplevel.application.settings
     set_name("topinambour-terminal")
     command_array = parse_command(command_string)
     rescued_spawn(command_array, working_dir)
 
     signal_connect "child-exited" do |widget|
     end
+
+    load_settings
     add_matches
     handle_mouse_clic
-    set_size(180, 20)
   end
 
   def pid_dir
@@ -63,6 +66,10 @@ class TopinambourTerminal < Vte::Terminal
   end
 
   private
+
+  ##############################
+  # Terminal command functions #
+  ##############################
 
   def parse_command(command_string)
     GLib::Shell.parse(command_string)
@@ -79,6 +86,49 @@ class TopinambourTerminal < Vte::Terminal
   rescue => e
     STDERR.puts e.message
   end
+
+  ######################################
+  # Methods used to load Gio::Settings #
+  ######################################
+
+  def load_settings
+    load_colors
+    set_colors(@colors[0], @colors[1], @colors[2..-1])
+    set_font(load_font)
+    set_size(*load_size)
+  end
+
+  def load_size
+    h = @settings["height"]
+    w = @settings["width"]
+    [w, h]
+  end
+
+  def load_colors
+    colors_strings = @settings["colorscheme"]
+    @colors = colors_strings.map { |c| Gdk::RGBA.parse(c) }
+    @colors
+  end
+
+  def load_font
+    font_str = @settings["font"]
+    @font = Pango::FontDescription.new(font_str)
+  end
+
+  def colors=(colors)
+    set_colors(colors[0], colors[1], colors[2..-1])
+  end
+
+  def font=(font_str)
+    @settings["font"] = font_str
+    font = Pango::FontDescription.new(font_str)
+    set_font(font)
+    @font = font
+  end
+
+  ###########################
+  # Regexes related methods #
+  ###########################
 
   def add_matches
     REGEXES.each do |name|
@@ -146,4 +196,5 @@ class TopinambourTerminal < Vte::Terminal
     end
     dialog.destroy
   end
+
 end

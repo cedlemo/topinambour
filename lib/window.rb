@@ -29,7 +29,7 @@ class TopinambourWindow < Gtk::ApplicationWindow
   end
 
   def add_terminal(cmd = "/usr/bin/zsh")
-    terminal = TopinambourTermBox.new(cmd)
+    terminal = TopinambourTermBox.new(cmd, self)
     @overlay.add(terminal)
     @terminal = terminal.term
   end
