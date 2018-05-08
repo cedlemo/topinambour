@@ -25,8 +25,6 @@ class TopinambourTermBox < Gtk::Box
     @term = TopinambourTerminal.new(command_string, working_dir)
     @scrollbar = Gtk::Scrollbar.new(:vertical, @term.vadjustment)
     @scrollbar.name = "topinambour-scrollbar"
-    @term.show
-    @scrollbar.show
     pack_start(@term, :expand => true, :fill => true, :padding => 0)
     pack_start(@scrollbar)
     show_all

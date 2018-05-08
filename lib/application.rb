@@ -36,6 +36,7 @@ class TopinambourApplication < Gtk::Application
       else
         window.add_terminal
       end
+      window.show_all
       window.present
     end
 
