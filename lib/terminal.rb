@@ -50,6 +50,7 @@ class TopinambourTerminal < Vte::Terminal
     signal_connect "child-exited" do |widget|
     end
     add_matches
+    handle_mouse_clic
     set_size(180, 20)
   end
 
@@ -80,7 +81,7 @@ class TopinambourTerminal < Vte::Terminal
   end
 
   def add_matches
-        REGEXES.each do |name|
+    REGEXES.each do |name|
       regex_name = TopinambourRegex.const_get(name)
       flags = [:optimize,
                :multiline]
@@ -95,6 +96,22 @@ class TopinambourTerminal < Vte::Terminal
       else
         regex = GLib::Regex.new(regex_name, :compile_options => flags)
         match_add_gregex(regex, 0)
+      end
+    end
+  end
+
+  def handle_mouse_clic
+    signal_connect "button-press-event" do |widget, event|
+      if event.type == Gdk::EventType::BUTTON_PRESS &&
+         event.button == Gdk::BUTTON_SECONDARY
+        manage_regex_on_right_click(widget, event)
+        # display_copy_past_menu(widget, event)
+        true
+      elsif event.button == Gdk::BUTTON_PRIMARY
+        manage_regex_on_click(widget, event)
+        false # let false so that it doesn't block the event
+      else
+        false
       end
     end
   end
@@ -121,7 +138,7 @@ class TopinambourTerminal < Vte::Terminal
     when :REGEX_EMAIL
       launch_default_for_regex_match("mailto:" + match, REGEXES[regex_type])
     when :REGEX_URL_HTTP
-      launch_default_for_regex_match("http://" + match, @regexes[regex_type])
+      launch_default_for_regex_match("http://" + match, REGEXES[regex_type])
     when :CSS_COLORS
       launch_color_visualizer(match)
     else
