@@ -43,7 +43,7 @@ resource = Gio::Resource.load(gresource_bin)
 Gio::Resources.register(resource)
 #
 # Load default libraries !!WARNING!! loading order matters
-%w[actions application rgb_names_regexes
+%w[version about actions application rgb_names_regexes
    terminal_regex terminal color_selector font_selector
    shortcuts window preferences].each do |l|
   require "#{LIB_PATH}/#{l}.rb"
