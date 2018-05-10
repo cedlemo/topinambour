@@ -30,7 +30,7 @@ module TopinambourWindowActions
   end
 
   def display_about
-    About.dialog
+    About.dialog(self)
   end
 
   def show_shortcuts

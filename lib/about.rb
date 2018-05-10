@@ -26,8 +26,8 @@ module About
   WEBSITE = "https://github.com/cedlemo/topinambour".freeze
   WEBSITE_LABEL = "Topinambour github repository".freeze
 
-  def dialog
-    Gtk::AboutDialog.show(self,
+  def self.dialog(parent)
+    Gtk::AboutDialog.show(parent,
                           "authors" => AUTHORS,
                           "comments" => COMMENTS,
                           "copyright" => COPYRIGHT,
