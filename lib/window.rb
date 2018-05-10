@@ -14,9 +14,8 @@
 # You should have received a copy of the GNU General Public License
 # along with Topinambour.  If not, see <http://www.gnu.org/licenses/>.
 
-# Actions of the window that will be called throught the Application instance.
-# or throught terminal signals.
-
+## Actions of the window that will be called throught the Application instance.
+#  or throught terminal signals.
 module TopinambourWindowActions
   def quit_gracefully
     application.quit
@@ -31,17 +30,7 @@ module TopinambourWindowActions
   end
 
   def display_about
-    Gtk::AboutDialog.show(self,
-                          "authors" => ["Cedric Le Moigne <cedlemo@gmx.com>"],
-                          "comments" => "Terminal Emulator based on the ruby bindings of Gtk3 and Vte3",
-                          "copyright" => "Copyright (C) 2015-2018 Cedric Le Moigne",
-                          "license" => "This program is licenced under the licence GPL-3.0 and later.",
-                          "logo_icon_name" => "utilities-terminal-symbolic",
-                          "program_name" => "Topinambour",
-                          "version" => "2.0.5",
-                          "website" => "https://github.com/cedlemo/topinambour",
-                          "website_label" => "Topinambour github repository"
-                         )
+    About.dialog
   end
 
   def show_shortcuts
@@ -53,6 +42,8 @@ module TopinambourWindowActions
   end
 end
 
+## Main window of Topinambour
+#
 class TopinambourWindow < Gtk::ApplicationWindow
   attr_reader :terminal, :overlay
   include TopinambourWindowActions
@@ -84,11 +75,11 @@ class TopinambourWindow < Gtk::ApplicationWindow
     headerbar.show_close_button = true
     set_titlebar(headerbar)
   end
-
 end
 
+## This overlay contains the main terminal and allows another widgets to be
+#  displayed on top of it.
 class TopinambourOverlay < Gtk::Overlay
-
   def initialize
     super()
   end
