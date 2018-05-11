@@ -67,6 +67,14 @@ class TopinambourTerminal < Vte::Terminal
     @custom_title.class == String ? @custom_title : window_title.to_s
   end
 
+  def size
+    col = column_count
+    char_w = char_width
+    row = row_count
+    char_h = char_height
+    [col * char_w, row * char_h]
+  end
+
   ######################################
   # Methods used to load Gio::Settings #
   ######################################
@@ -75,10 +83,10 @@ class TopinambourTerminal < Vte::Terminal
     load_colors
     set_colors(@colors[0], @colors[1], @colors[2..-1])
     set_font(load_font)
-    set_size(*load_size)
+    set_size(*load_size_settings)
   end
 
-  def load_size
+  def load_size_settings
     h = @settings["height"]
     w = @settings["width"]
     [w, h]

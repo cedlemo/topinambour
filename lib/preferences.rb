@@ -37,13 +37,17 @@ class TopinambourPreferences < Gtk::Window
     def on_width_spin_value_changed_cb(spin)
       parent = spin.toplevel.transient_for
       height = parent.application.settings["height"]
-      parent.terminal.set_size(spin.value, height)
+      terminal = parent.terminal
+      terminal.set_size(spin.value, height)
+      parent.resize(*terminal.size)
     end
 
     def on_height_spin_value_changed_cb(spin)
       parent = spin.toplevel.transient_for
       width = parent.application.settings["width"]
-      parent.terminal.set_size(width, spin.value)
+      terminal = parent.terminal
+      terminal.set_size(width, spin.value)
+      parent.resize(*terminal.size)
     end
 
     def on_shell_entry_activate_cb(entry)
