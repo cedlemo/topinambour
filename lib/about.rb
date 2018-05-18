@@ -26,7 +26,7 @@ module About
   LICENSE_COMMENTS =
     "This program is licenced under the licence GPL-3.0 and later.".freeze
   LOGO_ICON_NAME = "utilities-terminal-symbolic".freeze
-  PROGRAM_NAME = "Topinambour".freeze
+  PROGRAM_NAME = "topinambour".freeze
   VERSION = Version::STRING
   WEBSITE = "https://github.com/cedlemo/topinambour".freeze
   WEBSITE_LABEL = "Topinambour github repository".freeze
