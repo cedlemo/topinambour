@@ -16,6 +16,8 @@
 
 require 'optparse'
 
+## Gtk::Application class for topinambour
+#
 class TopinambourApplication < Gtk::Application
   attr_accessor :settings
   def initialize
@@ -30,8 +32,9 @@ class TopinambourApplication < Gtk::Application
       parent_schema = Gio::SettingsSchemaSource.default
       schema_source =
         Gio::SettingsSchemaSource.new(DATA_PATH, parent_schema, true)
-      source = schema_source.lookup(@app_id, true)
-      @settings = Gio::Settings.new(source, nil, @app_path + '/preferences/')
+      schema = schema_source.lookup(@app_id, true)
+      @settings = Gio::Settings.new(schema: schema,
+                                    path: @app_path + '/preferences/')
 
       TopinambourActions.add_actions_to(application)
       initialize_css_provider
