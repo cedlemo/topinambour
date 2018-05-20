@@ -19,16 +19,18 @@
 # vte 3 bindings.
 # Author:: Cedlemo (mailto:cedlemo@gmx.com)
 
-require "vte3"
-require "fileutils"
+require 'vte3'
+require 'fileutils'
 
-Signal.trap("INT") do
-  STDERR.puts "\tTopinambour processus pid = #{Process.pid} has been interrupted with Ctrl-C"
+err_msg = "\tTopinambour processus pid = #{Process.pid} has been "
+
+Signal.trap('INT') do
+  STDERR.puts err_msg + 'interrupted with Ctrl-C'
   exit
 end
 
-Signal.trap("TERM") do
-  STDERR.puts "\tTopinambour processus pid = #{Process.pid} has been killed"
+Signal.trap('TERM') do
+  STDERR.puts err_msg + 'has been killed'
   exit
 end
 
@@ -41,7 +43,7 @@ USR_LIB_PATH  = "#{CONFIG_DIR}/lib".freeze
 gresource_bin = "#{DATA_PATH}/topinambour.gresource"
 resource = Gio::Resource.load(gresource_bin)
 Gio::Resources.register(resource)
-#
+
 # Load default libraries !!WARNING!! loading order matters
 %w[version about actions application rgb_names_regexes
    terminal_regex terminal color_selector font_selector
