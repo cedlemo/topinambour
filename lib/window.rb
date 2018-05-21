@@ -34,9 +34,9 @@ module TopinambourWindowActions
   end
 
   def show_shortcuts
-    resource_file = "/com/github/cedlemo/topinambour/shortcuts.ui"
-    builder = Gtk::Builder.new(:resource => resource_file)
-    shortcuts_win = builder["shortcuts-window"]
+    resource_file = '/com/github/cedlemo/topinambour/shortcuts.ui'
+    builder = Gtk::Builder.new(resource: resource_file)
+    shortcuts_win = builder['shortcuts-window']
     shortcuts_win.transient_for = self
     shortcuts_win.show
   end
@@ -50,20 +50,20 @@ class TopinambourWindow < Gtk::ApplicationWindow
 
   def initialize(application)
     super(application)
-    set_icon_name("utilities-terminal-symbolic")
-    set_name("topinambour-window")
+    set_icon_name('utilities-terminal-symbolic')
+    set_name('topinambour-window')
     set_position(:center)
     @overlay = TopinambourOverlay.new
     create_header_bar
 
-    signal_connect "key-press-event" do |widget, event|
+    signal_connect 'key-press-event' do |widget, event|
       TopinambourShortcuts.handle_key_press(widget, event)
     end
 
     add(@overlay)
   end
 
-  def add_terminal(cmd = "/usr/bin/zsh")
+  def add_terminal(cmd = '/usr/bin/zsh')
     terminal = TopinambourTermBox.new(cmd, self)
     @terminal = terminal.term
     @overlay.add_main_widget(terminal)
@@ -71,7 +71,7 @@ class TopinambourWindow < Gtk::ApplicationWindow
 
   def create_header_bar
     headerbar = Gtk::HeaderBar.new
-    headerbar.name = "topinambour-headerbar"
+    headerbar.name = 'topinambour-headerbar'
     headerbar.show_close_button = true
     set_titlebar(headerbar)
   end
