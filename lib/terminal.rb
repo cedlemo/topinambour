@@ -21,11 +21,11 @@ class TopinambourTermBox < Gtk::Box
   attr_reader :term
   def initialize(command_string, working_dir = nil, parent)
     super(:horizontal, 0)
-    set_name("topinambour-term-box")
-    @term = TopinambourTerminal.new(command_string, working_dir, parent)
+    set_name('topinambour-term-box')
+    @term = TopinambourTerminal.new(command_string, parent, working_dir)
     @scrollbar = Gtk::Scrollbar.new(:vertical, @term.vadjustment)
-    @scrollbar.name = "topinambour-scrollbar"
-    pack_start(@term, :expand => true, :fill => true, :padding => 0)
+    @scrollbar.name = 'topinambour-scrollbar'
+    pack_start(@term, expand: true, fill: true, padding: 0)
     pack_start(@scrollbar)
     show_all
   end
@@ -36,22 +36,19 @@ end
 class TopinambourTerminal < Vte::Terminal
   attr_reader :pid, :menu, :last_match
   REGEXES = [:REGEX_URL_AS_IS, :REGEX_URL_FILE, :REGEX_URL_HTTP,
-                :REGEX_URL_VOIP, :REGEX_EMAIL, :REGEX_NEWS_MAN,
-                :CSS_COLORS]
+             :REGEX_URL_VOIP, :REGEX_EMAIL, :REGEX_NEWS_MAN, :CSS_COLORS]
 
   ##
   # Create a new TopinambourTerminal instance that runs command_string
-  def initialize(command_string, working_dir = nil, toplevel)
+  def initialize(command_string, toplevel, working_dir = nil)
     super()
     @toplevel = toplevel
     @settings = toplevel.application.settings
-    set_name("topinambour-terminal")
+    set_name('topinambour-terminal')
     command_array = parse_command(command_string)
     rescued_spawn(command_array, working_dir)
 
-    signal_connect "child-exited" do |widget|
-      @toplevel.quit_gracefully
-    end
+    signal_connect('child-exited') {@toplevel.quit_gracefully}
 
     load_settings
     add_matches
@@ -87,19 +84,19 @@ class TopinambourTerminal < Vte::Terminal
   end
 
   def load_size_settings
-    h = @settings["height"]
-    w = @settings["width"]
+    h = @settings['height']
+    w = @settings['width']
     [w, h]
   end
 
   def load_colors
-    colors_strings = @settings["colorscheme"]
+    colors_strings = @settings['colorscheme']
     @colors = colors_strings.map { |c| Gdk::RGBA.parse(c) }
     @colors
   end
 
   def load_font
-    font_str = @settings["font"]
+    font_str = @settings['font']
     @font = Pango::FontDescription.new(font_str)
   end
 
@@ -108,7 +105,7 @@ class TopinambourTerminal < Vte::Terminal
   end
 
   def font=(font_str)
-    @settings["font"] = font_str
+    @settings['font'] = font_str
     font = Pango::FontDescription.new(font_str)
     set_font(font)
     @font = font
@@ -129,9 +126,9 @@ class TopinambourTerminal < Vte::Terminal
   end
 
   def rescued_spawn(command_array, working_dir)
-    @pid = spawn(:argv => command_array,
-                 :working_directory => working_dir,
-                 :spawn_flags => GLib::Spawn::SEARCH_PATH)
+    @pid = spawn(argv: command_array,
+                 working_directory: working_dir,
+                 spawn_flags: GLib::Spawn::SEARCH_PATH)
   rescue => e
     STDERR.puts e.message
   end
@@ -144,22 +141,23 @@ class TopinambourTerminal < Vte::Terminal
     REGEXES.each do |name|
       regex_name = TopinambourRegex.const_get(name)
       regex = if Vte::Regex
-                Vte::Regex.new(regex_name, Pcre2::ALL_FLAGS, :for_match => true)
+                Vte::Regex.new(regex_name, Pcre2::ALL_FLAGS, for_match: true)
               else
-                GLib::Regex.new(regex_name, :compile_options => [:optimize, :multiline])
+                compile_options = %i[optimize multiline]
+                GLib::Regex.new(regex_name, compile_options: compile_options)
               end
       match_add_regex(regex, 0)
     end
   end
 
   def add_popup_menu
-    ui = "/com/github/cedlemo/topinambour/terminal-menu.ui"
-    builder = Gtk::Builder.new(:resource => ui)
-    @menu = Gtk::Popover.new(self, builder["termmenu"])
+    ui = '/com/github/cedlemo/topinambour/terminal-menu.ui'
+    builder = Gtk::Builder.new(resource: ui)
+    @menu = Gtk::Popover.new(self, builder['termmenu'])
   end
 
   def handle_mouse_clic
-    signal_connect "button-press-event" do |widget, event|
+    signal_connect 'button-press-event' do |widget, event|
       if event.type == Gdk::EventType::BUTTON_PRESS &&
          event.button == Gdk::BUTTON_SECONDARY
         manage_regex_on_right_click(widget, event)
@@ -189,14 +187,14 @@ class TopinambourTerminal < Vte::Terminal
     @menu.show
   end
 
-  def manage_regex_on_left_click(_widget, event)
+  def manage_regex_on_left_click(widget, event)
     match, regex_type = match_check_event(event)
     return nil if regex_type == -1
     case REGEXES[regex_type]
     when :REGEX_EMAIL
-      launch_default_for_regex_match("mailto:" + match, REGEXES[regex_type])
+      launch_default_for_regex_match('mailto:' + match, REGEXES[regex_type])
     when :REGEX_URL_HTTP
-      launch_default_for_regex_match("http://" + match, REGEXES[regex_type])
+      launch_default_for_regex_match('http://' + match, REGEXES[regex_type])
     when :CSS_COLORS
       launch_color_visualizer(match)
     else
@@ -212,8 +210,8 @@ class TopinambourTerminal < Vte::Terminal
   end
 
   def launch_color_visualizer(color_name)
-    dialog = Gtk::ColorChooserDialog.new(:title => color_name,
-                                         :parent => parent.toplevel)
+    dialog = Gtk::ColorChooserDialog.new(title: color_name,
+                                         parent: parent.toplevel)
     dialog.show_editor = true
     dialog.use_alpha = true
     dialog.rgba = Gdk::RGBA.parse(color_name)
@@ -223,5 +221,4 @@ class TopinambourTerminal < Vte::Terminal
     end
     dialog.destroy
   end
-
 end
