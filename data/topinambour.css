@@ -1,73 +1,34 @@
 *{
-/* Default css properties
-  -TopinambourTerminal-foreground: #aeafad;
-  -TopinambourTerminal-background: #323232;
-  -TopinambourTerminal-black: #000000;
-  -TopinambourTerminal-red: #b9214f;
-  -TopinambourTerminal-green: #A6E22E;
-  -TopinambourTerminal-yellow: #ff9800;
-  -TopinambourTerminal-blue: #3399ff;
-  -TopinambourTerminal-magenta: #8e33ff;
-  -TopinambourTerminal-cyan: #06a2dc;
-  -TopinambourTerminal-white: #B0B0B0;
-  -TopinambourTerminal-brightblack: #5D5D5D;
-  -TopinambourTerminal-brightred: #ff5c8d;
-  -TopinambourTerminal-brightgreen: #CDEE69;
-  -TopinambourTerminal-brightyellow: #ffff00;
-  -TopinambourTerminal-brightblue: #9CD9F0;
-  -TopinambourTerminal-brightmagenta: #FBB1F9;
-  -TopinambourTerminal-brightcyan: #77DFD8;
-  -TopinambourTerminal-brightwhite: #F7F7F7;
-  -TopinambourTerminal-font: Monospace 11;
-  -TopinambourWindow-shell: "/usr/bin/fish";
-  -TopinambourWindow-css-editor-style: "monokai-extended";
-  -TopinambourWindow-height: 500;
-  -TopinambourWindow-width: 1000;*/
 }
 
-#topinambour-overview-box {
-  background-color: rgba(43,45,54,0.95);
-  border-radius: 6px 0px 0px 6px;
+#topinambour-window {
+  background-color: rgba(0,0,0,0);
 }
 
 #topinambour-headerbar {
-  background-color: #323232;
+  background-color: #282828;
   border: none;
   box-shadow: none;
 }
-
 #topinambour-headerbar:backdrop {
   background-color: rgba(50,50,50,0.7);
   border: none;
   box-shadow: none;
 }
 
-#topinambour-scrollbar{
+#topinambour-scrollbar {
 	background-color: rgba(0,0,0,0);
 	border: none;
 }
-
 #topinambour-scrollbar trough{
 	background-color: rgba(0,0,0,0);
 	border: none;
 }
-
 #topinambour-scrollbar slider{
-	margin-left: 8px;
-	background-color: rgba(49,150,188,0.5);
-}
-
-#topinambour-tab-term {
-	background-color: rgba(0,0,0,0);
-}
-
-grid button image {
-  border: solid 3px rgba(0, 0, 0, 0.0);
   margin: 0px;
-  padding: 0px;
+	background-color: rgba(255,255,255,0.1);
 }
 
-grid button {
-  margin: 0px;
-  padding: 0px;
+#topinambour-term-box {
+	background-color: #282828;
 }
