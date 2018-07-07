@@ -29,6 +29,8 @@ class TopinambourApplication < Gtk::Application
     super(@app_id, %i[non_unique handles_command_line])
 
     signal_connect 'startup' do |application|
+      GLib.set_application_name('topinambout')
+      GLib.set_prgname('topinambour')
       parent_schema = Gio::SettingsSchemaSource.default
       schema_source =
         Gio::SettingsSchemaSource.new(DATA_PATH, parent_schema, true)

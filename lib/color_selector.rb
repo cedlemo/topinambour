@@ -155,7 +155,7 @@ class TopinambourColorSelector < Gtk::Grid
   def apply_new_properties
     colors_strings = @colors.map { |c| c.to_s }
     @window.application.settings["colorscheme"] = colors_strings
-    @window.terminal.colors
+    @window.terminal.load_colors
     @window.terminal.load_settings
   end
 
@@ -163,7 +163,7 @@ class TopinambourColorSelector < Gtk::Grid
     button = Gtk::Button.new(:label => "Save")
     button.signal_connect "clicked" do |widget|
       apply_new_properties
-      button.toplevel.exit_overlay_mode
+      @window.exit_overlay_mode
     end
     button
   end

@@ -75,6 +75,10 @@ class TopinambourWindow < Gtk::ApplicationWindow
     headerbar.show_close_button = true
     set_titlebar(headerbar)
   end
+
+  def exit_overlay_mode
+    @overlay.exit_overlay_mode
+  end
 end
 
 ## This overlay contains the main terminal and allows another widgets to be
