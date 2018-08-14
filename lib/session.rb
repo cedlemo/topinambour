@@ -18,11 +18,27 @@
 # Session or Profile class
 # Allow to switch easily between different configurations.
 class Session
-  attr_accessor :terminal_options,
+  attr_accessor :name,
+                :terminal_options,
                 :vte_options
   def initialize(terminal_options, vte_options)
     @terminal_options = terminal_options
     @vte_options = vte_options
+  end
+
+  ## TODO : use json
+  def save
+    # File.open("#{DATA_HOME_DIR}/#{@name}", 'w+') do |f|
+    #   Marshal.dump(self, f)
+    # end
+  end
+
+  def load
+    # File.open("#{DATA_HOME_DIR}/#{@name}") do |f|
+    #   session = Marshal.load(f)
+    #   @terminal_options = session.terminal_options
+    #   @vte_options = session.vte_options
+    # end
   end
 end
 
