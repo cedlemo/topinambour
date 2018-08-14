@@ -15,6 +15,7 @@
 # along with Topinambour.  If not, see <http://www.gnu.org/licenses/>.
 
 require 'optparse'
+require 'fileutils'
 
 ## Gtk::Application class for topinambour
 #
@@ -40,6 +41,7 @@ class TopinambourApplication < Gtk::Application
 
       TopinambourActions.add_actions_to(application)
       initialize_css_provider
+      create_xdg_dirs
       load_css_config
       load_menu_ui(application)
     end
@@ -165,5 +167,17 @@ class TopinambourApplication < Gtk::Application
     else
       @provider.load(data: '')
     end
+  end
+
+  #########################
+  # Misc                  #
+  #########################
+  def create_xdg_dirs
+    create_dir_if_absent(CONFIG_DIR)
+    create_dir_if_absent(DATA_HOME_DIR)
+  end
+
+  def create_dir_if_absent(path)
+    FileUtils.mkdir_p path unless File.exist?(path)
   end
 end
