@@ -38,6 +38,7 @@ CURRENT_PATH = __dir__
 LIB_PATH = "#{CURRENT_PATH}/../lib".freeze
 DATA_PATH = "#{CURRENT_PATH}/../data".freeze
 CONFIG_DIR = File.expand_path("#{ENV['HOME']}/.config/topinambour")
+DATA_HOME_DIR = File.expand_path("#{ENV['HOME']}/.local/share/topinambour")
 USR_CSS = "#{CONFIG_DIR}/topinambour.css".freeze
 USR_LIB_PATH  = "#{CONFIG_DIR}/lib".freeze
 gresource_bin = "#{DATA_PATH}/topinambour.gresource"
