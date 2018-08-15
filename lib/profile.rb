@@ -17,7 +17,7 @@
 ##
 # Session or Profile class
 # Allow to switch easily between different configurations.
-class Session
+class Profile
   attr_accessor :name,
                 :terminal_options,
                 :vte_options
