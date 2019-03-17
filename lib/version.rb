@@ -19,7 +19,7 @@
 module Version
   MAJOR = 2
   MINOR = 0
-  MICRO = 5
+  MICRO = 6
 
   STRING = "#{MAJOR}.#{MINOR}.#{MICRO}".freeze
 end
