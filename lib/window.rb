@@ -18,7 +18,7 @@
 #  or throught terminal signals.
 module TopinambourWindowActions
   def quit_gracefully
-    application.quit
+    @application.quit
   end
 
   def show_color_selector
@@ -50,6 +50,7 @@ class TopinambourWindow < Gtk::ApplicationWindow
 
   def initialize(application)
     super(application)
+    @application = application
     set_icon_name('utilities-terminal-symbolic')
     set_name('topinambour-window')
     set_position(:center)
