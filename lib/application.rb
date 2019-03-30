@@ -181,3 +181,25 @@ class TopinambourApplication < Gtk::Application
     FileUtils.mkdir_p path unless File.exist?(path)
   end
 end
+
+class TopinambourCssErrorPopup < Gtk::MessageDialog
+
+  def initialize(parent)
+    super(:parent => parent, :flags => 0,
+          :type => Gtk::MessageType::ERROR,
+          :buttons_type => Gtk::ButtonsType::CLOSE,
+          :message => "Css Error")
+
+    @message = Gtk::Label.new("")
+    content_area.add(@message)
+    signal_connect("response") { |widget| widget.destroy }
+  end
+
+  def message=(message)
+    @message.text = message
+  end
+
+  def message
+    @message.text
+  end
+end
